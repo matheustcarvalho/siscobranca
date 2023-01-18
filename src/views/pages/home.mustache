@@ -1,41 +1,35 @@
 {{>partials/header}}
-<div align="center">
- <table>
+<div align="center" >
+<br>
+<table class="table caption-top">
   <thead>
     <tr>
-      <th>Responsável</th>
-      <th>Data</th>
-      <th>Login</th>
-      <th>Cidade</th>
-      <th>Resultado</th>
-      <th>Prioridade</th>
-      <th>Probabilidade</th>
-      <th>Classificação</th>
+      <th scope="col"></th>
+      <th scope="col">Responsável</th>
+      <th scope="col">Data</th>
+      <th scope="col">Login</th>
+      <th scope="col">Cidade</th>
+      <th scope="col">Resultado</th>
+      <th scope="col">Prioridade</th>
+      <th scope="col">Probabilidade</th>
+      <th scope="col">Classificação</th>
     </tr>
   </thead>
+  <tbody> 
     <tr>
-      <td><select class="form-select" aria-label="Default select example">
-  <option value="1">Nalva</option>
-  <option value="1">Hellen</option>
-  <option value="1">Renata</option>
-  <option value="1">Gabriel</option>
-  </select>
-  </td>
-      <td>23/10/2022</td>
-      <td>matheus.carvalho</td>
-      <td>IBATIBA</td> 
-      <td><select class="form-select" aria-label="Default select example">
-  <option value="1">Cliente novo</option>
-  <option value="2">Primeira vez em atraso</option>
-  <option value="2">Não costuma atrasar</option>
-  <option value="2">Sempre atrasa</option>
-  <option value="2">Offline</option>
-</select></td> 
-      <td>Alta</td>   
-      <td>23/10</td> 
-      <td>8</td>           
+      {{#users}}
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+      <td>{{nome}}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      {{/users}}
     </tr>
-</table> 
+  </tbody>
+</table>
 </div>
-
 {{>partials/footer}}
