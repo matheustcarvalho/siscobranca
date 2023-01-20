@@ -3,7 +3,8 @@ import internal from 'stream';
 import { sequelize } from '../instances/mysql';
 
 export interface UserInstance extends Model {
-
+    
+    
     login: string;
     nome: string;
     boletos_vencidos: number;
@@ -28,7 +29,8 @@ export const User = sequelize.define<UserInstance>("User",{
 
     protocolo: {
         type: DataTypes.STRING
-    }
+    },
+
 
 }, {
     tableName: 'view_cobranca_relatorio',

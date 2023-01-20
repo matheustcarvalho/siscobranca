@@ -6,7 +6,8 @@ const router = Router();
 router.get('/login', PageController.login);
 router.get('/', PageController.home);
 router.get('/cobranca', PageController.cobranca);
-router.get('/relatorio23', PageController.relatorio);
+router.get('/relatorio', PageController.relatorio);
+router.get('/retornar',PageController.retornar);
 
 router.get('search', SearchController.search);
 

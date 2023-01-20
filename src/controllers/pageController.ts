@@ -12,7 +12,7 @@ export const home = async (req: Request, res: Response) => {
      const users = await User.findAll({
         where:{
             nome: {
-                [Op.like]: 'andre carvalho moreira%'
+                [Op.like]: 'andre%'
                 
             }
         }
@@ -45,5 +45,13 @@ export const login = (req: Request, res: Response) => {
     
 
     res.render('pages/login');
+
+}
+
+export const retornar = (req: Request, res: Response) => {
+
+    
+
+    res.render('pages/retornar');
 
 }

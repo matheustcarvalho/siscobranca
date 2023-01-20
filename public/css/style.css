@@ -55,11 +55,14 @@ ul {
 
 tr th {
     padding: 5px 35px ;
-    /* text-align: center; */
+    text-align: center;
 }
 
 tr td {
     padding: 5px 35px ;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 img {

@@ -1,35 +1,81 @@
 {{>partials/header}}
-<div align="center" >
+
+<div align="center">
 <br>
 <table class="table caption-top">
   <thead>
     <tr>
       <th scope="col"></th>
-      <th scope="col">Responsável</th>
-      <th scope="col">Data</th>
-      <th scope="col">Login</th>
-      <th scope="col">Cidade</th>
-      <th scope="col">Resultado</th>
-      <th scope="col">Prioridade</th>
-      <th scope="col">Probabilidade</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
       <th scope="col">Classificação</th>
+      <th scope="col">Cidade</th>
+      <th scope="col">Login</th>
+      <th scope="col">Vencimento</th>
+      <th style="color:rgb(21, 21, 21)" scope="col">Provável pagamento</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody> 
+    {{#users}}
     <tr>
-      {{#users}}
       <th scope="row"></th>
       <td></td>
       <td></td>
-      <td>{{nome}}</td>
       <td></td>
       <td></td>
       <td></td>
       <td></td>
+      <td><a href="google.com">{{login}}</a></td>
       <td></td>
-      {{/users}}
+      <td></td>
+      <td>
+          <button style="margin-left: -100px;" type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+      </td>
+      <td></td>
     </tr>
+    {{/users}}
   </tbody>
 </table>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Nova Cobrança</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"> 
+        <!-- Conteudo modal -->
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Responsável</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        <br>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Data</label>
+          <input type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Comentário</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+        </div>
+
+        <!-- /Conteudo modal -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /Modal -->
+
 {{>partials/footer}}
