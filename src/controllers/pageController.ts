@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { User } from '../models/User';
+import { User, Boleto } from '../models/User';
 import { Op } from 'sequelize';
+import sequelize from 'sequelize';
+import { QueryTypes } from 'sequelize';
 
 //[Op.gt] = >
 //[Op.gte] = >=
@@ -9,19 +11,30 @@ import { Op } from 'sequelize';
 
 export const home = async (req: Request, res: Response) => {
 
-     const users = await User.findAll({
-        where:{
-            nome: {
-                [Op.like]: 'andre%'
-                
-            }
+
+   const users = await User.findAll({
+        where: {
+            [Op.and]: [
+                sequelize.literal("boletos_vencidos >= 3 and nome like 'a%' ")
+            ]
         }
-    });
-    // console.log("USUARIOS: ", JSON.stringify(users));
+     }).catch(err => console.log(err));
+
+
+    // const boletos = await Boleto.findAll({
+    //     where: {
+    //         [Op.and]: [
+    //             sequelize.literal("")
+    //         ]
+    //     }
+    //  }).catch(err => console.log(err));
+
 
 
     res.render('pages/home', {
-        users
+         users,
+         
+        
     });
         
 
@@ -48,10 +61,10 @@ export const login = (req: Request, res: Response) => {
 
 }
 
-export const retornar = (req: Request, res: Response) => {
+export const concluido = (req: Request, res: Response) => {
 
     
 
-    res.render('pages/retornar');
+    res.render('pages/concluido');
 
 }

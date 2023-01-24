@@ -7,7 +7,7 @@ router.get('/login', PageController.login);
 router.get('/', PageController.home);
 router.get('/cobranca', PageController.cobranca);
 router.get('/relatorio', PageController.relatorio);
-router.get('/retornar',PageController.retornar);
+router.get('/concluido',PageController.concluido);
 
 router.get('search', SearchController.search);
 

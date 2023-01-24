@@ -1,41 +1,33 @@
 {{>partials/header}}
 <div align="center">
- <table>
-  <thead>
-    <tr>
-      <th>Responsável</th>
-      <th>Data</th>
-      <th>Login</th>
-      <th>Cidade</th>
-      <th>Resultado</th>
-      <th>Prioridade</th>
-      <th>Probabilidade</th>
-      <th>Classificação</th>
-    </tr>
-  </thead>
-    <tr>
-      <td><select class="form-select" aria-label="Default select example">
-  <option value="1">Nalva</option>
-  <option value="1">Hellen</option>
-  <option value="1">Renata</option>
-  <option value="1">Gabriel</option>
-  </select>
-  </td>
-      <td>23/10/2022</td>
-      <td>matheus.carvalho</td>
-      <td>IBATIBA</td> 
-      <td><select class="form-select" aria-label="Default select example">
-  <option value="1">Cliente novo</option>
-  <option value="2">Primeira vez em atraso</option>
-  <option value="2">Não costuma atrasar</option>
-  <option value="2">Sempre atrasa</option>
-  <option value="2">Offline</option>
-</select></td> 
-      <td>Alta</td>   
-      <td>23/10</td> 
-      <td>8</td>           
-    </tr>
-</table> 
+  <canvas id="myChart" width="600" height="400"></canvas>
+
+  <script>
+    var data = [
+    {
+        value: 300,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Red"
+    },
+    {
+        value: 50,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Green"
+    },
+    {
+        value: 100,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Yellow"
+    }
+];
+
+var ctx = document.getElementById("myChart").getContext("2d");
+new Chart(ctx).Pie(data);
+  </script>
+
 </div>
 
 {{>partials/footer}}

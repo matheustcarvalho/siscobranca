@@ -9,12 +9,12 @@
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
-      <th scope="col"></th>
       <th scope="col">Classificação</th>
       <th scope="col">Cidade</th>
       <th scope="col">Login</th>
       <th scope="col">Vencimento</th>
       <th style="color:rgb(21, 21, 21)" scope="col">Provável pagamento</th>
+      <th scope="col">Tipo</th>
       <th scope="col"></th>
       <th scope="col"></th>
     </tr>
@@ -27,13 +27,14 @@
       <td></td>
       <td></td>
       <td></td>
-      <td></td>
-      <td></td>
+      <td>{{cidade}}</td>
       <td><a href="google.com">{{login}}</a></td>
+      <td>{{dia_vencimento}}</td>
       <td></td>
+      <td>{{solicitacao}}</td>
       <td></td>
       <td>
-          <button style="margin-left: -100px;" type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+          <button  type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
       </td>
       <td></td>
     </tr>
@@ -77,5 +78,9 @@
 </div>
 
 <!-- /Modal -->
+
+<script>
+  
+</script>
 
 {{>partials/footer}}

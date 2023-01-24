@@ -13,7 +13,7 @@
     <div class="container">
         <a href="/"><img src="/images/logo.png"></a>
         <form method="GET" action="/search" class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+            <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." value="{{ query }}" aria-label="Search"/>
             <button class="btn btn-outline-success" type="submit">Buscar</button>
           </form>
       
@@ -23,7 +23,7 @@
     <ul>
         <li class=""><a href="/">Aberto</a></li>
         <li class=""><a href="/cobranca">Cobrança</a></li>
-        <li class=""><a href="/add">Concluído</a></li>
+        <li class=""><a href="/concluido">Concluído</a></li>
         <li class=""><a href="/relatorio">Relatório</a></li>
     </ul>
 </nav>
