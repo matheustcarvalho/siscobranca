@@ -53,13 +53,7 @@ export const relatorio = (req: Request, res: Response) => {
 
 }
 
-export const login = (req: Request, res: Response) => {
 
-    
-
-    res.render('pages/login');
-
-}
 
 export const concluido = (req: Request, res: Response) => {
 
