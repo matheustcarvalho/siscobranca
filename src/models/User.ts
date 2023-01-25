@@ -89,10 +89,10 @@ export const User = sequelize.define<UserInstance>("User",{
 export const Boleto = sequelize.define<BoletoInstance>("Boleto",{ 
 
     id: {
-        primaryKey: true,
         type: DataTypes.INTEGER
     },
     id_adesao: {
+        primaryKey: true,
         type: DataTypes.INTEGER
     },
     dataVencimento: {
@@ -118,4 +118,4 @@ export const Boleto = sequelize.define<BoletoInstance>("Boleto",{
 });
 
 
-// User.belongsTo(Boleto, {foreignKey: ''})
+User.belongsTo(Boleto, {foreignKey: 'id'});

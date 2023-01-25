@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { User, Boleto } from '../models/User';
-import { Op } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import sequelize from 'sequelize';
-import { QueryTypes } from 'sequelize';
+
 
 //[Op.gt] = >
 //[Op.gte] = >=
@@ -13,28 +13,28 @@ export const home = async (req: Request, res: Response) => {
 
 
    const users = await User.findAll({
-        where: {
-            [Op.and]: [
-                sequelize.literal("boletos_vencidos >= 3 and nome like 'a%' ")
-            ]
-        }
+
+    raw:true,
+
+    include:[{
+      model: Boleto,
+      required: false,
+      attributes:['dataVencimento', 'data_pagamento']
+      
+    }],
+
+     where:{
+                [Op.and]: [
+          sequelize.literal("boletos_vencidos >= 3  and nome like 'a%'")]
+
+     },
+
+    group:['login']
      }).catch(err => console.log(err));
-
-
-    // const boletos = await Boleto.findAll({
-    //     where: {
-    //         [Op.and]: [
-    //             sequelize.literal("")
-    //         ]
-    //     }
-    //  }).catch(err => console.log(err));
-
 
 
     res.render('pages/home', {
          users,
-         
-        
     });
         
 
