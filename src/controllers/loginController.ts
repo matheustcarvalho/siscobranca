@@ -1,40 +1,88 @@
 import { Request, response, Response } from 'express';
 import { Operador} from '../models/Operadores';
+import { Parametros, ParametrosInstance } from '../models/Parametros';
 import { Op, QueryTypes } from 'sequelize';
-import sequelize from 'sequelize';
-import  Express  from 'express';
-import { appendFile } from 'fs';
+import { createHash } from 'crypto';
 
 
-const usuario = 'admin';
-const password = 'admin123';
+
+export const home = async (req: Request , res: Response ) => {
 
 
-export const home = (req: Request , res: Response ) => {
+  const senhahash = createHash('md5').update(req.body.password).digest('hex');
+ 
+ 
+   try { 
+
+    const operadores = await Operador.findOne({
+
+      raw:true,
+      where: {
+        login: req.body.login
+      }
+
+    })
 
 
-  if(req.body.password == password && req.body.login == usuario) {
+    if(req.body.login == operadores?.login && senhahash == operadores?.senha){
 
-    res.redirect('/home');
-  }   else {
+      res.redirect('/home');
+    }   else {
+          
+          res.render('pages/login', {
+               
+          });
+  
+    }
+  } catch (e) {
 
-    res.render('pages/login', {
-             
-    });
-  } 
-        
-    
-        // res.render('pages/login', {
-             
-        // });
+    console.log(e)
 
+  }
 
 }
 
 
-export const login = (req: Request, res: Response) => {
+
+export const login = (req: Request , res: Response ) => {
 
     
     res.render('pages/login');
 
 }
+
+
+
+export const ipvalidation = async (req: Request , res: Response, next: Function ) => {
+
+  let ipCliente = (req.socket.remoteAddress)
+  ipCliente = ipCliente?.split(':').reverse()[0]
+
+  try { 
+    const parametro = await Parametros.findOne({
+      raw:true,
+      where: {
+        atributo: 'IpAddress'
+      }
+    });
+
+   const valor = parametro?.valor;
+   const ips = valor?.split(',') || []
+   const found = ips.find(ip => ipCliente == ip)
+
+   if (!found)
+    res.status(200).render('pages/restrito')
+   next()    
+  } catch (e) {
+    res.status(401).send(e)
+  }
+  
+
+}
+
+export const validationlogin = async (req: Request, res: Response, next: Function) => {
+
+
+  
+}
+

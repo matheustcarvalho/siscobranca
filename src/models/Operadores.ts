@@ -19,7 +19,8 @@ export const Operador = sequelize.define<OperadorInstance>("Operador",{
     },
 
     login: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        unique:true
 
     },
 

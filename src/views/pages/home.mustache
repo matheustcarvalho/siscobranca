@@ -1,6 +1,6 @@
 {{>partials/header}}
 
-<div align="center">
+<div align="center" id="paginate">
 <br>
 <table class="table caption-top">
   <thead>
@@ -13,74 +13,151 @@
       <th scope="col">Cidade</th>
       <th scope="col">Login</th>
       <th scope="col">Vencimento</th>
-      <th style="color:rgb(21, 21, 21)" scope="col">Provável pagamento</th>
+      <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
+      <th scope="col">Faturas vencidas</th>
       <th scope="col">Tipo</th>
       <th scope="col"></th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody> 
-    {{#users}}
-    <tr>
+    {{#clientes.rows}}
+    <tr >
       <th scope="row"></th>
       <td></td>
       <td></td>
       <td></td>
-      <td></td>
+      <td>{{classificacao}}</td>
       <td>{{cidade}}</td>
-      <td><a href="google.com">{{login}}</a></td>
+      <td>{{login}}</td>
       <td>{{dia_vencimento}}</td>
-      <td></td>
+      <td>{{Atrasa_dias}}</td>
+      <td>{{boletos_vencidos}}</td>
       <td>{{solicitacao}}</td>
       <td></td>
       <td>
-          <button  type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+          <button data-id="{{id_cliente}}" data-login="{{login}}" data-adesao="{{id}}" id="valor" type="button" class="salvar btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
       </td>
       <td></td>
     </tr>
-    {{/users}}
+    {{/clientes.rows}}
   </tbody>
 </table>
 </div>
-<!-- Modal -->
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item">
+    <a id="prev" href="/home{{previousurl}}" class="page-link">Anterior</a>
+    </li>
+    <li class="page-item"><button class="page-link" href="#"></button></li>
+    <li class="page-item">
+      <a class="page-link" id="next" href="/home{{nexturl}}">Proximo</a>
+    </li>
+  </ul>
+</nav>
+
+
+<!-- Modal -->     
+<form id="form">
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <input type="hidden" class="clientelogin" value="" name="login" >
+      <input type="hidden" class="idcliente" value="" name="id_cliente" >
+      <input type="hidden" class="id_adesao" value="" name="id_adesao">
+      <input type="hidden" value="1" name="numero_cobranca">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Nova Cobrança</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body"> 
+      <div class="modal-body" id="modall" data-id=""> 
         <!-- Conteudo modal -->
-          <select class="form-select" aria-label="Default select example">
+        <div class="mb-3">
+          <label class="form-label" value="">Login</label>
+          <input type="text" class="form-control clientelogin" disabled>
+        </div>
+        <label class="form-label" value="">Operador</label>
+          <select class="form-select" name="operador" aria-label="Default select example">
             <option selected>Responsável</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            {{#opcobranca}}
+            <option data-id="{{id}}" value="{{id}}">{{nome}}</option>
+            {{/opcobranca}}
+
           </select>
         <br>
         <div class="mb-3">
-          <label for="formGroupExampleInput" class="form-label">Data</label>
-          <input type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
+          <label class="form-label" value="">Data</label>
+          <input type="date" class="form-control" name="data" placeholder="Example input placeholder">
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlTextarea1" class="form-label">Comentário</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+          <label class="form-label">Comentário</label>
+          <textarea name="comentario" class="form-control" value="" rows="4"></textarea>
         </div>
-
         <!-- /Conteudo modal -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
       </div>
+ 
     </div>
   </div>
 </div>
+</form>
 
 <!-- /Modal -->
 
+<!-- Capturar id -->
 <script>
-  
+
+$(document).ready(() => {
+  $('.salvar').on('click', function() {
+    const login = $(this).data('login')
+    $('.clientelogin').val(login)
+  })
+  $('.salvar').on('click', function() {
+    const id = $(this).data('id')
+    $('.idcliente').val(id)
+  })
+  $('.salvar').on('click', function() {
+    const adesao = $(this).data('adesao')
+    $('.id_adesao').val(adesao)
+  })
+
+  $('#form').on('submit', e => {
+    e.preventDefault()
+    const data = {
+      id_cliente: $('[name=id_cliente]').val(),
+      id_adesao: $('[name=id_adesao]').val(),
+      operador_id: $('[name=operador]').val(),
+      login: $('[name=login]').val(),
+      data_cobranca:$('[name=data]').val(),
+      numero_cobranca: $('[name=numero_cobranca]').val(),
+      comentario: $('[name=comentario]').val()
+    }
+    save(data)
+  })
+})
+
+function save(data) {
+  console.log(data);
+  $.ajax({
+    url: '/home',
+    method: 'post',
+    data,
+    // dataType: 'json',
+    success: res => {
+      alert('Salvo com sucesso')
+    },
+    error: e => {
+      console.log(e);
+      alert('Houve algum erro')
+    }
+  })
+}
+
 </script>
+<!-- /Capturar id -->
+
+
 
 {{>partials/footer}}

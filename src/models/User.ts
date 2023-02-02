@@ -28,6 +28,7 @@ export interface BoletoInstance extends Model {
     status: string;
     valor_pago: number;
     data_pagamento: Date;
+    cobranca: number;
 
 
 }
@@ -75,6 +76,9 @@ export const User = sequelize.define<UserInstance>("User",{
 
     cidade:{
         type: DataTypes.STRING
+    },
+    cobranca:{
+        type: DataTypes.INTEGER
     },
 
 
