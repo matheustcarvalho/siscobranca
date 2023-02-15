@@ -1,14 +1,31 @@
-CREATE TABLE cob_cobrancas (
-    ID int PRIMARY KEY,
-    id_cliente int,
-    id_adesao int,
-    operador_id int,
-    login varchar(20),
-    data_cobranca date,
-    operador_nome VARCHAR(50),
-    numero_cobranca int,
-    comentario varchar(250)
-);
+CREATE TABLE `integra`.`cob_operadores` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL,
+  `login` VARCHAR(45) NULL,
+  `grupo` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+  
+CREATE TABLE `integra`.`cob_cobrancas` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `adesao_id` INT NULL,
+  `cliente_id` INT NULL,
+  `login` VARCHAR(45) NULL,
+  `operador_id` INT NULL,
+  `numero_cobranca` INT NULL,
+  PRIMARY KEY (`id`));
+
+
+  CREATE TABLE `integra`.`cob_atribuicao` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cliente_id` INT NULL,
+  `adesao_id` INT NULL,
+  `login` VARCHAR(45) NULL,
+  `operador_id` INT NULL,
+  PRIMARY KEY (`id`));
+
+  ///////////////////////////////////////////////////////////////
 
 CREATE TABLE cob_operadores (
 id int PRIMARY KEY,

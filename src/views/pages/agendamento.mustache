@@ -1,32 +1,20 @@
 {{>partials/header}}
-
-<style>
-  .loading {
-  animation: is-rotating 1s infinite;
-  border: 6px solid #696767;
-  border-radius: 50%;
-  border-top-color: #1d1d1d;
-  height: 50px;
-  width: 50px;
-}
-
-@keyframes is-rotating {
-  to {
-    transform: rotate(1turn);
-  }
-}
-</style>
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
     style="position:absolute; right: 5px; width: 150px; margin-bottom: 15px; justify-content: right; margin: 10px;"
     type="button" class="btn btn-success">Atribuir</button>
   <br>
 </div>
-<div align="center" id="paginate" style="height:100vh; overflow-y:auto;">
+<div align="center" id="paginate">
+
+
   <table id="myTable" class="table caption-top">
     <thead>
       <tr>
-        <th></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
         <th scope="col">Classificação</th>
         <th scope="col">Cidade</th>
         <th scope="col">Login</th>
@@ -35,20 +23,72 @@
         <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
         <th scope="col">Faturas vencidas</th>
         <th scope="col">Tipo</th>
-        <th></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
-    <tbody id="listar-clientes">
+    <tbody>
 
+      <tr>
+        <th scope="row"></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>aoba</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança"
+            data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" title="Agendar retorno"
+            data-bs-target="#staticBackdrop2"><i class="bi bi-calendar2-minus"></i></button>
+        </td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
-  <div id="loading" class="loading"></div>
 </div>
-
 
 <!-- Modal -->
 <form id="form">
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <input type="hidden" class="clientelogin" value="" name="login">
+        <input type="hidden" class="idcliente" value="" name="id_cliente">
+        <input type="hidden" class="id_adesao" value="" name="id_adesao">
+        <input type="hidden" value="1" name="numero_cobranca">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Cobrança</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modall" data-id="">
+          <!-- Conteudo modal -->
+          <div class="form-group">
+            <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
+            <input type="date" class="form-control" id="message-text"></input>
+          </div>
+          <!-- /Conteudo modal -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- /Modal -->
+
+<!-- Modal -->
+<form id="form">
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -63,8 +103,11 @@
         <div class="modal-body" id="modall" data-id="">
           <!-- Conteudo modal -->
           <label class="form-label" value="">Operador</label>
-          <select class="form-select" id="operadores-list" name="operador" aria-label="Default select example">
-            <option value='' selected>Selecione</option>
+          <select class="form-select" name="operador" aria-label="Default select example">
+            <option value='' selected>Responsável</option>
+
+            <option data-id="" value=""></option>
+
           </select>
           <br>
           <!-- /Conteudo modal -->
@@ -72,102 +115,37 @@
         <div class="modal-footer">
           <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
         </div>
-
       </div>
     </div>
   </div>
 </form>
-
 <!-- /Modal -->
 
 <script>
-  
 
-  $.ajax({
-  
-  type: 'GET',
-  url: 'http://localhost:8888/integra/apis/sis-cobranca/operadores-cobranca',
-  dataType: 'json',
-  success: function (data) {
-
-    let options = ''
-
-    for(operador of data) {
-
-      options += `
-      <option data-id="${operador.id}" value="${operador.id}">${operador.nome}</option>
-      
-      `
-    }
-
-    $("#operadores-list").append(options)
-
-  }
-
-});
-
- var currentPage = 1
- var limit = 20
-
-   $( "#paginate" ).scroll(function() {
-     
-     if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
-       console.log('carlao');
-       getList(currentPage + 1, 20)
-     }
-   });
-
- 
-
-
-  function getList(page, limit) {
+function save(data) {
+    console.log(data);
     $.ajax({
-    
-      type: 'GET',
-      url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes?page=${page}&limit=${limit}`,
-      dataType: 'json',
-      success: function (data) {
-  
-        
-    
-        let content = '';
-    
-        for (cliente of data.clientes) {
-          content += `
-            <tr>
-              <td></td>
-              <td>${cliente.classificacao || '-'}</td>
-              <td>${cliente.cidade || '-'}</td>
-              <td>${cliente.login || '-'}</td>
-              <td>${cliente.status_login || '-'}</td>
-              <td>${cliente.dia_vencimento || '-'}</td>
-              <td>${cliente.Atrasa_dias || '-'}</td>
-              <td>${cliente.boletos_vencidos || '-'}</td>
-              <td>${cliente.solicitacao || '-'}</td>
-              <td>
-                <input style="width: 25px; height: 25px; border-color: rgb(55, 55, 55);" data-id="${cliente.id_cliente}"
-                  data-login="${cliente.login}" data-adesao="${cliente.id}" id="valor" class="big-cehckboc form-check-input" type="checkbox"
-                  value="" id="flexCheckDefault">
-              </td>
-              <td></td>
-            </tr>`
-    
-        }
-    
-        $('#loading').removeClass('loading')
-        $('#pagi').css('display', 'block')
-        $("#listar-clientes").append(content)
-    
-        currentPage = page
+      url: '/agendamento',
+      method: 'post',
+      data,
+      // dataType: 'json',
+      success: res => {
+        alert('Salvo com sucesso')
+        location.reload();
+      },
+      error: e => {
+        console.log(e);
+        alert('Houve algum erro')
       }
-    
-    });
+    })
   }
 
 
   let clientes = [];
   $(document).ready(() => {
     $("input[type='checkbox']:checked").prop('checked', false);
+
 
     $('#salvarr').on('click', function () {
       $("input[type='checkbox']:checked").each(function () {
@@ -179,15 +157,15 @@
         clientes.push(data)
       });
 
+
       const operador = $('[name=operador]').val()
+
 
       save({ operador, clientes })
       clientes = []
     })
 
-    getList(1, 20)
   })
-
 
   function save(data) {
     console.log(data);
@@ -208,8 +186,9 @@
   }
 
 
-  $(document).ready(function () {
 
+
+  $(document).ready(function () {
     $("#myInput").on("keyup", function () {
       var value = $(this).val().toLowerCase();
       $("#myTable tr").filter(function () {
@@ -219,26 +198,6 @@
   });
 
 
-
-
-  $('#listar-clientes').on('click', '.form-check-input', function () {
-
-    let quantCheck = $('.form-check-input:checked').length;
-
-    if (quantCheck != 0) {
-      $('#botao').css('display', 'block')
-      $('#paginate').css('margin-top', '30px')
-    }
-    else {
-      $('#botao').css('display', 'none')
-      $('#paginate').css('margin-top', '0px')
-    }
-  });
-
 </script>
-
-
-  
-  
 
 {{>partials/footer}}

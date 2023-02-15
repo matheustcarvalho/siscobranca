@@ -1,121 +1,194 @@
 {{>partials/header}}
+<style>
+  .loading {
+  animation: is-rotating 1s infinite;
+  border: 6px solid #696767;
+  border-radius: 50%;
+  border-top-color: #1d1d1d;
+  height: 50px;
+  width: 50px;
+}
 
-<div align="center">
-<br>
-<table class="table caption-top">
-  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col">Login</th>
-      <th scope="col">Cidade</th>
-      <th scope="col">Vencimento</th>
-      <th style="color:rgb(21, 21, 21)" scope="col">Prov. pagamento</th>
-      <th scope="col">Cobrança 1</th>
-      <th scope="col">Cobrança 2</th>
-      <th scope="col">Cobrança 3</th>
-      <th scope="col">Agendamento</th>
-      <th scope="col"></th>
+@keyframes is-rotating {
+  to {
+    transform: rotate(1turn);
+  }
+}
+</style>
 
-    </tr>
-  </thead>
-  <tbody> 
-
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td>andre.dias</td>
-      <td>IBATIBA</td>
-      <td>10/01/2023</td>
-      <td>20/01/2023</td>
-      <td>Hellen-15/01/2023</td>
-      <td>Nalva-16/01/2022</td>
-      <td>Nalva-19/01/2022</td>
-      <td>25/01/2023</td>
-      <td>
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança" data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" title="Agendar retorno" data-bs-target="#staticBackdrop2"><i class="bi bi-calendar2-minus"></i></button>
-      </td>
-    </tr>
-
-  </tbody>
-</table>
+<div>
+  <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+    style="position:absolute; right: 5px; width: 150px; margin-bottom: 15px; justify-content: right; margin: 10px;"
+    type="button" class="btn btn-success">Atribuir</button>
+  <br>
 </div>
+<div align="center" id="paginate" style="height:100vh; overflow-y:auto;">
+  <table id="myTable" class="table caption-top">
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Classificação</th>
+        <th scope="col">Cidade</th>
+        <th scope="col">Login</th>
+        <th scope="col">Status</th>
+        <th scope="col">Vencimento</th>
+        <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
+        <th scope="col">Faturas vencidas</th>
+        <th scope="col">Tipo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="listar-clientes">
+
+    </tbody>
+  </table>
+  <div id="loading" class="loading"></div>
+</div>
+</div>
+
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Nova Cobrança</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body"> 
-        <!-- Conteudo modal -->
-        Responsável
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Selecione</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      <br>
-      Número Cobrança
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Selecione</option>
-        <option value="2">2ª Cobrança</option>
-        <option value="3">3ª Cobrança</option>
-      </select>
-    <br>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Data</label>
-        <input type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
-      </div>
-      <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Comentário</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-      </div>
-        <!-- /Conteudo modal -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Salvar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- /Modal -->
-
-<!-- Modal2 Retorno -->
-<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agendar Cobrança</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body"> 
-        <!-- Conteudo modal -->
-           Responsável
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Selecione</option>
-            <option value="1">Operador 1</option>
-            <option value="2">Operador 2</option>
-            <option value="3">Operador 3</option>
-          </select>
-        <br>
-        <div class="mb-3">
-          <label for="formGroupExampleInput" class="form-label">Data</label>
-          <input type="date" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
+<form id="form" action="/cobranca">
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <input type="hidden" class="clientelogin" value="" name="login">
+        <input type="hidden" class="idcliente" value="" name="id_cliente">
+        <input type="hidden" class="idadesao" value="" name="id_adesao">
+        <input type="hidden" value="2" name="id_operador">
+        <input type="hidden" value="1" name="numero_cobranca">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Cobrança</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <!-- /Conteudo modal -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Salvar</button>
+        <div class="modal-body" id="modall" data-id="">
+          <!-- Conteudo modal -->
+          <div class="form-group">
+            <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
+            <input type="date" class="form-control" id="message-text"></input>
+          </div>
+          <!-- /Conteudo modal -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
+<!--/Modal -->
 
-<!-- /Modal2 -->
+<!-- Capturar id -->
+<script>
+
+  var currentPage = 1
+  var limit = 20
+
+  $("#paginate").scroll(function () {
+
+    if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
+      console.log('carlao');
+      getList(currentPage + 1, 20)
+    }
+  });
+
+  function getList(page, limit) {
+
+    $.ajax({
+
+      type: 'GET',
+      url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos?page=${page}&limit=${limit}`,
+      dataType: 'json',
+      success: function (data) {
+
+        let content = '';
+
+        for (cliente of data.clientes) {
+          content += `
+        <tr>
+          <td></td>
+          <td>${cliente.classificacao || '-'}</td>
+          <td>${cliente.cidade || '-'}</td>
+          <td>${cliente.login || '-'}</td>
+          <td>${cliente.status_login || '-'}</td>
+          <td>${cliente.dia_vencimento || '-'}</td>
+          <td>${cliente.Atrasa_dias || '-'}</td>
+          <td>${cliente.boletos_vencidos || '-'}</td>
+          <td>${cliente.solicitacao || '-'}</td>
+          <td>
+            <button type="button" data-id="${cliente.id_cliente}" data-adesao="${cliente.id}" data-login="${cliente.login}"
+            class="btn btn-success" data-bs-toggle="modal" id="botaosalvar" title="Adicionar cobrança"
+            data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+          </td>
+          <td></td>
+        </tr>`
+
+        }
+
+        $('#loading').removeClass('loading')
+        $('#pagi').css('display', 'block')
+        $("#listar-clientes").append(content)
+
+        currentPage = page
+
+      }
+
+    });
+  }
+
+
+  $('#listar-clientes').on('click', '#botaosalvar', function () {
+
+    const id = $(this).data('id')
+    $('.idcliente').val(id)
+    const adesao = $(this).data('adesao')
+    $('.idadesao').val(adesao)
+    const login = $(this).data('login')
+    $('.clientelogin').val(login)
+
+  })
+
+
+
+  $('#salvarr').on("click", function (e) {
+    let formData = new FormData($("#form").get(0))
+
+    const data = {}
+    formData.forEach((val, key) => {
+      data[key] = val
+    })
+    console.log(data);
+
+    $.ajax({
+      url: '/cobranca',
+      method: 'post',
+      data,
+      // dataType: 'json',
+      success: res => {
+        alert('Salvo com sucesso')
+        location.reload();
+      },
+      error: e => {
+        console.log(e);
+        alert('Houve algum erro')
+      }
+    })
+  });
+
+
+
+  $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+    getList(1, 20)
+  });
+
+</script>
+
+<!-- /Capturar id -->
 
 {{>partials/footer}}

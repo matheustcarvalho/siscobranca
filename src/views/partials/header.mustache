@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cobranças</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cobranças</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
 </head>
+
 <body>
-<header>
+  <header>
     <div class="container">
-        <a href="/home"><img src="/images/logo.png"></a>
-        <form method="GET" action="/search" class="d-flex" role="search">
-            <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." value="{{ query }}" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Buscar</button>
-          </form>
-
-
+      <a href="/index"><img src="/images/logo.png"></a>
+      <form method="GET" action="/search" class="d-flex" role="search">
+        <input class="form-control me-2" type="search" id="myInput" name="q" placeholder="Buscar..." value="{{ query }}"
+          aria-label="Search" />
+      </form>
     </div>
-</header>
-<nav id="menu">
-    <ul>
-        <li class=""><a href="/home">Aberto</a></li>
-        <li class=""><a href="/cobranca">Cobrança</a></li>
-        <li class=""><a href="/concluido">Concluído</a></li>
-        <li class=""><a href="/relatorio">Relatório</a></li>
-    </ul>
-</nav>
+  </header>
 
-<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+  </div>
+  <nav id="menu">
+    <ul>
+      <li id="carrega" class=""><a href="/index">Home</a></li>
+      <li class=""><a href="/atribuir">Atribuir</a></li>
+      <li class=""><a href="/cobranca">Cobrança</a></li>
+      <li class=""><a href="/agendamento">Agendamentos</a></li>
+      <li class="" style="position:absolute; right: 5px;justify-content: center; margin-top: 10px;"><a href="/logout"
+          style="width: 30px; margin-bottom: 5px;" class="btn btn-danger"><i style="width: 5px; margin-left: -6px;"
+            class="bi bi-arrow-right-square"></i></a></li>
+    </ul>
+  </nav>
+  <script>
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>

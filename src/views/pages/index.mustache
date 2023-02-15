@@ -1,0 +1,101 @@
+{{>partials/header}}
+
+<style>
+
+    .loading {
+        margin: 1rem;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        border: 3px #FFFFFF solid;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+</style>
+<div class="container">
+    <div class="pt-4 d-flex flex-row m2 justify-content-center">
+        <div class="caixaat col-md-4 col-xs-12 col-sm-4 adm-inc">
+            <div class="info-tiles tiles-toyo " id="novo-colaborador" href="">
+                <br>
+                <div class="tiles-heading text-center">
+                    <H6 style="color: #FFFFFF">Atribuir Cobranças</H6>
+                </div>
+                <div class="adm-inc d-flex justify-content-center">
+                    <div class="text-center loading" id="atribuir"></div>
+                </div>
+                <p><a href="/atribuir" class="col-sm-12 btn btn-secondary">Ir para atribuição</a></p>
+            </div>
+        </div>
+        <div class="caixacob col-md-4 col-xs-12 col-sm-4">
+            <div class="info-tiles tiles-success" id="colaborador-ativo" href="#">
+                <br>
+                <div class="tiles-heading2 text-center">
+                    <H6 style="color: #FFFFFF">Nova cobrança</H6>
+                </div>
+                <div class="adm-inc d-flex justify-content-center">
+                    <div class="text-center loading" id="atribuir2">
+                    </div>
+                </div>
+                <p><a href="/cobranca" class="col-sm-12 btn btn-success">Iniciar cobrança</a></p>
+            </div>
+        </div>
+        <div class="caixaage col-md-4 col-xs-12 col-sm-4">
+            <div class="info-tiles tiles-orange" id="colaborador-ferias" href="#">
+                <br>
+                <div class="tiles-heading3 text-center">
+                    <H6 style="color: #FFFFFF">Cobranças Agendadas</H6>
+                </div>
+                <div class="fe-fa-afa">
+                    <div class="text-center" id="emp-actives">
+                        <h4 style="color: #FFFFFF">0</h4>
+                        <small style=" color: #FFFFFF">Aguardando cobrança</small>
+                    </div>
+                </div>
+                <p><a href="#" class="col-sm-12 btn btn-dark">Cobranças agendadas</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $.ajax({
+            type: 'GET',
+            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes',
+            success: function(data){
+
+                let total = data.pagination.total
+                const content = `
+                    <h4 style="color: #FFFFFF">${total}</h4>
+                    <small style=" color: #FFFFFF">Aguardando atribuição</small>
+                `
+                $('#atribuir').removeClass('loading').html(content);
+
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos',
+            success: function(data){
+
+                let totalatribuido = data.pagination.total
+                const content = `
+                    <h4 style="color: #FFFFFF">${totalatribuido}</h4>
+                    <small style=" color: #FFFFFF">Aguardando cobrança</small>
+                `
+                $('#atribuir2').removeClass('loading').html(content);
+
+            }
+        });
+    </script>

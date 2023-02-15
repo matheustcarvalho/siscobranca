@@ -1,139 +1,181 @@
 import { request, Request, response, Response } from 'express';
-import { User, Boleto } from '../models/User';
-import { Cobranca } from '../models/Cobranca';
-import { Op, QueryTypes } from 'sequelize';
-import sequelize from 'sequelize';
-import { Cliente } from '../models/Clientes';
-import { OpCobranca } from '../models/OperadorCobranca';
-import { off } from 'process';
-import { count } from 'console';
+const axios = require('axios');
 
 
 
-//[Op.gt] = >
-//[Op.gte] = >=
-//[Op.lt] = <
-//[Op.lte] = <=
+export const homeget = async (req: Request, res: Response, next: Function) => {
 
 
+  try {
 
-export const homeget = async (req: Request, res: Response) => {
+    var grupo_user = req.session.user?.group
 
+    var grupoUsuario = Number(grupo_user);
 
-
-    //Paginação
-
-
-    let offset:any =  req.query.offset
-    let limit:any = req.query.limit
-    limit = Number(limit)
-    offset = Number(offset)
-
-    if(!limit){
-        limit = 20
-      }
-    
-    
-      if(!offset){
-        offset = 0
-      }
-
-    //Query
-
-    try{
-    const clientes = await Cliente.findAndCountAll({
-       raw:true,
-       where:{
-        
-            cobranca: {
-                [Op.is]:null
-            }
-        
-       },
-       order: [
-        ['boletos_vencidos', 'DESC'],
-        ['nome', 'ASC']
-       ],
-       limit: limit,
-       offset: offset
-
-    })
+    var grupo = 1
 
 
-    const opcobranca = await OpCobranca.findAll({raw:true}).catch(err => console.log(err));
+    if (grupoUsuario !== grupo) {
 
-    //fimQuey
+      res.render('pages/restrito')
 
-     //paginação
-    const totalclientes:any = clientes?.count
-    const currentUrl = req.baseUrl
+    } else {
 
-    const next =  offset + limit
-    const nexturl:any =  next < totalclientes ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
-    const previous = offset - limit < 0 ? null : offset-limit;
-    const previousurl:any = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}`: null;
+      res.render('pages/home', {
+
+      });
+    }
 
 
-    res.render('pages/home', {
-        
-         clientes,
-         totalclientes,
-         previousurl,
-         nexturl,
-         opcobranca
-
-    });  
-    }catch (err) {
-        console.log(err);
+  } catch (err) {
+    console.log(err);
   }
-  
-  
-//   (err => console.log(err));}
 
-    
- 
 
 }
 
 export const homepost = async (req: Request, res: Response) => {
 
-    const cobranca = await Cobranca.create({
-      
-        id_cliente: req.body.id_cliente,
-        id_adesao: req.body.id_adesao,
-        operador_id: req.body.operador_id,
-        login: req.body.login,
-        data_cobranca:req.body.data_cobranca,
-        numero_cobranca: req.body.numero_cobranca,
-        comentario: req.body.comentario
 
- 
-     }).catch(err => console.log(err));
+  var cliente = req.body.clientes
+  var operador = req.body.operador
 
-    res.sendStatus(200);
-}
 
-export const cobranca = (req: Request, res: Response) => {
+  const resposta = await axios({
+    method: 'post',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-atribuicao',
+    data: {
+      clientes: cliente,
+      operadores: operador
+    }
 
-    res.render('pages/cobranca');
+  })
+
+  res.sendStatus(200)
 
 }
+
+export const cobrancaget = async (req: Request, res: Response) => {
+
+  
+
+
+
+  let page: any = req.query.page
+  page = Number(page)
+
+  if (!page) {
+    page = 1
+  }
+
+  try {
+
+    // const CobcurrentUrl = req.baseUrl;
+    // const next = page + 1
+    // const previous = page - 1
+    // const nexturl: any = `${CobcurrentUrl}?page=${next}`;
+    // const previousurl: any = `${CobcurrentUrl}?page=${previous}`;
+
+    // const response = await axios.get('http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos')
+    // const clientes = response.data.clientes
+    // const pageapi = page
+    // const respons = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos?page=${pageapi}&limit=40`)
+    // const cliente = respons.data.clientes
+
+
+    //-paginação
+
+
+
+
+    res.render('pages/cobranca', {
+
+
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+
+}
+
+export const cobrancapost = async (req: Request, res: Response) => {
+
+
+  var idOperador = req.session.user?.id
+
+
+
+  var cliente = req.body
+
+
+  const resposta = await axios({
+    method: 'post',
+    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-cobranca',
+    data: {
+      clientes: cliente,
+      operador: idOperador
+    }
+
+  })
+
+  res.sendStatus(200)
+
+
+  res.sendStatus(200)
+
+}
+
 
 export const relatorio = (req: Request, res: Response) => {
 
 
-    res.render('pages/relatorio');
+  res.render('pages/relatorio');
 
 }
 
 
 
 
-export const concluido = (req: Request, res: Response) => {
+export const agendamentoget = (req: Request, res: Response) => {
 
-    
 
-    res.render('pages/concluido');
+
+  res.render('pages/agendamento');
+
+}
+
+export const agendamentopost = (req: Request, res: Response) => {
+
+  console.log(req.body);
+
+
+
+  
+
+}
+
+export const index = async (req: Request, res: Response) => {
+
+
+
+  // const total = await axios.get('http://localhost:8888/integra/apis/sis-cobranca/listar-clientes')
+
+  // const totalclientes = total.data.pagination.total
+
+  // const atribuidos = await axios.get('http://localhost:8888/integra/apis/sis-cobranca/listar-clientes-atribuidos')
+
+  // const clientes_atribuidos = atribuidos.data.pagination.total
+
+
+
+
+
+  res.render('pages/index', {
+    // totalclientes,
+    // clientes_atribuidos
+
+  })
 
 }
 

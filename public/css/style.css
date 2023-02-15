@@ -22,8 +22,8 @@ body {
     margin: auto;
 }
 header {
-    font-size: 28px;
-    padding: 10px 0;
+    font-size: 20px;
+    
 }
 header .container {
     display: flex;
@@ -42,7 +42,7 @@ header input {
 #menu {
     background: var(--main2);
     color: var(--darkbg);
-    padding: 2px 10px;
+    padding: 2px 5px;
 }
 ul {
     list-style: none;
@@ -100,7 +100,11 @@ h2 {
 header {
     background: var(--main);
     color: var(--darkbg);
-    padding: 17px 0;
+    padding: 15px 0;
+}
+
+#myInput{
+    height: 30px;
 }
 
 .list {
@@ -130,6 +134,27 @@ header {
     margin-bottom: 3px;
 }
 
+.caixaat{
+    background-color:#5A6268;
+    border-radius: 10px;
+    margin: 5px;
+   
+}
+
+.caixacob {
+    background-color:#116522;
+    border-radius: 10px;
+    margin: 5px;
+    
+}
+
+.caixaage{
+    background-color: #15171a;
+    border-radius: 10px;
+    margin: 5px;
+    
+}
+
 footer {
     border-top: 1px solid var(--lighter);
     padding: 20px 0 !important;
@@ -138,6 +163,17 @@ footer {
     color: var(--main);
 }
 
+#botao{
+    display: none;
+}
+
+#paginate{
+margin-top: 00px;
+}
+
+#pagi {
+    display: none;
+}
 
 
 @media (max-width: 900px) {
