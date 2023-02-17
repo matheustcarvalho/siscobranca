@@ -9,7 +9,7 @@ const crypto = require('crypto');
 
 
 
-export const home = async (req: Request, res: Response) => {
+export const home = async (req: Request, res: Response) => {  
 
   var loginn = req.body.login
   var passwordd = req.body.password

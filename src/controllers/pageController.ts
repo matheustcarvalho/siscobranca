@@ -21,7 +21,7 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
     } else {
 
-      res.render('pages/home', {
+      res.render('pages/atribuir', {
 
       });
     }
@@ -39,14 +39,18 @@ export const homepost = async (req: Request, res: Response) => {
 
   var cliente = req.body.clientes
   var operador = req.body.operador
+  var atribuiuId = req.session.user?.id
+
+  console.log(req.body)
 
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-atribuicao',
+    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-atribuicao',
     data: {
       clientes: cliente,
-      operadores: operador
+      operador: operador,
+      atribuiuId: atribuiuId
     }
 
   })
@@ -58,9 +62,6 @@ export const homepost = async (req: Request, res: Response) => {
 export const cobrancaget = async (req: Request, res: Response) => {
 
   
-
-
-
   let page: any = req.query.page
   page = Number(page)
 
@@ -108,19 +109,19 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
   var cliente = req.body
 
+  console.log(cliente)
+
+
 
   const resposta = await axios({
     method: 'post',
     url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-cobranca',
     data: {
-      clientes: cliente,
+      cliente: cliente,
       operador: idOperador
     }
 
   })
-
-  res.sendStatus(200)
-
 
   res.sendStatus(200)
 
@@ -145,9 +146,51 @@ export const agendamentoget = (req: Request, res: Response) => {
 
 }
 
-export const agendamentopost = (req: Request, res: Response) => {
+export const agendamentopost = async (req: Request, res: Response) => {
+  
 
-  console.log(req.body);
+  var idOperador = req.session.user?.id
+
+  var cliente = req.body
+
+  console.log(cliente);
+
+
+  const resposta = await axios({
+    method: 'post',
+    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-agendamento',
+    data: {
+      clientes: cliente,
+      operador: idOperador
+    }
+
+  })
+
+  res.sendStatus(200)
+  
+
+}
+
+export const agendamentoput = async (req: Request, res: Response) => {
+
+  var idOperador = req.session.user?.id
+
+  var cliente = req.body
+
+  console.log(cliente);
+
+
+  const resposta = await axios({
+    method: 'post',
+    url: 'http://localhost:8888/integra/apis/sis-cobranca/atualizar-agendamento',
+    data: {
+      clientes: cliente,
+      operador: idOperador
+    }
+
+  })
+
+  res.sendStatus(200)
 
 
 

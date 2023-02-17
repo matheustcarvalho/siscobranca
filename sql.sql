@@ -1,20 +1,25 @@
-CREATE TABLE `integra`.`cob_operadores` (
+CREATE TABLE `integra`.`cob_atribuicao` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NULL,
+  `cliente_id` INT NULL,
+  `adesao_id` INT NULL,
   `login` VARCHAR(45) NULL,
-  `grupo` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
+  `operador_id` INT NULL,
+  `operador_atribuiu` INT NULL,
+  `status` VARCHAR(45) NULL,
+  `agendado` DATE NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
   
 CREATE TABLE `integra`.`cob_cobrancas` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `adesao_id` INT NULL,
-  `cliente_id` INT NULL,
-  `login` VARCHAR(45) NULL,
+  `atribuicao_id` INT NULL,
   `operador_id` INT NULL,
-  `numero_cobranca` INT NULL,
-  PRIMARY KEY (`id`));
+  `comentario` VARCHAR(255) NULL,
+  `data_cobranca` DATE NULL,
+  `criado` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
   CREATE TABLE `integra`.`cob_atribuicao` (
@@ -25,12 +30,20 @@ CREATE TABLE `integra`.`cob_cobrancas` (
   `operador_id` INT NULL,
   PRIMARY KEY (`id`));
 
+  CREATE TABLE `integra`.`cob_agendamento` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `adesao_id` INT NULL,
+  `cliente_id` INT NULL,
+  `login` VARCHAR(45) NULL,
+  `operador_id` INT NULL,
+  `comentario` VARCHAR(250) NULL,
+  `data_agendamento` DATE NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+
   ///////////////////////////////////////////////////////////////
 
-CREATE TABLE cob_operadores (
-id int PRIMARY KEY,
-nome VARCHAR(50)
-);
+
 
 CREATE 
     ALGORITHM = UNDEFINED 

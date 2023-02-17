@@ -1,70 +1,60 @@
 {{>partials/header}}
+
+<style>
+  .loading {
+    animation: is-rotating 1s infinite;
+    border: 6px solid #696767;
+    border-radius: 50%;
+    border-top-color: #1d1d1d;
+    height: 50px;
+    width: 50px;
+  }
+
+  @keyframes is-rotating {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+</style>
+
+
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
     style="position:absolute; right: 5px; width: 150px; margin-bottom: 15px; justify-content: right; margin: 10px;"
     type="button" class="btn btn-success">Atribuir</button>
   <br>
 </div>
-<div align="center" id="paginate">
-
-
+<div align="center" id="paginate" style="height:100vh; overflow-y:auto;">
   <table id="myTable" class="table caption-top">
     <thead>
       <tr>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th></th>
         <th scope="col">Classificação</th>
         <th scope="col">Cidade</th>
         <th scope="col">Login</th>
         <th scope="col">Status</th>
         <th scope="col">Vencimento</th>
         <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
-        <th scope="col">Faturas vencidas</th>
-        <th scope="col">Tipo</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th scope="col">Agendamento</th>
+        <th></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="listar-clientes">
 
-      <tr>
-        <th scope="row"></th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>aoba</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" title="Adicionar cobrança"
-            data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" title="Agendar retorno"
-            data-bs-target="#staticBackdrop2"><i class="bi bi-calendar2-minus"></i></button>
-        </td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
+  <div id="loading" class="loading"></div>
+</div>
 </div>
 
 <!-- Modal -->
-<form id="form">
+<form id="form" action="/cobranca">
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <input type="hidden" class="clientelogin" value="" name="login">
-        <input type="hidden" class="idcliente" value="" name="id_cliente">
-        <input type="hidden" class="id_adesao" value="" name="id_adesao">
-        <input type="hidden" value="1" name="numero_cobranca">
+        <input type="hidden" class="idatribuicao" value="" name="id_atribuicao">
+        <input type="hidden" value="1" name="status">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Cobrança</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -73,7 +63,11 @@
           <!-- Conteudo modal -->
           <div class="form-group">
             <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
-            <input type="date" class="form-control" id="message-text"></input>
+            <input type="date" name="data" class="form-control"></input>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label"><b>Comentário</b></label>
+            <textarea name="comentario" class="form-control" rows="4"></textarea>
           </div>
           <!-- /Conteudo modal -->
         </div>
@@ -87,33 +81,26 @@
 <!-- /Modal -->
 
 <!-- Modal -->
-<form id="form">
+<form id="formag" action="/agendamento">
   <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <input type="hidden" class="clientelogin" value="" name="login">
-        <input type="hidden" class="idcliente" value="" name="id_cliente">
-        <input type="hidden" class="id_adesao" value="" name="id_adesao">
-        <input type="hidden" value="1" name="numero_cobranca">
+        <input type="hidden" class="idattr" value="" name="id_atribuicao">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Atribuir cobrança</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Agendar Cobrança</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="modall" data-id="">
           <!-- Conteudo modal -->
-          <label class="form-label" value="">Operador</label>
-          <select class="form-select" name="operador" aria-label="Default select example">
-            <option value='' selected>Responsável</option>
-
-            <option data-id="" value=""></option>
-
-          </select>
-          <br>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
+            <input type="date" name="data" class="form-control" id="message-text"></input>
+          </div>
           <!-- /Conteudo modal -->
         </div>
         <div class="modal-footer">
-          <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
+          <button type="button" id="salvaragendamento" class="btn btn-primary">Salvar</button>
         </div>
       </div>
     </div>
@@ -121,10 +108,64 @@
 </form>
 <!-- /Modal -->
 
+<!-- Modal -->
+
+<div class="modal fade" id="staticBackdrop3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /Modal -->
+
 <script>
 
-function save(data) {
+$('#salvarr').on("click", function (e) {
+        let formData = new FormData($("#form").get(0))
+
+        const data = {}
+        formData.forEach((val, key) => {
+            data[key] = val
+        })
+        console.log(data);
+
+        $.ajax({
+            url: '/cobranca',
+            method: 'post',
+            data,
+            // dataType: 'json',
+            success: res => {
+                alert('Salvo com sucesso')
+                location.reload();
+            },
+            error: e => {
+                console.log(e);
+                alert('Houve algum erro')
+            }
+        })
+    });
+
+
+  $('#salvaragendamento').on("click", function (e) {
+    let formData = new FormData($("#formag").get(0))
+
+    const data = {}
+    formData.forEach((val, key) => {
+      data[key] = val
+    })
     console.log(data);
+
     $.ajax({
       url: '/agendamento',
       method: 'post',
@@ -139,54 +180,72 @@ function save(data) {
         alert('Houve algum erro')
       }
     })
-  }
+  });
 
 
-  let clientes = [];
-  $(document).ready(() => {
-    $("input[type='checkbox']:checked").prop('checked', false);
+  $.ajax({
+
+    type: 'GET',
+    url: `http://localhost:8888/integra/apis/sis-cobranca/cobranca-agendamento`,
+    dataType: 'json',
+    success: function (data) {
 
 
-    $('#salvarr').on('click', function () {
-      $("input[type='checkbox']:checked").each(function () {
-        const data = {
-          login: $(this).data('login'),
-          client_id: $(this).data('id'),
-          adesao_id: $(this).data('adesao'),
-        }
-        clientes.push(data)
-      });
 
 
-      const operador = $('[name=operador]').val()
+      let content = '';
+
+      for (cliente of data.clientes) {
+
+        let dataa = cliente.agendado
+        let dataFormatada = dataa.split('-').reverse().join('/')
+
+        content += `
+            <tr>
+              <td></td>
+              <td>${cliente.classificacao || '-'}</td>
+              <td>${cliente.cidade || '-'}</td>
+              <td>${cliente.login || '-'}</td>
+              <td>${cliente.status_login || '-'}</td>
+              <td>${cliente.dia_vencimento || '-'}</td>
+              <td>${cliente.Atrasa_dias || '-'}</td>
+              <td style="color:rgb(21, 21, 21)"><b>${dataFormatada || '-'}</b></td>
+              <td>
+                <button type="button"  "
+            class="btn btn-success" data-id="${cliente.id}" data-bs-toggle="modal" id="botaosalvar" title="Adicionar cobrança"
+            data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
+            <button type="button" data-id="${cliente.id}" class="btn btn-primary" data-bs-toggle="modal" id="botaoagendar" title="Agendar retorno"
+            data-bs-target="#staticBackdrop2"><i class="bi bi-calendar2-minus"></i></button>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" title="Histórico"
+            data-bs-target="#staticBackdrop3"><i class="bi bi-clock"></i></button>
+              </td>
+              <td></td>
+            </tr>`
+
+      }
+
+      $('#loading').removeClass('loading')
+      $('#pagi').css('display', 'block')
+      $("#listar-clientes").append(content)
 
 
-      save({ operador, clientes })
-      clientes = []
-    })
+    }
+
+  });
+
+  $('#listar-clientes').on('click', '#botaoagendar', function () {
+
+    const id = $(this).data('id')
+    $('.idattr').val(id)
 
   })
 
-  function save(data) {
-    console.log(data);
-    $.ajax({
-      url: '/home',
-      method: 'post',
-      data,
-      // dataType: 'json',
-      success: res => {
-        alert('Salvo com sucesso')
-        location.reload();
-      },
-      error: e => {
-        console.log(e);
-        alert('Houve algum erro')
-      }
-    })
-  }
+  $('#listar-clientes').on('click', '#botaosalvar', function () {
 
+    const id = $(this).data('id')
+    $('.idatribuicao').val(id)
 
-
+  })
 
   $(document).ready(function () {
     $("#myInput").on("keyup", function () {

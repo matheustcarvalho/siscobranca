@@ -55,7 +55,7 @@
         <input type="hidden" class="clientelogin" value="" name="login">
         <input type="hidden" class="idcliente" value="" name="id_cliente">
         <input type="hidden" class="id_adesao" value="" name="id_adesao">
-        <input type="hidden" value="1" name="numero_cobranca">
+        <input type="hidden" value="N" name="status">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">Atribuir cobrança</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -95,7 +95,7 @@
     for(operador of data) {
 
       options += `
-      <option data-id="${operador.id}" value="${operador.id}">${operador.nome}</option>
+      <option data-id="${operador.id}" name="operador" value="${operador.id}">${operador.nome}</option>
       
       `
     }
@@ -117,14 +117,12 @@
      }
    });
 
- 
-
 
   function getList(page, limit) {
     $.ajax({
     
       type: 'GET',
-      url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes?page=${page}&limit=${limit}`,
+      url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes?page=${page}&limit=${limit}`,
       dataType: 'json',
       success: function (data) {
   
@@ -180,8 +178,9 @@
       });
 
       const operador = $('[name=operador]').val()
+      const status = $('[name=status]').val()
 
-      save({ operador, clientes })
+      save({ status, operador, clientes })
       clientes = []
     })
 
