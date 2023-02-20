@@ -16,7 +16,7 @@ export const home = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://localhost:8888/integra/api/login',
+    url: 'http://integra2hm.micron.com.br/integra/api/login',
     data: {
       login: loginn,
       password: passwordd
