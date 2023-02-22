@@ -22,24 +22,7 @@ CREATE TABLE `integra`.`cob_cobrancas` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
 
-  CREATE TABLE `integra`.`cob_atribuicao` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cliente_id` INT NULL,
-  `adesao_id` INT NULL,
-  `login` VARCHAR(45) NULL,
-  `operador_id` INT NULL,
-  PRIMARY KEY (`id`));
-
-  CREATE TABLE `integra`.`cob_agendamento` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `adesao_id` INT NULL,
-  `cliente_id` INT NULL,
-  `login` VARCHAR(45) NULL,
-  `operador_id` INT NULL,
-  `comentario` VARCHAR(250) NULL,
-  `data_agendamento` DATE NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+  
 
   ///////////////////////////////////////////////////////////////
 

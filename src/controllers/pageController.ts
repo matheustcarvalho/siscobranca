@@ -45,7 +45,7 @@ export const homepost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-atribuicao',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-atribuicao',
     data: {
       clientes: cliente,
       operador: operador,
@@ -114,7 +114,7 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-cobranca',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-cobranca',
     data: {
       cliente: cliente,
       operador: idOperador
@@ -156,7 +156,7 @@ export const agendamentopost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://localhost:8888/integra/apis/sis-cobranca/salvar-agendamento',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-agendamento',
     data: {
       clientes: cliente,
       operador: idOperador
@@ -179,7 +179,7 @@ export const agendamentoput = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://localhost:8888/integra/apis/sis-cobranca/atualizar-agendamento',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/atualizar-agendamento',
     data: {
       clientes: cliente,
       operador: idOperador
