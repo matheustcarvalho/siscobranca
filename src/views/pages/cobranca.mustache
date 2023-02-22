@@ -22,18 +22,18 @@
         type="button" class="btn btn-success">Atribuir</button>
     <br>
 </div>
-<div align="center" id="paginate" style="height:100vh; overflow-y:auto;">
+<div align="center" id="paginate" style=" padding: 0 3rem;">
     <table id="myTable" class="table caption-top">
         <thead>
             <tr>
-                <th></th>
                 <th scope="col">Classificação</th>
                 <th scope="col">Cidade</th>
                 <th scope="col">Login</th>
                 <th scope="col">Status</th>
                 <th scope="col">Vencimento</th>
-                <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
-                <th scope="col">Faturas vencidas</th>
+                <th title="Média de atraso em dias"style="color:rgb(21, 21, 21)" scope="col">M. Atraso</th>
+                <th title="Faturas vencidas" scope="col">Faturas</th>
+                <th scope="col">Cobrança</th>
                 <th scope="col">Tipo</th>
                 <th></th>
             </tr>
@@ -131,16 +131,16 @@
 <!-- Capturar id -->
 <script>
 
-    var currentPage = 1
-    var limit = 20
+    // var currentPage = 1
+    // var limit = 20
 
-    $("#paginate").scroll(function () {
+    // $("#paginate").scroll(function () {
 
-        if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
-            console.log('carlao');
-            getList(currentPage + 1, 20)
-        }
-    });
+    //     if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
+    //         console.log('carlao');
+    //         getList(currentPage + 1, 20)
+    //     }
+    // });
 
 
     function getList(page, limit) {
@@ -148,7 +148,7 @@
         $.ajax({
 
             type: 'GET',
-            url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes-atribuidos?page=${page}&limit=${limit}`,
+            url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes-atribuidos`,
             dataType: 'json',
             success: function (data) {
 
@@ -156,33 +156,51 @@
 
                 for (cliente of data.clientes) {
                     content += `
-        <tr>
-          <td></td>
-          <td>${cliente.classificacao || '-'}</td>
-              <td>${cliente.cidade || '-'}</td>
-              <td>${cliente.login || '-'}</td>
-              <td>${cliente.status_login || '-'}</td>
-              <td>${cliente.dia_vencimento || '-'}</td>
-              <td>${cliente.Atrasa_dias || '-'}</td>
-              <td>${cliente.boletos_vencidos || '-'}</td>
-              <td>${cliente.solicitacao || '-'}</td>
-          <td>
-            <button type="button"  "
-            class="btn btn-success" data-id="${cliente.id_atribuicao}" data-bs-toggle="modal" id="botaosalvar" title="Adicionar cobrança"
-            data-bs-target="#staticBackdrop"><i class="bi bi-plus-square"></i></button>
-            <button type="button" data-id="${cliente.id_atribuicao}" class="btn btn-primary" data-bs-toggle="modal" id="botaoagendar" title="Agendar retorno"
-            data-bs-target="#staticBackdrop2"><i class="bi bi-calendar2-minus"></i></button>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" title="Histórico"
-            data-bs-target="#staticBackdrop3"><i class="bi bi-clock"></i></button>
-          </td>
-          <td></td>
-        </tr>`
+                        <tr>
+                            <td>${cliente.classificacao || '-'}</td>
+                            <td>${cliente.cidade || '-'}</td>
+                            <td>${cliente.login || '-'}</td>
+                            <td>${cliente.status_login || '-'}</td>
+                            <td>${cliente.dia_vencimento || '-'}</td>
+                            <td>${cliente.Atrasa_dias || '-'}</td>
+                            <td>${cliente.boletos_vencidos || '-'}</td>
+                            <td>${cliente.quant_cob || 0 }</td>
+                            <td>${cliente.solicitacao || '-'}</td>
+                            <td>
+            
+                              <div class="btn-group">
+                              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              Ações
+                              </button>
+                              <ul class="dropdown-menu">
+                              <li><button type="button" class="dropdown-item" data-id="${cliente.id_atribuicao}" data-bs-toggle="modal" id="botaosalvar" title="Adicionar cobrança"
+                              data-bs-target="#staticBackdrop" >Nova Cobrança</button></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><button type="button" data-id="${cliente.id_atribuicao}" class="dropdown-item" data-bs-toggle="modal" id="botaoagendar" title="Agendar retorno"
+                              data-bs-target="#staticBackdrop2">Agendar</button></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop3">Histórico</button></li>
+                              </ul>
+                              </div>
+
+                        
+                            </td>
+                        </tr>
+                    `
 
                 }
+                const table = $("#myTable")
+                table.DataTable().destroy()
+                $("#listar-clientes").html(content)
+                table.DataTable({
+                "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
+                }
+                } );
 
                 $('#loading').removeClass('loading')
                 $('#pagi').css('display', 'block')
-                $("#listar-clientes").append(content)
 
                 currentPage = page
 
