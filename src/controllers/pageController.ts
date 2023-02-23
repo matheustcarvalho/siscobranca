@@ -41,6 +41,8 @@ export const homepost = async (req: Request, res: Response) => {
   var operador = req.body.operador
   var atribuiuId = req.session.user?.id
 
+  console.log(req.body)
+
 
 
   const resposta = await axios({
@@ -107,6 +109,8 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
 
   var cliente = req.body
+
+  console.log(cliente)
 
   
 

@@ -27,14 +27,14 @@
     <thead>
       <tr>
 
-        <th scope="col">Classificação</th>
-        <th scope="col">Cidade</th>
-        <th scope="col">Login</th>
-        <th scope="col">Status</th>
-        <th scope="col">Vencimento</th>
-        <th style="color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
-        <th scope="col">Faturas vencidas</th>
-        <th scope="col">Tipo</th>
+        <th style="text-align: center;"scope="col">Classificação</th>
+        <th style="text-align: center;"scope="col">Cidade</th>
+        <th style="text-align: center;" scope="col">Login</th>
+        <th style="text-align: center;" scope="col">Status</th>
+        <th style="text-align: center;" scope="col">Vencimento</th>
+        <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
+        <th style="text-align: center;" scope="col">Faturas vencidas</th>
+        <th style="text-align: center;" scope="col">Tipo</th>
         <th></th>
       </tr>
     </thead>
@@ -118,7 +118,7 @@
   //  });
 
 
-  function getList(page, limit) {
+  
     $.ajax({
     
       type: 'GET',
@@ -168,7 +168,7 @@
       }
     
     });
-  }
+  
 
 
   let clientes = [];
@@ -192,7 +192,7 @@
       clientes = []
     })
 
-    getList(1, 20)
+    
   })
 
 
