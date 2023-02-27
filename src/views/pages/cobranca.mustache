@@ -26,12 +26,14 @@
     <table id="myTable" class="table caption-top">
         <thead>
             <tr>
-                <th style="text-align: center;" title="Classificação de atraso no último ano" scope="col">Classificação</th>
+                <th style="text-align: center;" title="Classificação de atraso no último ano" scope="col">Classificação
+                </th>
                 <th style="text-align: center;" scope="col">Cidade</th>
                 <th style="text-align: center;" scope="col">Login</th>
                 <th style="text-align: center;" scope="col">Status</th>
                 <th style="text-align: center;" title="Dia de Vencimento" scope="col">Vencimento</th>
-                <th title="Média de atraso em dias"style="text-align: center; color:rgb(21, 21, 21)" scope="col">M. Atraso</th>
+                <th title="Média de atraso em dias" style="text-align: center; color:rgb(21, 21, 21)" scope="col">M.
+                    Atraso</th>
                 <th style="text-align: center;" title="Faturas vencidas" scope="col">Faturas</th>
                 <th style="text-align: center;" title="Cobranças feitas" scope="col">Cobrança</th>
                 <th style="text-align: center;" scope="col">Tipo</th>
@@ -116,8 +118,9 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                ...
+            <div id="modal-cobrancas" class="modal-body">
+                <p>Cobrança 1</p>
+                <hr>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
@@ -131,16 +134,6 @@
 <!-- Capturar id -->
 <script>
 
-    // var currentPage = 1
-    // var limit = 20
-
-    // $("#paginate").scroll(function () {
-
-    //     if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
-    //         console.log('carlao');
-    //         getList(currentPage + 1, 20)
-    //     }
-    // });
 
 
     function getList(page, limit) {
@@ -164,7 +157,7 @@
                             <td>${cliente.dia_vencimento || '-'}</td>
                             <td>${cliente.Atrasa_dias || '-'}</td>
                             <td>${cliente.boletos_vencidos || '-'}</td>
-                            <td>${cliente.quant_cob || 0 }</td>
+                            <td>${cliente.quant_cob || 0}</td>
                             <td>${cliente.solicitacao || '-'}</td>
                             <td>
             
@@ -179,11 +172,10 @@
                               <li><button type="button" data-id="${cliente.id_atribuicao}" class="dropdown-item" data-bs-toggle="modal" id="botaoagendar" title="Agendar retorno"
                               data-bs-target="#staticBackdrop2">Agendar</button></li>
                               <li><hr class="dropdown-divider"></li>
-                              <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                              <li><button type="button" data-id="${cliente.id_atribuicao}" id="botaohistorico" class="dropdown-item" data-bs-toggle="modal"
                               data-bs-target="#staticBackdrop3">Histórico</button></li>
                               </ul>
                               </div>
-
                         
                             </td>
                         </tr>
@@ -194,10 +186,10 @@
                 table.DataTable().destroy()
                 $("#listar-clientes").html(content)
                 table.DataTable({
-                "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
-                }
-                } );
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
+                    }
+                });
 
                 $('#loading').removeClass('loading')
                 $('#pagi').css('display', 'block')
@@ -207,8 +199,51 @@
             }
 
         });
+
+
+
     }
 
+    $('#listar-clientes').on('click', '#botaohistorico', function () {
+
+        const id = $(this).data('id')
+
+        $.ajax({
+
+            type: 'GET',
+            url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
+            dataType: 'json',
+            success: function (data) {
+
+                let content = '';
+
+                
+
+                for (historico of data.historico) {
+
+                    console.log(historico)
+
+                    content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança no dia ${historico.data_historico}.</p><hr>`
+
+
+                }
+
+                $("#modal-cobrancas").html(content)
+
+
+
+            }
+
+        });
+    })
+
+
+    $('#listar-clientes').on('click', '#botaosalvar', function () {
+
+        const id = $(this).data('id')
+        $('.idatribuicao').val(id)
+
+    })
 
     $('#listar-clientes').on('click', '#botaoagendar', function () {
 
@@ -217,12 +252,7 @@
 
     })
 
-    $('#listar-clientes').on('click', '#botaosalvar', function () {
 
-        const id = $(this).data('id')
-        $('.idatribuicao').val(id)
-
-    })
 
     $('#salvarr').on("click", function (e) {
         let formData = new FormData($("#form").get(0))
@@ -237,7 +267,6 @@
             url: '/cobranca',
             method: 'post',
             data,
-            // dataType: 'json',
             success: res => {
                 alert('Salvo com sucesso')
                 location.reload();

@@ -46,6 +46,7 @@ export const homepost = async (req: Request, res: Response) => {
   var cliente = req.body.clientes
   var operador = req.body.operador
   var atribuiuId = req.session.user?.id
+  
 
   console.log(req.body)
 
@@ -57,7 +58,8 @@ export const homepost = async (req: Request, res: Response) => {
     data: {
       clientes: cliente,
       operador: operador,
-      atribuiuId: atribuiuId
+      atribuiuId: atribuiuId,
+    
     }
 
   })
@@ -94,15 +96,13 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
 
   var idOperador = req.session.user?.id
-
+  var nomeOperador = req.session.user?.name
+  var loginOperador = req.session.user?.login
 
 
   var cliente = req.body
 
   console.log(cliente)
-
-  
-
 
 
   const resposta = await axios({
@@ -110,7 +110,9 @@ export const cobrancapost = async (req: Request, res: Response) => {
     url: `http://${url}/integra/apis/sis-cobranca/salvar-cobranca`,
     data: {
       cliente: cliente,
-      operador: idOperador
+      operador: idOperador,
+      nome: nomeOperador,
+      login: loginOperador
     }
 
   })
@@ -145,6 +147,7 @@ export const agendamentopost = async (req: Request, res: Response) => {
   var idOperador = req.session.user?.id
 
   var cliente = req.body
+  
 
 
 
