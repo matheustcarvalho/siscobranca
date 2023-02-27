@@ -5,8 +5,7 @@
 
 ### Instalação 
 `npm install`
-`npm install --save-dev @types/sequelize`
-`npm install --save-dev @types/validator`
+
 
 ### Para rodar o projeto
 `npm run start-dev`
