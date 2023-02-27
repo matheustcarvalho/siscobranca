@@ -2,19 +2,19 @@
 
 <style>
   .loading {
-  animation: is-rotating 1s infinite;
-  border: 6px solid #696767;
-  border-radius: 50%;
-  border-top-color: #1d1d1d;
-  height: 50px;
-  width: 50px;
-}
-
-@keyframes is-rotating {
-  to {
-    transform: rotate(1turn);
+    animation: is-rotating 1s infinite;
+    border: 6px solid #696767;
+    border-radius: 50%;
+    border-top-color: #1d1d1d;
+    height: 50px;
+    width: 50px;
   }
-}
+
+  @keyframes is-rotating {
+    to {
+      transform: rotate(1turn);
+    }
+  }
 </style>
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
@@ -27,8 +27,8 @@
     <thead>
       <tr>
 
-        <th style="text-align: center;"scope="col">Classificação</th>
-        <th style="text-align: center;"scope="col">Cidade</th>
+        <th style="text-align: center;" scope="col">Classificação</th>
+        <th style="text-align: center;" scope="col">Cidade</th>
         <th style="text-align: center;" scope="col">Login</th>
         <th style="text-align: center;" scope="col">Status</th>
         <th style="text-align: center;" scope="col">Vencimento</th>
@@ -81,57 +81,48 @@
 <!-- /Modal -->
 
 <script>
+
   
 
   $.ajax({
-  
-  type: 'GET',
-  url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/operadores-cobranca',
-  dataType: 'json',
-  success: function (data) {
 
-    let options = ''
+    type: 'GET',
+    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/operadores-cobranca',
+    dataType: 'json',
+    success: function (data) {
 
-    for(operador of data) {
+      let options = ''
 
-      options += `
+      for (operador of data) {
+
+        options += `
       <option data-id="${operador.id}" name="operador" value="${operador.id}">${operador.nome}</option>
       
       `
+      }
+
+      $("#operadores-list").append(options)
+
     }
 
-    $("#operadores-list").append(options)
-
-  }
-
-});
-
-//  var currentPage = 1
-//  var limit = 20
-
-  //  $( "#paginate" ).scroll(function() {
-     
-  //    if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) {
-  //      console.log('carlao');
-  //      getList(currentPage + 1, 20)
-  //    }
-  //  });
+  });
 
 
-  
-    $.ajax({
-    
-      type: 'GET',
-      url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
-      dataType: 'json',
-      success: function (data) {
-  
-        
-    
-        let content = '';
-    
-        for (cliente of data.clientes) {
-          content += `
+
+
+  $.ajax({
+
+    type: 'GET',
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
+    dataType: 'json',
+    success: function (data) {
+
+
+
+      let content = '';
+
+      for (cliente of data.clientes) {
+        content += `
             <tr>
             
               <td>${cliente.classificacao || '-'}</td>
@@ -149,26 +140,26 @@
               </td>
               
             </tr>`
-    
-        }
-    
-        const table = $("#myTable")
-                table.DataTable().destroy()
-                $("#listar-clientes").html(content)
-                table.DataTable({
-                "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
-                }
-                } );
 
-                $('#loading').removeClass('loading')
-                $('#pagi').css('display', 'block')
-
-                // currentPage = pagege
       }
-    
-    });
-  
+
+      const table = $("#myTable")
+      table.DataTable().destroy()
+      $("#listar-clientes").html(content)
+      table.DataTable({
+        "language": {
+          "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
+        }
+      });
+
+      $('#loading').removeClass('loading')
+      $('#pagi').css('display', 'block')
+
+      // currentPage = pagege
+    }
+
+  });
+
 
 
   let clientes = [];
@@ -192,7 +183,9 @@
       clientes = []
     })
 
-    
+
+
+
   })
 
 
@@ -245,7 +238,7 @@
 </script>
 
 
-  
-  
+
+
 
 {{>partials/footer}}

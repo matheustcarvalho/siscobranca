@@ -6,7 +6,7 @@ const axios = require('axios');
 const flash = require('connect-flash');
 const crypto = require('crypto');
 
-
+const url = process.env.API_URL
 
 
 export const home = async (req: Request, res: Response) => {  
@@ -16,7 +16,7 @@ export const home = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: 'http://integra2hm.micron.com.br/integra/api/login',
+    url: `http://${url}/integra/api/login`,
     data: {
       login: loginn,
       password: passwordd
@@ -34,7 +34,8 @@ export const home = async (req: Request, res: Response) => {
       // renderIndex(res)
       res.redirect('/index')
     } else {
-      res.render('pages/login')
+      res.render('pages/login'
+      )
     }
 
   }).catch(function (error: any) {
@@ -61,21 +62,24 @@ export const logout = async (req: Request, res: Response) => {
 
 export const ipvalidation = async (req: Request, res: Response, next: Function) => {
 
-  // console.log(req.session);
+
 
   try {
 
-    const parametro = await axios.get('http://integra2hm.micron.com.br/integra/apis/sis-cobranca/buscar-ip')
+    const parametro = await axios.get(`http://${url}/integra/apis/sis-cobranca/buscar-ip`)
 
     let ipCliente = (req.socket.remoteAddress)
     ipCliente = ipCliente?.split(':').reverse()[0]
     var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
 
+
     const valores = parametro.data
+
 
     let found = valores.includes(hash);
 
-    if (!found)
+
+    if (found == false)
       res.status(200).render('pages/restrito')
     next()
   } catch (e) {
@@ -95,9 +99,9 @@ export const validationlogin = async (req: Request, res: Response, next: Functio
 }
 
 const renderIndex = async (res: Response) => {
-  const total = await axios.get('http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes')
+  const total = await axios.get(`http://${url}/integra/apis/sis-cobranca/listar-clientes`)
   const totalclientes = total.data.pagination.total
-  const atribuidos = await axios.get('http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos')
+  const atribuidos = await axios.get(`http://${url}/integra/apis/sis-cobranca/listar-clientes-atribuidos`)
   const clientes_atribuidos = atribuidos.data.pagination.total
 
   res.render('pages/index', {

@@ -6,7 +6,7 @@ export const search = (req: Request, res: Response) => {
 
     let query: string = req.query.q as string;
 
-    // let list = User.(query)
+    
 
     if(!query) {
         res.redirect('/home');
@@ -18,26 +18,3 @@ export const search = (req: Request, res: Response) => {
 
 }
 
-//exemplo join
-
-
-//    const users = await User.findAll({
-
-
-//     raw:true,
-
-//     include:[{
-//       model: Boleto,
-//       required: false,
-//       attributes:['dataVencimento', 'data_pagamento']
-      
-//     }],
-
-//      where:{
-//                 [Op.and]: [
-//           sequelize.literal("boletos_vencidos >= 3  and nome like 'a%'")]
-
-//      },
-
-//     group:['login']
-//      }).catch(err => console.log(err));
