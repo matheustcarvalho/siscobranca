@@ -201,7 +201,6 @@
         });
 
 
-
     }
 
     $('#listar-clientes').on('click', '#botaohistorico', function () {
@@ -217,20 +216,23 @@
 
                 let content = '';
 
-                
-
                 for (historico of data.historico) {
 
-                    console.log(historico)
+                    let dataCobranca = historico.data_historico
 
-                    content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança no dia ${historico.data_historico}.</p><hr>`
+                    let dataFormatada = dataCobranca.slice(0,10).split('-').reverse().join('/');
 
+                    let hora = dataCobranca.slice(10,19)
+
+                    
+
+                    
+
+                    content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança no dia <b>${dataFormatada}</b> ás <b>${hora}</b>.</p><hr>`
 
                 }
 
                 $("#modal-cobrancas").html(content)
-
-
 
             }
 

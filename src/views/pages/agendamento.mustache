@@ -118,8 +118,9 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Histórico</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div id="modal-cobrancas" class="modal-body">
+        <p>Cobrança 1</p>
+        <hr>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
@@ -132,30 +133,30 @@
 
 <script>
 
-$('#salvarr').on("click", function (e) {
-        let formData = new FormData($("#form").get(0))
+  $('#salvarr').on("click", function (e) {
+    let formData = new FormData($("#form").get(0))
 
-        const data = {}
-        formData.forEach((val, key) => {
-            data[key] = val
-        })
-        console.log(data);
+    const data = {}
+    formData.forEach((val, key) => {
+      data[key] = val
+    })
+    console.log(data);
 
-        $.ajax({
-            url: '/cobranca',
-            method: 'post',
-            data,
-            // dataType: 'json',
-            success: res => {
-                alert('Salvo com sucesso')
-                location.reload();
-            },
-            error: e => {
-                console.log(e);
-                alert('Houve algum erro')
-            }
-        })
-    });
+    $.ajax({
+      url: '/cobranca',
+      method: 'post',
+      data,
+      // dataType: 'json',
+      success: res => {
+        alert('Salvo com sucesso')
+        location.reload();
+      },
+      error: e => {
+        console.log(e);
+        alert('Houve algum erro')
+      }
+    })
+  });
 
 
   $('#salvaragendamento').on("click", function (e) {
@@ -210,7 +211,7 @@ $('#salvarr').on("click", function (e) {
               <td>${cliente.status_login || '-'}</td>
               <td>${cliente.dia_vencimento || '-'}</td>
               <td>${cliente.Atrasa_dias || '-'}</td>
-              <td>${cliente.quant_cob || 0 }</td>
+              <td>${cliente.quant_cob || 0}</td>
               <td style="color:rgb(21, 21, 21)"><b>${dataFormatada || '-'}</b></td>
               <td>
                 <div class="btn-group">
@@ -224,7 +225,7 @@ $('#salvarr').on("click", function (e) {
                               <li><button type="button" data-id="${cliente.id_atribuicao}" class="dropdown-item" data-bs-toggle="modal" id="botaoagendar" title="Agendar retorno"
                               data-bs-target="#staticBackdrop2">Agendar</button></li>
                               <li><hr class="dropdown-divider"></li>
-                              <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                              <li><button data-id="${cliente.id_atribuicao}" id="botaohistorico" type="button" class="dropdown-item" data-bs-toggle="modal"
                               data-bs-target="#staticBackdrop3">Histórico</button></li>
                               </ul>
                               </div>
@@ -235,21 +236,54 @@ $('#salvarr').on("click", function (e) {
       }
 
       const table = $("#myTable")
-                table.DataTable().destroy()
-                $("#listar-clientes").html(content)
-                table.DataTable({
-                "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
-                }
-                } );
+      table.DataTable().destroy()
+      $("#listar-clientes").html(content)
+      table.DataTable({
+        "language": {
+          "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
+        }
+      });
 
-                $('#loading').removeClass('loading')
-                $('#pagi').css('display', 'block')
+      $('#loading').removeClass('loading')
+      $('#pagi').css('display', 'block')
 
 
     }
 
   });
+
+  $('#listar-clientes').on('click', '#botaohistorico', function () {
+
+    const id = $(this).data('id')
+
+    $.ajax({
+
+      type: 'GET',
+      url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
+      dataType: 'json',
+      success: function (data) {
+
+        let content = '';
+
+        for (historico of data.historico) {
+
+          let dataCobranca = historico.data_historico
+
+          let dataFormatada = dataCobranca.slice(0, 10).split('-').reverse().join('/');
+
+          let hora = dataCobranca.slice(10, 19)
+
+
+          content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança no dia <b>${dataFormatada}</b> ás <b>${hora}</b>.</p><hr>`
+
+        }
+
+        $("#modal-cobrancas").html(content)
+
+      }
+
+    });
+  })
 
   $('#listar-clientes').on('click', '#botaoagendar', function () {
 

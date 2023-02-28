@@ -1,22 +1,264 @@
 {{>partials/header}}
-<div class="container">
-  <div class="pt-4 d-flex flex-row m2 justify-content-center">
-    <div id="chart" class="col-md-4 col-xs-12 col-sm-4">
 
-    </div>
-    <div id="chart2" class="col-md-4 col-xs-12 col-sm-4">
+<div id="page" class="container">
+  <div id="page-content">
+    <main id="moodle-page" class="clearfix">
+      <div id="snap-course-wrapper">
+        <div class="row">
+          <div class="col-lg-3 etapas-rh">
+            <nav id="course-toc" class="js-only">
 
-    </div>
-    <div id="chart3" class="col-md-4 col-xs-12 col-sm-4">
 
-    </div>
+              <ol id="chapters" style="margin-top:25px" class="chapters list-large">
+                <li
+                  style=" border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
+                  class="">
+                  <a onClick="mostrar('section-0')" id="doc-pessoais"
+                    style="margin-left:15px; margin-top:25px; color:rgb(35, 34, 34); text-decoration: none;"
+                    class="chapter-title" section-number="0">Gráfico 1
+                    <span class="text completionstatus outoftotal">
+
+                      <small style="margin-left: 15px;">
+
+                        <p style="margin-left:15px"> Relatório: 1 / 4 </p>
+                      </small>
+
+                    </span>
+                  </a>
+                </li>
+
+                <li
+                  style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
+                  class="">
+                  <a onClick="mostrar('section-1')" id="dados-pessoais"
+                    style="margin-left:15px; color:rgb(35, 34, 34); text-decoration: none;" class="chapter-title"
+                    section-number="1">Gráfico 2
+
+                    <span class="text completionstatus outoftotal">
+
+                      <small style="margin-left: 15px;">
+
+                        <p style="margin-left:15px"> Relatório: 2 / 4 </p>
+                      </small>
+                    </span>
+                  </a>
+                </li>
+                <li
+                  style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
+                  class="">
+                  <a onClick="mostrar('section-2')" id="secao_endereco"
+                    style="margin-left:15px; color:rgb(35, 34, 34); text-decoration: none;" class="chapter-title"
+                    section-number="2">Gráfico 3
+
+                    <span class="text completionstatus outoftotal">
+
+                      <small style="margin-left: 15px;">
+
+                        <p style="margin-left:15px"> Relatório: 3 / 4 </p>
+                      </small>
+                    </span>
+                  </a>
+                </li>
+                <li
+                  style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
+                  class="">
+                  <a onClick="mostrar('section-3')" id="dados-banc"
+                    style="margin-left:15px; color:rgb(35, 34, 34); text-decoration: none;" class="chapter-title"
+                    section-number="3">Gráfico 4
+
+                    <span class="text completionstatus outoftotal">
+
+                      <small style="margin-left: 15px;">
+
+                        <p style="margin-left:15px"> Relatório: 4 / 4 </p>
+                      </small>
+                    </span>
+                  </a>
+                </li>
+                <!-- <li
+                  style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
+                  class="">
+                  <a onClick="mostrar('section-4')" id="dados-vaga"
+                    style="margin-left:15px; color:rgb(35, 34, 34); text-decoration: none;" class="chapter-title"
+                    section-number="4">Gráfico 5
+
+                    <span class="text completionstatus outoftotal">
+
+                      <small style="margin-left: 15px;">
+
+                        <p style="margin-left:15px"> Relatório: 5 / 5 </p>
+                      </small>
+                    </span>
+                  </a>
+                </li> -->
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-9">
+            <section id="region-main" style="margin-top:21px">
+              <span class="notifications" id="user-notifications"></span>
+              <div id="snap-footer-alert" tabindex="-1">
+                <h5 class="snap-footer-alert-title"></h5>
+
+              </div>
+              <div name="trilha" role="main"><span id="maincontent"></span>
+                <div class="course-content">
+                  <ul class="topics" id="admissao">
+                    <li id="section-0" class="section main clearfix section-0 hidden" aria-label="Aula 1 "
+                      tabindex="-1">
+                      <div class="content">
+                        <div>
+                          <h2
+                            style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
+                            class="sectionname">Relatório 1
+                          </h2>
+                        </div>
+                        <div id="chart"></div>
+                      </div>
+                    </li>
+
+                    <li id="section-1" class="section main clearfix section-1 hidden" aria-label="Aula 1 "
+                      tabindex="-1">
+                      <div class="content">
+                        <div>
+                          <h2
+                            style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
+                            class="sectionname">Relatório 2
+                          </h2>
+                        </div>
+                        <div id="chart2"></div>
+
+                      </div>
+                    </li>
+                    <li id="section-2" class="section main clearfix section-2 hidden"
+                      aria-label="-&amp;gt; Fórum de Dúvidas " tabindex="-1">
+
+                      <div class="content">
+                        <div>
+                          <h2
+                            style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
+                            class="sectionname">Relatório 3
+                          </h2>
+                        </div>
+                        <div id="chart3"></div>
+                      </div>
+                    </li>
+                    <li id="section-3" class="section main clearfix section-3 hidden" aria-label="Aula 1 "
+                      tabindex="-1">
+                      <div class="content">
+                        <div>
+                          <h2
+                            style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
+                            class="sectionname">Relatório 4
+                          </h2>
+                        </div>
+                        <div id="chart4">
+
+                        </div>
+
+                      </div>
+                    </li>
+                    <li id="section-4" class="section main clearfix section-4 hidden" aria-label="Aula 2 "
+                      tabindex="-1">
+                      <div class="content">
+                        <div>
+                          <h2
+                            style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
+                            class="sectionname">Relatório 5
+                          </h2>
+                        </div>
+                        <div id="chart5">
+
+                        </div>
+                   
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        </section>
+
+      </div>
   </div>
 </div>
+
+<style>
+  .sectionname {
+    margin-top: 10px
+  }
+
+  #region-main {
+    margin-top: 90px
+  }
+
+  .course-content {
+
+    border: solid 1px;
+    border-color: rgb(207, 204, 204);
+    margin-bottom: 5px;
+    border-top-width: 5px;
+    border-top-color: #2D4E9E;
+    margin: 15px
+  }
+
+  .section-0 {
+    display: block;
+  }
+
+  .section-1 {
+    display: none;
+  }
+
+  .section-2 {
+    display: none;
+  }
+
+  .section-3 {
+    display: none;
+  }
+
+  .section-4 {
+    display: none;
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  div {
+    margin-bottom: 15px
+  }
+
+  .snap-section-complete {
+    display: none;
+  }
+</style>
+
+<script>
+  function mostrar(id) {
+    if (document.getElementById(id).style.display !== "none") {
+      document.getElementById(id).style.display = "none";
+      return;
+    }
+    Array.from(document.getElementsByClassName("hidden")).forEach(
+      li => (li.style.display = "none")
+    );
+    document.getElementById(id).style.display = "block";
+  };
+</script>
+
+
 
 <script>
   var options = {
     chart: {
-      type: 'bar'
+      type: 'bar',
+      width: 700,
+      height: 400
+
     },
     series: [
       {
@@ -32,7 +274,7 @@
   var options2 = {
     series: [44, 55, 13, 43, 22],
     chart: {
-      width: 380,
+      width: 600,
       type: 'pie',
     },
     labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
@@ -40,7 +282,7 @@
       breakpoint: 480,
       options: {
         chart: {
-          width: 200
+          width: 600
         },
         legend: {
           position: 'bottom'
@@ -56,6 +298,7 @@
     }],
     chart: {
       height: 350,
+      width: 700,
       type: 'line',
       zoom: {
         enabled: false
@@ -82,6 +325,74 @@
     }
   };
 
+  var options4 = {
+          series: [{
+          name: 'PRODUCT A',
+          data: [44, 55, 41, 67, 22, 43]
+        }, {
+          name: 'PRODUCT B',
+          data: [13, 23, 20, 8, 13, 27]
+        }, {
+          name: 'PRODUCT C',
+          data: [11, 17, 15, 15, 21, 14]
+        }, {
+          name: 'PRODUCT D',
+          data: [21, 7, 25, 13, 22, 8]
+        }],
+          chart: {
+          type: 'bar',
+          height: 400,
+          width:750,
+          stacked: true,
+          toolbar: {
+            show: true
+          },
+          zoom: {
+            enabled: true
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0
+            }
+          }
+        }],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10,
+            dataLabels: {
+              total: {
+                enabled: true,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
+              }
+            }
+          },
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: ['01/01/2011 GMT', '01/02/2011 GMT', '01/03/2011 GMT', '01/04/2011 GMT',
+            '01/05/2011 GMT', '01/06/2011 GMT'
+          ],
+        },
+        legend: {
+          position: 'right',
+          offsetY: 40
+        },
+        fill: {
+          opacity: 1
+        }
+        };
+  
+        
+
 
 
   var chart = new ApexCharts(document.querySelector('#chart'), options)
@@ -92,6 +403,10 @@
 
   var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
   chart3.render();
+
+  var chart4 = new ApexCharts(document.querySelector("#chart4"), options4);
+  chart4.render();
+
 </script>
 
 
