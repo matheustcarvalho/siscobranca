@@ -14,6 +14,27 @@
             transform: rotate(1turn);
         }
     }
+
+    .loading2 {
+        margin: 2px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        border: 4px #FFFFFF solid;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
 </style>
 
 <div>
@@ -64,11 +85,12 @@
                     <!-- Conteudo modal -->
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
-                        <input type="date" name="data" class="form-control"></input>
+                        <input type="date" autocomplete="off" name="data" id="cobrancaform" class="cobrancaform form-control"
+                            required></input>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Comentário</b></label>
-                        <textarea name="comentario" class="form-control" rows="4"></textarea>
+                        <textarea name="comentario" autocomplete="off" class="cobrancaform form-control" rows="4"></textarea>
                     </div>
                     <!-- /Conteudo modal -->
                 </div>
@@ -96,7 +118,7 @@
                     <!-- Conteudo modal -->
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
-                        <input type="date" name="data" class="form-control" id="message-text"></input>
+                        <input type="date" autocomplete="off" id="campodata" name="data" class="form-control" id="message-text"></input>
                     </div>
                     <!-- /Conteudo modal -->
                 </div>
@@ -134,6 +156,11 @@
 <!-- Capturar id -->
 <script>
 
+    // if(document.getElementById("cobrancaform").value.length < 1){
+    // alert('Por favor, preencha o campo nome');
+    // document.getElementById("cobrancaform").focus();
+    // }
+
 
 
     function getList(page, limit) {
@@ -141,7 +168,7 @@
         $.ajax({
 
             type: 'GET',
-            url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos`,
+            url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes-atribuidos`,
             dataType: 'json',
             success: function (data) {
 
@@ -179,8 +206,7 @@
                         
                             </td>
                         </tr>
-                    `
-
+                  `
                 }
                 const table = $("#myTable")
                 table.DataTable().destroy()
@@ -195,11 +221,9 @@
                 $('#pagi').css('display', 'block')
 
                 currentPage = page
-
             }
 
         });
-
 
     }
 
@@ -210,7 +234,7 @@
         $.ajax({
 
             type: 'GET',
-            url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
+            url: `http://localhost:8888/integra/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
             dataType: 'json',
             success: function (data) {
 
@@ -218,17 +242,16 @@
 
                 for (historico of data.historico) {
 
+                    let comentario = historico.historico
+
                     let dataCobranca = historico.data_historico
 
-                    let dataFormatada = dataCobranca.slice(0,10).split('-').reverse().join('/');
+                    let dataFormatada = dataCobranca.slice(0, 10).split('-').reverse().join('/');
 
-                    let hora = dataCobranca.slice(10,19)
+                    let hora = dataCobranca.slice(10, 19)
 
-                    
 
-                    
-
-                    content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança no dia <b>${dataFormatada}</b> ás <b>${hora}</b>.</p><hr>`
+                    content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança e adicionou o comentário: <b>"${comentario || '-'}"</b> no dia <b>${dataFormatada}</b> ás <b>${hora}</b>.</p><hr>`
 
                 }
 
@@ -257,30 +280,45 @@
 
 
     $('#salvarr').on("click", function (e) {
-        let formData = new FormData($("#form").get(0))
 
-        const data = {}
-        formData.forEach((val, key) => {
-            data[key] = val
-        })
-        console.log(data);
+        $('#salvarr').html('<div class="loading2"></div>')
 
-        $.ajax({
-            url: '/cobranca',
-            method: 'post',
-            data,
-            success: res => {
-                alert('Salvo com sucesso')
-                location.reload();
-            },
-            error: e => {
-                console.log(e);
-                alert('Houve algum erro')
+        
+
+            let formData = new FormData($("#form").get(0))
+    
+            const data = {}
+            formData.forEach((val, key) => {
+                data[key] = val
+            })
+            console.log(data);
+
+            if (document.getElementById("cobrancaform").value.length < 1) {
+            alert('Por favor, preencha o campo data');
+            document.getElementById("cobrancaform").focus();
+            return false;
             }
-        })
+    
+            $.ajax({
+                url: '/cobranca',
+                method: 'post',
+                data,
+                success: res => {
+                    alert('Salvo com sucesso')
+                    location.reload();
+                },
+                error: e => {
+                    console.log(e);
+                    alert('Houve algum erro')
+                }
+            })
+        
     });
 
     $('#salvaragendamento').on("click", function (e) {
+
+        $('#salvaragendamento').html('<div class="loading2"></div>')
+
         let formData = new FormData($("#formag").get(0))
 
         const data = {}
@@ -288,6 +326,12 @@
             data[key] = val
         })
         console.log(data);
+
+        if (document.getElementById("campodata").value.length < 1) {
+            alert('Por favor, preencha o campo data');
+            document.getElementById("campodata").focus();
+            return false;
+        }
 
         $.ajax({
             url: '/agendamento',
