@@ -26,7 +26,7 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
     } else {
 
-      res.render('pages/index', {
+      res.render('pages/atribuir', {
 
       });
     }

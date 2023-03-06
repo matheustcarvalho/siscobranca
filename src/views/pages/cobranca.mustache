@@ -26,14 +26,15 @@
     }
 
     @keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
     }
 </style>
 
@@ -53,11 +54,9 @@
                 <th style="text-align: center;" scope="col">Login</th>
                 <th style="text-align: center;" scope="col">Status</th>
                 <th style="text-align: center;" title="Dia de Vencimento" scope="col">Vencimento</th>
-                <th title="Média de atraso em dias" style="text-align: center; color:rgb(21, 21, 21)" scope="col">M.
-                    Atraso</th>
-                <th style="text-align: center;" title="Faturas vencidas" scope="col">Faturas</th>
-                <th style="text-align: center;" title="Cobranças feitas" scope="col">Cobrança</th>
-                <th style="text-align: center;" scope="col">Tipo</th>
+                <th title="Média de atraso em dias" style="text-align: center; color:rgb(21, 21, 21)" scope="col">Média de Atraso</th>
+                <th style="text-align: center;" title="Faturas vencidas" scope="col">Faturas Vencidas</th>
+                <th style="text-align: center;" title="Cobranças feitas" scope="col">Cobranças</th>
                 <th></th>
             </tr>
         </thead>
@@ -85,12 +84,13 @@
                     <!-- Conteudo modal -->
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
-                        <input type="date" autocomplete="off" name="data" id="cobrancaform" class="cobrancaform form-control"
-                            required></input>
+                        <input type="date" autocomplete="off" name="data" id="cobrancaform"
+                            class="cobrancaform form-control" required></input>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Comentário</b></label>
-                        <textarea name="comentario" autocomplete="off" class="cobrancaform form-control" rows="4"></textarea>
+                        <textarea name="comentario" autocomplete="off" class="cobrancaform form-control"
+                            rows="4"></textarea>
                     </div>
                     <!-- /Conteudo modal -->
                 </div>
@@ -118,7 +118,8 @@
                     <!-- Conteudo modal -->
                     <div class="form-group">
                         <label for="message-text" class="col-form-label"><b>Data cobrança</b></label>
-                        <input type="date" autocomplete="off" id="campodata" name="data" class="form-control" id="message-text"></input>
+                        <input type="date" autocomplete="off" id="campodata" name="data" class="form-control"
+                            id="message-text"></input>
                     </div>
                     <!-- /Conteudo modal -->
                 </div>
@@ -172,22 +173,24 @@
             dataType: 'json',
             success: function (data) {
 
+
+
                 let content = '';
 
                 for (cliente of data.clientes) {
+
+                  let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso+' dias';
                     content += `
                         <tr>
                             <td>${cliente.classificacao || '-'}</td>
                             <td>${cliente.cidade || '-'}</td>
                             <td>${cliente.login || '-'}</td>
                             <td>${cliente.status_login || '-'}</td>
-                            <td>${cliente.dia_vencimento || '-'}</td>
-                            <td>${cliente.Atrasa_dias || '-'}</td>
+                            <td>Dia ${cliente.dia_vencimento || '-'}</td>
+                            <td>${atraso}</td>
                             <td>${cliente.boletos_vencidos || '-'}</td>
                             <td>${cliente.quant_cob || 0}</td>
-                            <td>${cliente.solicitacao || '-'}</td>
                             <td>
-            
                               <div class="btn-group">
                               <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                               Ações
@@ -203,7 +206,6 @@
                               data-bs-target="#staticBackdrop3">Histórico</button></li>
                               </ul>
                               </div>
-                        
                             </td>
                         </tr>
                   `
@@ -283,36 +285,36 @@
 
         $('#salvarr').html('<div class="loading2"></div>')
 
-        
 
-            let formData = new FormData($("#form").get(0))
-    
-            const data = {}
-            formData.forEach((val, key) => {
-                data[key] = val
-            })
-            console.log(data);
 
-            if (document.getElementById("cobrancaform").value.length < 1) {
+        let formData = new FormData($("#form").get(0))
+
+        const data = {}
+        formData.forEach((val, key) => {
+            data[key] = val
+        })
+        console.log(data);
+
+        if (document.getElementById("cobrancaform").value.length < 1) {
             alert('Por favor, preencha o campo data');
             document.getElementById("cobrancaform").focus();
             return false;
+        }
+
+        $.ajax({
+            url: '/cobranca',
+            method: 'post',
+            data,
+            success: res => {
+                alert('Salvo com sucesso')
+                location.reload();
+            },
+            error: e => {
+                console.log(e);
+                alert('Houve algum erro')
             }
-    
-            $.ajax({
-                url: '/cobranca',
-                method: 'post',
-                data,
-                success: res => {
-                    alert('Salvo com sucesso')
-                    location.reload();
-                },
-                error: e => {
-                    console.log(e);
-                    alert('Houve algum erro')
-                }
-            })
-        
+        })
+
     });
 
     $('#salvaragendamento').on("click", function (e) {

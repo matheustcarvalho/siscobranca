@@ -1,6 +1,5 @@
 {{>partials/header}}
 
-
 <style>
     .progress{
         margin-top: 15px
@@ -92,10 +91,10 @@
         
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes',
+            url: 'http://localhost:8888/integra/apis/sis-cobranca/contagem-listar-clientes',
             success: function(data){
 
-                let total = data.pagination.total
+                let total = data.clientes.total
                 const content = `
                     <h4 style="color: #FFFFFF">${total}</h4>
                     <small style=" color: #FFFFFF">Aguardando atribuição</small>
@@ -107,10 +106,10 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos',
+            url: 'http://localhost:8888/integra/apis/sis-cobranca/contagem-listar-clientes-atribuidos',
             success: function(data){
 
-                let totalatribuido = data.pagination.total
+                let totalatribuido = data.clientes.total
                 const content = `
                     <h4 style="color: #FFFFFF">${totalatribuido}</h4>
                     <small style=" color: #FFFFFF">Aguardando cobrança</small>
@@ -122,14 +121,14 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/cobranca-agendamento',
+            url: 'http://localhost:8888/integra/apis/sis-cobranca/contagem-cobranca-agendamento',
             success: function(data){
 
               
 
-                let totalatribuido = data.total.total
+                let totalagendado = data.clientes.total
                 const content = `
-                    <h4 style="color: #FFFFFF">${totalatribuido}</h4>
+                    <h4 style="color: #FFFFFF">${totalagendado}</h4>
                     <small style=" color: #FFFFFF">Aguardando cobrança</small>
                 `
                 $('#atribuir3').removeClass('loading').html(content);

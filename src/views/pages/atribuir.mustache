@@ -16,6 +16,40 @@
     }
   }
 </style>
+<!-- <form id="filtro">
+<div align="center" style="padding: 0 3rem;">
+  <table class="table caption-top">
+    <thead>
+      <tr>
+        <th style="text-align: center; width: 25px;" scope="col">
+          <select class="form-select" id="cidadeslist" name="operador" aria-label="Default select example">
+            <option value='' selected>Cidade</option>
+          </select>
+        </th>
+        <th style="text-align: center; width: 25px;" scope="col">
+          <select class="form-select" id="opparametros" name="operador" aria-label="Default select example">
+            <option value='' selected>Status</option>
+          </select>
+        </th>
+        <th style="text-align: center; width: 25px;" scope="col">
+          <select class="form-select" name="operador" aria-label="Default select example">
+            <option value='' selected>Vencimento</option>
+            <option value='5'>5</option>
+            <option value='10'>10</option>
+            <option value='15'>15</option>
+            <option value='20'>20</option>
+            <option value='25'>25</option>
+          </select>
+        </th>
+        <th style="text-align: center; width: 10px;" scope="col">
+          <button style="margin-left: 0%;"type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</div>
+</form> -->
+
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
     style="position:absolute; right: 5px; width: 150px; margin-bottom: 15px; justify-content: right; margin: 10px;"
@@ -32,9 +66,8 @@
         <th style="text-align: center;" scope="col">Login</th>
         <th style="text-align: center;" scope="col">Status</th>
         <th style="text-align: center;" scope="col">Vencimento</th>
-        <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Dias de atraso</th>
+        <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Média de Atraso</th>
         <th style="text-align: center;" scope="col">Faturas vencidas</th>
-        <th style="text-align: center;" scope="col">Tipo</th>
         <th></th>
       </tr>
     </thead>
@@ -106,12 +139,36 @@
   });
 
 
+$.ajax({
+
+type: 'GET',
+url: 'http://localhost:8888/integra/apis/sis-cobranca/cidades-atendidas',
+dataType: 'json',
+success: function (data) {
+
+  let options = ''
+
+  for (var i = 0; i < data.cidades.length; i++ ) {
+
+    let cidade = data.cidades[i].CIDADE_DESCRICAO
+
+  options += `
+  <option value='${cidade}'>${cidade}</option>
+  `
+}
+
+   $("#cidadeslist").append(options)
+
+}
+
+});
+
 
 
   $.ajax({
 
     type: 'GET',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
+    url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes`,
     dataType: 'json',
     success: function (data) {
 
@@ -119,6 +176,9 @@
       let content = '';
 
       for (cliente of data.clientes) {
+        let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso+' dias';
+
+        
         content += `
             <tr>
             
@@ -126,10 +186,9 @@
               <td>${cliente.cidade || '-'}</td>
               <td>${cliente.login || '-'}</td>
               <td>${cliente.status_login || '-'}</td>
-              <td>${cliente.dia_vencimento || '-'}</td>
-              <td>${cliente.Atrasa_dias || '-'}</td>
+              <td>Dia ${cliente.dia_vencimento || '-'}</td>
+              <td>${atraso}</td>
               <td>${cliente.boletos_vencidos || '-'}</td>
-              <td>${cliente.solicitacao || '-'}</td>
               <td>
                 <input style="width: 25px; height: 25px; border-color: rgb(55, 55, 55);" data-id="${cliente.id_cliente}"
                   data-login="${cliente.login}" data-adesao="${cliente.id}" id="valor" class="big-cehckboc form-check-input" type="checkbox"
@@ -156,6 +215,30 @@
     }
 
   });
+
+
+$.ajax({
+
+type: 'GET',
+url: `http://localhost:8888/integra/apis/sis-cobranca/atributos-parametros`,
+dataType: 'json',
+success: function (data) {
+
+  let content = '';
+
+  for (var i = 0; i < data.parametros.length; i++ ) {
+
+    content += `
+    <option value='${data.parametros[i].atributo}'>${data.parametros[i].atributo}</option>
+    
+    `
+  }
+
+  $("#opparametros").append(content)
+
+}
+
+});
 
 
 
@@ -185,7 +268,7 @@
 
 
   function save(data) {
-    console.log(data);
+    
     $.ajax({
       url: '/home',
       method: 'post',
