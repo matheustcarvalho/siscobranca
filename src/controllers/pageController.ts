@@ -54,7 +54,7 @@ export const homepost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://${url}/integra/apis/sis-cobranca/salvar-atribuicao`,
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-atribuicao`,
     data: {
       clientes: cliente,
       operador: operador,
@@ -107,12 +107,30 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://${url}/integra/apis/sis-cobranca/salvar-cobranca`,
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-cobranca`,
     data: {
       cliente: cliente,
       operador: idOperador,
       nome: nomeOperador,
       login: loginOperador
+    }
+
+  })
+
+  res.sendStatus(200)
+
+}
+
+
+export const filtropost = async (req: Request, res: Response) => {
+
+  console.log(req.body)
+
+  const resposta = await axios({
+    method: 'post',
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
+    data: {
+     
     }
 
   })
@@ -136,7 +154,6 @@ export const relatorio = (req: Request, res: Response) => {
 export const agendamentoget = (req: Request, res: Response) => {
 
 
-
   res.render('pages/agendamento');
 
 }
@@ -153,7 +170,7 @@ export const agendamentopost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://${url}/integra/apis/sis-cobranca/salvar-agendamento`,
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-agendamento`,
     data: {
       clientes: cliente,
       operador: idOperador
@@ -176,7 +193,7 @@ export const agendamentoput = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://${url}/integra/apis/sis-cobranca/atualizar-agendamento`,
+    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/atualizar-agendamento`,
     data: {
       clientes: cliente,
       operador: idOperador

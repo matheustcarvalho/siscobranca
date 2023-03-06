@@ -16,7 +16,7 @@ export const home = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://${url}/integra/api/login`,
+    url: `http://integra2hm.micron.com.br/integra/api/login`,
     data: {
       login: loginn,
       password: passwordd
@@ -66,7 +66,7 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
 
   try {
 
-    const parametro = await axios.get(`http://${url}/integra/apis/sis-cobranca/buscar-ip`)
+    const parametro = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/buscar-ip`)
 
     let ipCliente = (req.socket.remoteAddress)
     ipCliente = ipCliente?.split(':').reverse()[0]
@@ -99,9 +99,9 @@ export const validationlogin = async (req: Request, res: Response, next: Functio
 }
 
 const renderIndex = async (res: Response) => {
-  const total = await axios.get(`http://${url}/integra/apis/sis-cobranca/listar-clientes`)
+  const total = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`)
   const totalclientes = total.data.pagination.total
-  const atribuidos = await axios.get(`http://${url}/integra/apis/sis-cobranca/listar-clientes-atribuidos`)
+  const atribuidos = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos`)
   const clientes_atribuidos = atribuidos.data.pagination.total
 
   res.render('pages/index', {

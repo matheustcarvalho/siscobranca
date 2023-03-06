@@ -55,6 +55,7 @@ router.post('/', loginController.home);
 
 router.get('/atribuir', PageController.homeget);
 router.post('/home', PageController.homepost);
+router.post('/home', PageController.filtropost);
 router.get('/cobranca', PageController.cobrancaget);
 router.post('/cobranca', PageController.cobrancapost);
 router.get('/relatorio', PageController.relatorio);
