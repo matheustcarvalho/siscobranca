@@ -8,8 +8,6 @@ const url = process.env.API_URL
 
 export const homeget = async (req: Request, res: Response, next: Function) => {
 
-  process.env.API_URL
-
 
   try {
 
@@ -28,6 +26,9 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
       res.render('pages/atribuir', {
 
+        url
+
+
       });
     }
 
@@ -42,7 +43,6 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 export const homepost = async (req: Request, res: Response) => {
 
 
-
   var cliente = req.body.clientes
   var operador = req.body.operador
   var atribuiuId = req.session.user?.id
@@ -51,7 +51,7 @@ export const homepost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-atribuicao`,
+    url: `${url}/apis/sis-cobranca/salvar-atribuicao`,
     data: {
       clientes: cliente,
       operador: operador,
@@ -73,6 +73,7 @@ export const cobrancaget = async (req: Request, res: Response) => {
 
     res.render('pages/cobranca', {
 
+      url
 
     });
   } catch (err) {
@@ -95,7 +96,7 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-cobranca`,
+    url: `${url}/apis/sis-cobranca/salvar-cobranca`,
     data: {
       cliente: cliente,
       operador: idOperador,
@@ -115,7 +116,7 @@ export const filtropost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
+    url: `${url}/apis/sis-cobranca/listar-clientes`,
     data: {
      
     }
@@ -130,7 +131,6 @@ export const filtropost = async (req: Request, res: Response) => {
 export const relatorio = (req: Request, res: Response) => {
 
 
-
   res.render('pages/relatorio');
 
 }
@@ -141,7 +141,9 @@ export const relatorio = (req: Request, res: Response) => {
 export const agendamentoget = (req: Request, res: Response) => {
 
 
-  res.render('pages/agendamento');
+  res.render('pages/agendamento',{
+    url
+  });
 
 }
 
@@ -157,7 +159,7 @@ export const agendamentopost = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/salvar-agendamento`,
+    url: `${url}/apis/sis-cobranca/salvar-agendamento`,
     data: {
       clientes: cliente,
       operador: idOperador
@@ -180,7 +182,7 @@ export const agendamentoput = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/atualizar-agendamento`,
+    url: `${url}/apis/sis-cobranca/atualizar-agendamento`,
     data: {
       clientes: cliente,
       operador: idOperador
@@ -189,9 +191,6 @@ export const agendamentoput = async (req: Request, res: Response) => {
   })
 
   res.sendStatus(200)
-
-
-
   
 
 }
@@ -203,7 +202,7 @@ export const index = async (req: Request, res: Response) => {
 
   res.render('pages/index', {
     
-
+     url
   })
 
 }

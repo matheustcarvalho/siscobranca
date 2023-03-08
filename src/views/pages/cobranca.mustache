@@ -157,12 +157,14 @@
 <!-- Capturar id -->
 <script>
 
+let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+
     function getList(page, limit) {
 
         $.ajax({
 
             type: 'GET',
-            url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos`,
+            url: `${url_api}/apis/sis-cobranca/listar-clientes-atribuidos`,
             dataType: 'json',
             success: function (data) {
 
@@ -229,7 +231,7 @@
         $.ajax({
 
             type: 'GET',
-            url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
+            url: `${url_api}/apis/sis-cobranca/historico-cobranca?tipo=COBCOBRANCA&referencia=${id}`,
             dataType: 'json',
             success: function (data) {
 

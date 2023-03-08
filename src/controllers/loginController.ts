@@ -5,8 +5,11 @@ import session from 'express-session';
 const axios = require('axios');
 const flash = require('connect-flash');
 const crypto = require('crypto');
+import dotenv from 'dotenv';
+dotenv.config();
 
 const url = process.env.API_URL
+
 
 
 export const home = async (req: Request, res: Response) => {  
@@ -16,7 +19,7 @@ export const home = async (req: Request, res: Response) => {
 
   const resposta = await axios({
     method: 'post',
-    url: `http://integra2hm.micron.com.br/integra/api/login`,
+    url: `${url}/api/login`,
     data: {
       login: loginn,
       password: passwordd
@@ -69,7 +72,7 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
 
   try {
 
-    const parametro = await axios.get(`http://localhost:8888/integra/apis/sis-cobranca/buscar-ip`)
+    const parametro = await axios.get(`${url}/apis/sis-cobranca/buscar-ip`)
 
     let ipCliente = (req.socket.remoteAddress)
     ipCliente = ipCliente?.split(':').reverse()[0]
@@ -102,9 +105,9 @@ export const validationlogin = async (req: Request, res: Response, next: Functio
 }
 
 const renderIndex = async (res: Response) => {
-  const total = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`)
+  const total = await axios.get(`${url}/apis/sis-cobranca/listar-clientes`)
   const totalclientes = total.data.pagination.total
-  const atribuidos = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes-atribuidos`)
+  const atribuidos = await axios.get(`${url}/apis/sis-cobranca/listar-clientes-atribuidos`)
   const clientes_atribuidos = atribuidos.data.pagination.total
 
   res.render('pages/index', {

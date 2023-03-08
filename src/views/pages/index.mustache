@@ -88,10 +88,11 @@
 
     <script>
 
-        
+let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/contagem-listar-clientes',
+            url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
             success: function(data){
 
                 let total = data.clientes.total
@@ -106,7 +107,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/contagem-listar-clientes-atribuidos',
+            url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes-atribuidos`,
             success: function(data){
 
                 let totalatribuido = data.clientes.total
@@ -121,7 +122,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/contagem-cobranca-agendamento',
+            url: `${url_api}/apis/sis-cobranca/contagem-cobranca-agendamento`,
             success: function(data){
 
               

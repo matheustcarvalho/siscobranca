@@ -133,11 +133,14 @@
 <!-- /Modal -->
 
 <script>
+
+  let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+  
     
 function listOperadores() {
   $.ajax({
     type: 'GET',
-    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/operadores-cobranca',
+    url: `${url_api}/apis/sis-cobranca/operadores-cobranca`,
     dataType: 'json',
     success: function (data) {
 
@@ -163,7 +166,7 @@ function listCidades() {
   $.ajax({
 
     type: 'GET',
-    url: 'http://integra2hm.micron.com.br/integra/apis/sis-cobranca/cidades-atendidas',
+    url: `${url_api}/apis/sis-cobranca/cidades-atendidas`,
     dataType: 'json',
     success: function (data) {
 
@@ -194,7 +197,7 @@ function list(filter = null) {
   $.ajax({
 
     type: 'POST',
-    url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes`,
+    url: `${url_api}/apis/sis-cobranca/listar-clientes`,
     data: filter,
     dataType: 'json',
     success: function (data) {
@@ -254,7 +257,7 @@ function listStatuses() {
   $.ajax({
 
     type: 'GET',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/atributos-parametros`,
+    url: `${url_api}/apis/sis-cobranca/atributos-parametros`,
     dataType: 'json',
     success: function (data) {
 
