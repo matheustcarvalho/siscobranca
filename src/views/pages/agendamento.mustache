@@ -45,7 +45,7 @@
     type="button" class="btn btn-success">Atribuir</button>
   <br>
 </div>
-<div align="center" id="paginate" style="padding: 0 3rem;">
+<div align="center" style="padding: 0 3rem;">
   <table id="myTable" class="table caption-top">
     <thead>
       <tr>
@@ -253,7 +253,7 @@
               <td>${cliente.cidade || '-'}</td>
               <td>${cliente.login || '-'}</td>
               <td>${cliente.status_login || '-'}</td>
-              <td>Dia ${cliente.dia_vencimento || '-'}</td>
+              <td>${cliente.dia_vencimento || '-'}</td>
               <td>${atraso}</td>
               <td>${cliente.quant_cob || 0}</td>
               <td style="color:rgb(21, 21, 21)"><b>${dataFormatada || '-'}</b></td>

@@ -64,7 +64,7 @@ tr td {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 2.7vh;
+    font-size: 15px;
 }
 
 
@@ -175,7 +175,7 @@ footer {
 margin-top: 00px;
 }
 
-#pagi {
+#paginate {
     display: none;
 }
 

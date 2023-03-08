@@ -44,7 +44,7 @@
         type="button" class="btn btn-success">Atribuir</button>
     <br>
 </div>
-<div align="center" id="paginate" style=" padding: 0 3rem;">
+<div align="center" style=" padding: 0 3rem;">
     <table id="myTable" class="table caption-top">
         <thead>
             <tr>
@@ -157,13 +157,6 @@
 <!-- Capturar id -->
 <script>
 
-    // if(document.getElementById("cobrancaform").value.length < 1){
-    // alert('Por favor, preencha o campo nome');
-    // document.getElementById("cobrancaform").focus();
-    // }
-
-
-
     function getList(page, limit) {
 
         $.ajax({
@@ -186,7 +179,7 @@
                             <td>${cliente.cidade || '-'}</td>
                             <td>${cliente.login || '-'}</td>
                             <td>${cliente.status_login || '-'}</td>
-                            <td>Dia ${cliente.dia_vencimento || '-'}</td>
+                            <td>${cliente.dia_vencimento || '-'}</td>
                             <td>${atraso}</td>
                             <td>${cliente.boletos_vencidos || '-'}</td>
                             <td>${cliente.quant_cob || 0}</td>
@@ -278,7 +271,6 @@
         $('.idattr').val(id)
 
     })
-
 
 
     $('#salvarr').on("click", function (e) {

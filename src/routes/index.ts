@@ -48,7 +48,7 @@ router.use(loginController.validationlogin);
 
 
 //rotas
-router.get('/restrito', loginController.ipvalidation)
+router.get('/restrito', loginController.restricted)
 router.get('/', loginController.login);
 router.get('/logout', loginController.logout);
 router.post('/', loginController.home);

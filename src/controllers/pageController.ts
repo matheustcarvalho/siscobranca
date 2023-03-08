@@ -48,9 +48,6 @@ export const homepost = async (req: Request, res: Response) => {
   var atribuiuId = req.session.user?.id
   
 
-  console.log(req.body)
-
-
 
   const resposta = await axios({
     method: 'post',
@@ -70,13 +67,6 @@ export const homepost = async (req: Request, res: Response) => {
 
 export const cobrancaget = async (req: Request, res: Response) => {
 
-  
-  let page: any = req.query.page
-  page = Number(page)
-
-  if (!page) {
-    page = 1
-  }
 
   try {
 
@@ -102,8 +92,6 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
   var cliente = req.body
 
-  console.log(cliente)
-
 
   const resposta = await axios({
     method: 'post',
@@ -124,7 +112,6 @@ export const cobrancapost = async (req: Request, res: Response) => {
 
 export const filtropost = async (req: Request, res: Response) => {
 
-  console.log(req.body)
 
   const resposta = await axios({
     method: 'post',

@@ -18,23 +18,23 @@
 
   #filtropesquisa{
     margin-top: 10px;
-    margin-left: 10rem;
+    margin-left: 5rem;
   }
 </style>
 <div id="filtropesquisa" class="row">
   <div class="col-12">
     <form id="filtro">
       <div class="row mr-2 ml-2 container-fluid">
-        <div class="col-md-3 container-fluid">
-          <select class="form-control filtro" multiple id="cidadeslist" name="cidade">
+        <div class="col-md-2 container-fluid">
+          <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
           </select>
         </div>
-        <div class="col-md-3">
-          <select class="form-select filtro2" multiple="multiple" id="opparametros" name="status_login">
+        <div class="col-md-2">
+          <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
           </select>
         </div>
-        <div class="col-md-3">
-          <select placholder="Selecione um dia" class="form-select filtro3" id="dias" multiple="multiple" name="dia_vencimento">
+        <div class="col-md-2">
+          <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple" name="dia_vencimento">
             <option data-dia="5" value='5'>5</option>
             <option data-dia="10" value='10'>10</option>
             <option data-dia="15" value='15'>15</option>
@@ -42,8 +42,19 @@
             <option data-dia="25" value='25'>25</option>
           </select>
         </div>
-        <div class="col-md-3">
-          <button style="margin-left: 0%;" type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
+        <div class="col-md-2">
+          <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao" multiple="multiple" name="classificacao">
+            <option value='0'>Primeiro atraso</option>
+            <option value='1'>Segundo atraso</option>
+            <option value='2'>Terceiro atraso</option>
+            <option value='3'>Atrasa com frequência</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input placeholder="Dias de atraso" style="height:32px; border-color: #b6b3b3;" value="" type="text" class="form-control filtro5 enviafiltro"  name="dias_atraso">
+        </div>
+        <div align="center" style="margin-top:-3px" class="col-md-2">
+          <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
         </div>
       </div>
     </form>
@@ -71,14 +82,21 @@
         <th></th>
       </tr>
     </thead>
-    
     <tbody id="listar-clientes">
 
     </tbody>
-    <div id="loading" class="loading"></div>
   </table>
 </div>
-
+<div class="row">
+  <div class="col-md-4">
+  </div>
+  <div align="center" class="col-md-4">
+    <div id="loading" class="loading">
+    </div>
+  </div>
+  <div class="col-md-4">
+  </div>
+</div>
 
 <!-- Modal -->
 <form id="form">
@@ -176,7 +194,7 @@ function list(filter = null) {
   $.ajax({
 
     type: 'POST',
-    url: `http://integra2hm.micron.com.br/integra/apis/sis-cobranca/listar-clientes`,
+    url: `http://localhost:8888/integra/apis/sis-cobranca/listar-clientes`,
     data: filter,
     dataType: 'json',
     success: function (data) {
@@ -195,7 +213,7 @@ function list(filter = null) {
             <td>${cliente.cidade || '-'}</td>
             <td>${cliente.login || '-'}</td>
             <td>${cliente.status_login || '-'}</td>
-            <td>Dia ${cliente.dia_vencimento || '-'}</td>
+            <td>${cliente.dia_vencimento || '-'}</td>
             <td>${atraso}</td>
             <td>${cliente.boletos_vencidos || '-'}</td>
             <td>
@@ -218,15 +236,15 @@ function list(filter = null) {
       });
 
       $('#loading').removeClass('loading')
-      $('#pagi').css('display', 'block')
+      $('#paginate').css('display', 'block')
 
       $('#botaofiltro').on('click', function () {
 
-        $('#loading').addClass('loading')
+        $('#paginate').css('display', 'none')
+        $('#loading').addClass('loading');
         
         });
-
-      
+ 
     }
 
   })
@@ -279,22 +297,37 @@ function save(data) {
   })
 }
 
+$('.filtro3').select2({
+    placeholder: "Vencimento",
+    allowClear: true
+  });
+
+$('.filtro4').select2({
+    placeholder: "Classificação",
+    allowClear: true
+});
+
 
 $(document).ready(function () {
   $('.filtro').select2({
-    placeholder: "Selecione Por Cidade",
+    placeholder: "Cidade",
     allowClear: true
   });
 
   $('.filtro2').select2({
-    placeholder: "Selecione Por Status",
+    placeholder: "Status",
     allowClear: true
   });
 
-  $('.filtro3').select2({
-    placeholder: "Selecione Por Vencimento",
-    allowClear: true
-  });
+  // $('.filtro3').select2({
+  //   placeholder: "Vencimento",
+  //   allowClear: true
+  // });
+
+  // $('.filtro4').select2({
+  //   placeholder: "Classificação",
+  //   allowClear: true
+  // });
 
   $("#myInput").on("keyup", function () {
     var value = $(this).val().toLowerCase();
@@ -320,7 +353,7 @@ $(document).ready(function () {
   $('#filtro').on('submit', function (e) {
     e.preventDefault()
     const form = $('#filtro')
-    const fields = form.find('select')
+    const fields = form.find('.enviafiltro')
     const data = {}
 
     fields.each((i, el) => {

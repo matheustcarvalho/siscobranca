@@ -58,15 +58,18 @@ export const logout = async (req: Request, res: Response) => {
   res.redirect('/')
 }
 
-
+export const restricted = async (req: Request, res: Response) => {
+  res.send(200).render('pages/restrito')
+}
 
 export const ipvalidation = async (req: Request, res: Response, next: Function) => {
-
-
+  
+  if (req.url == '/restrito')
+    return next()
 
   try {
 
-    const parametro = await axios.get(`http://integra2hm.micron.com.br/integra/apis/sis-cobranca/buscar-ip`)
+    const parametro = await axios.get(`http://localhost:8888/integra/apis/sis-cobranca/buscar-ip`)
 
     let ipCliente = (req.socket.remoteAddress)
     ipCliente = ipCliente?.split(':').reverse()[0]
@@ -79,8 +82,8 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
     let found = valores.includes(hash);
 
 
-    if (found == false)
-      res.status(200).render('pages/restrito')
+    if (!found)
+      return res.status(403).render('pages/restrito')
     next()
   } catch (e) {
     res.status(401).send(e)
@@ -91,7 +94,7 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
 
 export const validationlogin = async (req: Request, res: Response, next: Function) => {
   var sessao = req.session
-  if (req.url == '/' || sessao?.user?.id) {
+  if (['/', '/restrito'].includes(req.url) || sessao?.user?.id) {
     next()
   } else {
     res.redirect('/')
