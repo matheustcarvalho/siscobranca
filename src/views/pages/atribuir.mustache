@@ -129,7 +129,6 @@
         <input type="hidden" class="clientelogin" value="" name="login">
         <input type="hidden" class="idcliente" value="" name="id_cliente">
         <input type="hidden" class="id_adesao" value="" name="id_adesao">
-        <input type="hidden" value="N" name="status">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">Atribuir cobrança</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -243,7 +242,7 @@ function list(filter = null) {
             <td>${cliente.boletos_vencidos || '-'}</td>
             <td>
               <input style="width: 25px; height: 25px; border-color: rgb(55, 55, 55);" data-id="${cliente.id_cliente}"
-                data-login="${cliente.login}" data-adesao="${cliente.id}" id="valor" class="big-cehckboc form-check-input" type="checkbox"
+                data-login="${cliente.login}" data-adesao="${cliente.id}" class="big-cehckboc form-check-input select-item" type="checkbox"
                 value="" id="flexCheckDefault">
             </td>
             
@@ -319,6 +318,10 @@ function save(data) {
     error: e => {
       console.log(e);
       alert('Houve algum erro')
+    },
+    complete: () => {
+      $(".select-item").prop('checked', false);
+      clientes = []
     }
   })
 }
@@ -337,6 +340,9 @@ $('.filtro4').select2({
 
 
 $(document).ready(function () {
+
+  let selectedItems = []
+
   $('.filtro').select2({
     placeholder: "Cidade",
     allowClear: true
@@ -390,26 +396,35 @@ $(document).ready(function () {
 
     list(data)
   });
+  
+  $('#listar-clientes').on('change', '.select-item', function() {
+    const selected = $(this).is(':checked')
+    const login = $(this).data('login')
+
+    if (selected) {
+      const data = {
+        login,
+        client_id: $(this).data('id'),
+        adesao_id: $(this).data('adesao'),
+      }
+      clientes.push(data);
+    } else {
+      clientes.splice(clientes.findIndex(i => {i.login == login}), 1)
+    }
+
+    // console.log(clientes);
+  })
 
   $("input[type='checkbox']:checked").prop('checked', false);
+
 
   $('#salvarr').on('click', function () {
     
     $('#salvarr').html('<div class="loading2"></div>')
 
-    $("input[type='checkbox']:checked").each(function () {
-      const data = {
-        login: $(this).data('login'),
-        client_id: $(this).data('id'),
-        adesao_id: $(this).data('adesao'),
-      }
-      clientes.push(data)
-    });
-
     const operador = $('[name=operador]').val()
-    const status = $('[name=status]').val()
 
-    save({ status, operador, clientes })
+    save({ status: 'N', operador, clientes })
     clientes = []
   })
 
