@@ -16,6 +16,28 @@
     }
   }
 
+  .loading2 {
+        margin: 2px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        border: 4px #FFFFFF solid;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
   #filtropesquisa{
     margin-top: 10px;
     margin-left: 5rem;
@@ -281,6 +303,7 @@ function listStatuses() {
 
 let clientes = [];
 
+  // $('#salvarr').html('<div class="loading2"></div>')
 
 function save(data) {
 
@@ -299,6 +322,8 @@ function save(data) {
     }
   })
 }
+
+
 
 $('.filtro3').select2({
     placeholder: "Vencimento",
@@ -369,6 +394,9 @@ $(document).ready(function () {
   $("input[type='checkbox']:checked").prop('checked', false);
 
   $('#salvarr').on('click', function () {
+    
+    $('#salvarr').html('<div class="loading2"></div>')
+
     $("input[type='checkbox']:checked").each(function () {
       const data = {
         login: $(this).data('login'),

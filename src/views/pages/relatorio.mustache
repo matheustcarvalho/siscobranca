@@ -143,7 +143,7 @@
                         <div id="chart3"></div>
                       </div>
                     </li>
-                    <li id="section-3" class="section main clearfix section-3 hidden" aria-label="Aula 1 "
+                    <li id="section-3" class="section main clearfix section-3 hidden" aria-label="Aula 1"
                       tabindex="-1">
                       <div class="content">
                         <div>
@@ -170,7 +170,6 @@
                         <div id="chart5">
 
                         </div>
-                   
                       </div>
                     </li>
                   </ul>
@@ -178,10 +177,9 @@
               </div>
             </section>
           </div>
-        </div>
-        </section>
-
+         </div>
       </div>
+    </div>
   </div>
 </div>
 
@@ -238,6 +236,10 @@
 </style>
 
 <script>
+
+let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+
+
   function mostrar(id) {
     if (document.getElementById(id).style.display !== "none") {
       document.getElementById(id).style.display = "none";
@@ -248,48 +250,73 @@
     );
     document.getElementById(id).style.display = "block";
   };
-</script>
 
+$.ajax({
 
+type: 'GET',
+url: `${url_api}a/apis/sis-cobranca/relatorio-valor`,
+dataType: 'json',
+success: function (data) {
 
-<script>
   var options = {
     chart: {
       type: 'bar',
       width: 700,
       height: 400
-
+  
     },
     series: [
       {
-        name: 'sales',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+        name: 'Valores recebidos',
+        data: [data.operador[0].valor_recebido, data.operador[1].valor_recebido, data.operador[2].valor_recebido]
       }
     ],
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      categories: [data.operador[0].nome, data.operador[1].nome, data.operador[2].nome]
     }
-  }
 
-  var options2 = {
-    series: [44, 55, 13, 43, 22],
-    chart: {
-      width: 600,
-      type: 'pie',
-    },
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 600
-        },
-        legend: {
-          position: 'bottom'
-        }
+ }
+  var chart = new ApexCharts(document.querySelector('#chart'), options)
+  chart.render()  
+
+}
+
+});
+
+
+$.ajax({
+
+type: 'GET',
+url: `${url_api}/apis/sis-cobranca/relatorio-quantide`,
+dataType: 'json',
+success: function (data) {
+
+  
+  
+}
+
+});
+
+var options2 = {
+  series: [44, 55, 13, 43, 22],
+  chart: {
+    width: 600,
+    type: 'pie',
+  },
+  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 600
+      },
+      legend: {
+        position: 'bottom'
       }
-    }]
-  };
+    }
+  }]
+};
+
 
   var options3 = {
     series: [{
@@ -392,12 +419,6 @@
         };
   
         
-
-
-
-  var chart = new ApexCharts(document.querySelector('#chart'), options)
-  chart.render()
-
   var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
   chart2.render();
 

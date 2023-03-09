@@ -25,10 +25,7 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     } else {
 
       res.render('pages/atribuir', {
-
         url
-
-
       });
     }
 
@@ -72,9 +69,7 @@ export const cobrancaget = async (req: Request, res: Response) => {
 
 
     res.render('pages/cobranca', {
-
       url
-
     });
   } catch (err) {
     console.log(err);
@@ -131,7 +126,9 @@ export const filtropost = async (req: Request, res: Response) => {
 export const relatorio = (req: Request, res: Response) => {
 
 
-  res.render('pages/relatorio');
+  res.render('pages/relatorio',{
+    url
+  });
 
 }
 
@@ -201,7 +198,6 @@ export const index = async (req: Request, res: Response) => {
 
 
   res.render('pages/index', {
-    
      url
   })
 
