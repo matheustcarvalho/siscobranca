@@ -17,28 +17,28 @@
   }
 
   .loading2 {
-        margin: 2px;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        border: 4px #FFFFFF solid;
-        border-top-color: transparent;
-        animation: spin 1s linear infinite;
+    margin: 2px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 4px #FFFFFF solid;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
     }
 
-    @keyframes spin {
-        0% {
-            -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
     }
+  }
 
-  #filtropesquisa{
+  #filtropesquisa {
     margin-top: 10px;
     margin-left: 5rem;
   }
@@ -47,16 +47,20 @@
   <div class="col-12">
     <form id="filtro">
       <div class="row mr-2 ml-2 container-fluid">
-        <div class="col-md-2 container-fluid">
+        <div class="col-md-2 container-fluid" align="center">
+          <label class="form-label">Cidade</label>
           <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
           </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" align="center">
+          <label class="form-label">Status</label>
           <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
           </select>
         </div>
-        <div class="col-md-2">
-          <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple" name="dia_vencimento">
+        <div class="col-md-2" align="center">
+          <label class="form-label">Vencimento</label>
+          <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple"
+            name="dia_vencimento">
             <option data-dia="5" value='5'>5</option>
             <option data-dia="10" value='10'>10</option>
             <option data-dia="15" value='15'>15</option>
@@ -64,25 +68,45 @@
             <option data-dia="25" value='25'>25</option>
           </select>
         </div>
-        <div class="col-md-2">
-          <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao" multiple="multiple" name="classificacao">
+        <div class="col-md-2" align="center">
+          <label class="form-label">Classificação</label>
+          <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
+            multiple="multiple" name="classificacao">
             <option value='0'>Primeiro atraso</option>
             <option value='1'>Segundo atraso</option>
             <option value='2'>Terceiro atraso</option>
             <option value='3'>Atrasa com frequência</option>
           </select>
         </div>
-        <div class="col-md-2">
-          <input placeholder="Dias de atraso" style="height:32px; border-color: #b6b3b3;" value="" type="text" class="form-control filtro5 enviafiltro"  name="dias_atraso">
+        <div class="col-md-2 row" align="center" style="margin-top: -3px;">
+          <label class="form-label">Média de Atraso</label>
+          <div class="col">
+            <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+              value="" type="number" id="nmin" class="form-control filtro5 enviafiltro" name="dias_atraso_min">
+          </div>
+          <div class="col">
+            <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+              value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
+          </div>
         </div>
+        {{! <div class="col-md-2" align="center" style="margin-top: -3px;">
+          <label class="form-label">Período</label>
+          <select placholder="Selecione um dia" class="form-select enviafiltro" name="periodo">
+            <option data-p="" value='4'>4 Meses</option>
+            <option data-p="" value='6' selected>6 Meses</option>
+            <option data-p="" value='8'>8 Meses</option>
+            <option data-p="" value='10'>10 Meses</option>
+            <option data-p="" value='12'>1 Ano</option>
+          </select>
+        </div> }}
         <div align="center" style="margin-top:-3px" class="col-md-2">
+          <br>
           <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
         </div>
       </div>
     </form>
   </div>
 </div>
-
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
     style="position:absolute; right: 5px; width: 150px; margin-bottom: 15px; justify-content: right; margin: 10px;"
@@ -155,82 +179,85 @@
 
 <script>
 
+
+  // $("#botaofiltro").click(function () {
+  //   if ($('#nmin').val() < 0 || $('#nmin').val() < 0) {
+  //     alert('Valor inserido é menor que 0');
+  //     return false;
+  //   }
+  // });
+
+
   let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
-  
-    
-function listOperadores() {
-  $.ajax({
-    type: 'GET',
-    url: `${url_api}/apis/sis-cobranca/operadores-cobranca`,
-    dataType: 'json',
-    success: function (data) {
 
-      let options = ''
 
-      for (operador of data) {
+  function listOperadores() {
+    $.ajax({
+      type: 'GET',
+      url: `${url_api}/apis/sis-cobranca/operadores-cobranca`,
+      dataType: 'json',
+      success: function (data) {
 
-        options += `
+        let options = ''
+
+        for (operador of data) {
+
+          options += `
       <option data-id="${operador.id}" name="operador" value="${operador.id}">${operador.nome}</option>
       
       `
+        }
+
+        $("#operadores-list").append(options)
+
       }
 
-      $("#operadores-list").append(options)
-
-    }
-
-  })
-}
+    })
+  }
 
 
-function listCidades() {
-  $.ajax({
+  function listCidades() {
+    $.ajax({
 
-    type: 'GET',
-    url: `${url_api}/apis/sis-cobranca/cidades-atendidas`,
-    dataType: 'json',
-    success: function (data) {
+      type: 'GET',
+      url: `${url_api}/apis/sis-cobranca/cidades-atendidas`,
+      dataType: 'json',
+      success: function (data) {
 
-      let options = ''
+        let options = ''
 
-      for (var i = 0; i < data.cidades.length; i++) {
+        for (var i = 0; i < data.cidades.length; i++) {
 
-        let cidade = data.cidades[i].CIDADE_DESCRICAO
+          let cidade = data.cidades[i].CIDADE_DESCRICAO
 
-        options += `<option data-cidade='${cidade}' value='${cidade}'>${cidade}</option>`
+          options += `<option data-cidade='${cidade}' value='${cidade}'>${cidade}</option>`
+        }
+
+        $("#cidadeslist").append(options)
+
       }
 
-      $("#cidadeslist").append(options)
-
-    }
-
-  });
-}
-
-$('#botaofiltro').on('click', function () {
+    });
+  }
 
 
+  function list(filter = null) {
+    $.ajax({
 
-});
-
-
-function list(filter = null) {
-  $.ajax({
-
-    type: 'POST',
-    url: `${url_api}/apis/sis-cobranca/listar-clientes`,
-    data: filter,
-    dataType: 'json',
-    success: function (data) {
+      type: 'POST',
+      url: `${url_api}/apis/sis-cobranca/listar-clientes`,
+      data: filter,
+      dataType: 'json',
+      success: function (data) {
 
 
-      let content = '';
+        let content = '';
 
-      for (cliente of data.clientes) {
-        let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso + ' dias';
+        for (cliente of data.clientes) {
+          let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso + ' dias';
 
 
-        content += `
+          content += `
           <tr>
           
             <td>${cliente.classificacao || '-'}</td>
@@ -248,191 +275,203 @@ function list(filter = null) {
             
           </tr>`
 
+        }
+
+        const table = $("#myTable")
+        table.DataTable().destroy()
+        $("#listar-clientes").html(content)
+        table.DataTable({
+          "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
+          }
+        });
+
+        $('#loading').removeClass('loading')
+        $('#paginate').css('display', 'block')
+
+        $('#botaofiltro').on('click', function () {
+
+          if ($('#nmin').val() < 0) {
+          alert('Valor inserido não pode ser menor que zero');
+          $('#loading').removeClass('loading');
+          
+        }
+          $('#paginate').css('display', 'none')
+          $('#loading').addClass('loading');
+
+        });
+
       }
 
-      const table = $("#myTable")
-      table.DataTable().destroy()
-      $("#listar-clientes").html(content)
-      table.DataTable({
-        "language": {
-          "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
-        }
-      });
+    })
+  }
 
-      $('#loading').removeClass('loading')
-      $('#paginate').css('display', 'block')
+  function listStatuses() {
+    $.ajax({
 
-      $('#botaofiltro').on('click', function () {
+      type: 'GET',
+      url: `${url_api}/apis/sis-cobranca/atributos-parametros`,
+      dataType: 'json',
+      success: function (data) {
 
-        $('#paginate').css('display', 'none')
-        $('#loading').addClass('loading');
-        
-        });
- 
-    }
+        let content = '';
 
-  })
-}
+        for (var i = 0; i < data.parametros.length; i++) {
 
-function listStatuses() {
-  $.ajax({
-
-    type: 'GET',
-    url: `${url_api}/apis/sis-cobranca/atributos-parametros`,
-    dataType: 'json',
-    success: function (data) {
-
-      let content = '';
-
-      for (var i = 0; i < data.parametros.length; i++) {
-
-        content += `
+          content += `
     <option data-status='${data.parametros[i].atributo}' value='${data.parametros[i].atributo}'>${data.parametros[i].atributo}</option>
     
     `
+        }
+
+        $("#opparametros").append(content)
+
       }
 
-      $("#opparametros").append(content)
-
-    }
-
-  });
-}
+    });
+  }
 
 
-let clientes = [];
+  let clientes = [];
 
   // $('#salvarr').html('<div class="loading2"></div>')
 
-function save(data) {
+  function save(data) {
 
-  $.ajax({
-    url: '/home',
-    method: 'post',
-    data,
-    // dataType: 'json',
-    success: res => {
-      alert('Salvo com sucesso')
-      location.reload();
-    },
-    error: e => {
-      console.log(e);
-      alert('Houve algum erro')
-    },
-    complete: () => {
-      $(".select-item").prop('checked', false);
-      clientes = []
-    }
-  })
-}
+    $.ajax({
+      url: '/home',
+      method: 'post',
+      data,
+      // dataType: 'json',
+      success: res => {
+        alert('Salvo com sucesso')
+        location.reload();
+      },
+      error: e => {
+        console.log(e);
+        alert('Houve algum erro')
+      },
+      complete: () => {
+        $(".select-item").prop('checked', false);
+        clientes = []
+      }
+    })
+  }
 
 
 
-$('.filtro3').select2({
-    placeholder: "Vencimento",
+  $('.filtro3').select2({
+    placeholder: "Selecione",
     allowClear: true
   });
 
-$('.filtro4').select2({
-    placeholder: "Classificação",
-    allowClear: true
-});
-
-
-$(document).ready(function () {
-
-  let selectedItems = []
-
-  $('.filtro').select2({
-    placeholder: "Cidade",
+  $('.filtro4').select2({
+    placeholder: "Selecione",
     allowClear: true
   });
 
-  $('.filtro2').select2({
-    placeholder: "Status",
-    allowClear: true
-  });
 
-  // $('.filtro3').select2({
-  //   placeholder: "Vencimento",
-  //   allowClear: true
-  // });
+  $(document).ready(function () {
 
-  // $('.filtro4').select2({
-  //   placeholder: "Classificação",
-  //   allowClear: true
-  // });
+    let selectedItems = []
 
-  $("#myInput").on("keyup", function () {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function () {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    $('.filtro').select2({
+      placeholder: "Selecione",
+      allowClear: true
     });
-  });
 
-  $('#listar-clientes').on('click', '.form-check-input', function () {
+    $('.filtro2').select2({
+      placeholder: "Selecione",
+      allowClear: true
+    });
 
-    let quantCheck = $('.form-check-input:checked').length;
+    // $('.filtro3').select2({
+    //   placeholder: "Vencimento",
+    //   allowClear: true
+    // });
 
-    if (quantCheck != 0) {
-      $('#botao').css('display', 'block')
-      $('#paginate').css('margin-top', '30px')
-    }
-    else {
-      $('#botao').css('display', 'none')
-      $('#paginate').css('margin-top', '0px')
-    }
-  });
+    // $('.filtro4').select2({
+    //   placeholder: "Classificação",
+    //   allowClear: true
+    // });
 
-  $('#filtro').on('submit', function (e) {
-    e.preventDefault()
-    const form = $('#filtro')
-    const fields = form.find('.enviafiltro')
-    const data = {}
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
 
-    fields.each((i, el) => {
-      data[$(el).attr('name')] = $(el).val()
+    $('#listar-clientes').on('click', '.form-check-input', function () {
+
+      let quantCheck = $('.form-check-input:checked').length;
+
+      if (quantCheck != 0) {
+        $('#botao').css('display', 'block')
+        $('#paginate').css('margin-top', '30px')
+      }
+      else {
+        $('#botao').css('display', 'none')
+        $('#paginate').css('margin-top', '0px')
+      }
+    });
+
+    $("#botaofiltro").click(function () {
+
+      $('#filtro').on('submit', function (e) {
+        e.preventDefault()
+        const form = $('#filtro')
+        const fields = form.find('.enviafiltro')
+        const data = {}
+
+        fields.each((i, el) => {
+          data[$(el).attr('name')] = $(el).val()
+        })
+
+
+
+        list(data)
+      });
+    });
+
+
+
+    $('#listar-clientes').on('change', '.select-item', function () {
+      const selected = $(this).is(':checked')
+      const login = $(this).data('login')
+
+      if (selected) {
+        const data = {
+          login,
+          client_id: $(this).data('id'),
+          adesao_id: $(this).data('adesao'),
+        }
+        clientes.push(data);
+      } else {
+        clientes.splice(clientes.findIndex(i => { i.login == login }), 1)
+      }
+
+      // console.log(clientes);
     })
 
-    list(data)
+    $("input[type='checkbox']:checked").prop('checked', false);
+
+
+    $('#salvarr').on('click', function () {
+
+      $('#salvarr').html('<div class="loading2"></div>')
+
+      const operador = $('[name=operador]').val()
+
+      save({ status: 'N', operador, clientes })
+      clientes = []
+    })
+
+    listCidades()
+    listOperadores()
+    listStatuses()
+    list()
   });
-  
-  $('#listar-clientes').on('change', '.select-item', function() {
-    const selected = $(this).is(':checked')
-    const login = $(this).data('login')
-
-    if (selected) {
-      const data = {
-        login,
-        client_id: $(this).data('id'),
-        adesao_id: $(this).data('adesao'),
-      }
-      clientes.push(data);
-    } else {
-      clientes.splice(clientes.findIndex(i => {i.login == login}), 1)
-    }
-
-    // console.log(clientes);
-  })
-
-  $("input[type='checkbox']:checked").prop('checked', false);
-
-
-  $('#salvarr').on('click', function () {
-    
-    $('#salvarr').html('<div class="loading2"></div>')
-
-    const operador = $('[name=operador]').val()
-
-    save({ status: 'N', operador, clientes })
-    clientes = []
-  })
-
-  listCidades()
-  listOperadores()
-  listStatuses()
-  list()
-});
 
 </script>
 

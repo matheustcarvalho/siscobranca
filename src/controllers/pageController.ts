@@ -17,6 +17,26 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
     var grupo = 1
 
+    var sessionName = req.session.user?.name;
+
+    var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+    var nomelogin3 = nomelogin4?.toUpperCase()[0]
+    var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+    var nomelogin = nomelogin3?.concat(nomelogin2)
+
+
+    const date = new Date().toLocaleTimeString();
+
+    if (date >= '06:00:00' && date < '12:00:00') {
+
+      var texto = 'Bom dia'
+
+    } else if (date >= '12:00:00' && date < '18:00:00') {
+      texto = 'Boa tarde'
+    } else {
+      texto = 'Boa noite'
+    }
+
 
     if (grupoUsuario !== grupo) {
 
@@ -25,7 +45,9 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     } else {
 
       res.render('pages/atribuir', {
-        url
+        url,
+        nomelogin,
+        texto
       });
     }
 
@@ -43,7 +65,7 @@ export const homepost = async (req: Request, res: Response) => {
   var cliente = req.body.clientes
   var operador = req.body.operador
   var atribuiuId = req.session.user?.id
-  
+
 
 
   const resposta = await axios({
@@ -53,7 +75,7 @@ export const homepost = async (req: Request, res: Response) => {
       clientes: cliente,
       operador: operador,
       atribuiuId: atribuiuId,
-    
+
     }
 
   })
@@ -64,12 +86,31 @@ export const homepost = async (req: Request, res: Response) => {
 
 export const cobrancaget = async (req: Request, res: Response) => {
 
+  var sessionName = req.session.user?.name;
+
+  var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+  var nomelogin3 = nomelogin4?.toUpperCase()[0]
+  var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+  var nomelogin = nomelogin3?.concat(nomelogin2)
+
+  const date = new Date().toLocaleTimeString();
+
+  if (date >= '06:00:00' && date < '12:00:00') {
+
+    var texto = 'Bom dia'
+
+  } else if (date >= '12:00:00' && date < '18:00:00') {
+    texto = 'Boa tarde'
+  } else {
+    texto = 'Boa noite'
+  }
 
   try {
 
-
     res.render('pages/cobranca', {
-      url
+      url,
+      nomelogin,
+      texto
     });
   } catch (err) {
     console.log(err);
@@ -113,7 +154,7 @@ export const filtropost = async (req: Request, res: Response) => {
     method: 'post',
     url: `${url}/apis/sis-cobranca/listar-clientes`,
     data: {
-     
+
     }
 
   })
@@ -126,32 +167,50 @@ export const filtropost = async (req: Request, res: Response) => {
 export const relatorio = (req: Request, res: Response) => {
 
 
-  res.render('pages/relatorio',{
+  res.render('pages/relatorio', {
     url
   });
 
 }
 
 
-
-
 export const agendamentoget = (req: Request, res: Response) => {
 
+  var sessionName = req.session.user?.name;
 
-  res.render('pages/agendamento',{
-    url
+  var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+  var nomelogin3 = nomelogin4?.toUpperCase()[0]
+  var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+  var nomelogin = nomelogin3?.concat(nomelogin2)
+
+
+  const date = new Date().toLocaleTimeString();
+
+  if (date >= '06:00:00' && date < '12:00:00') {
+
+    var texto = 'Bom dia'
+
+  } else if (date >= '12:00:00' && date < '18:00:00') {
+    texto = 'Boa tarde'
+  } else {
+    texto = 'Boa noite'
+  }
+
+
+  res.render('pages/agendamento', {
+    url,
+    nomelogin,
+    texto
   });
 
 }
 
 export const agendamentopost = async (req: Request, res: Response) => {
-  
+
 
   var idOperador = req.session.user?.id
 
   var cliente = req.body
-  
-
 
 
   const resposta = await axios({
@@ -165,7 +224,7 @@ export const agendamentopost = async (req: Request, res: Response) => {
   })
 
   res.sendStatus(200)
-  
+
 
 }
 
@@ -188,17 +247,35 @@ export const agendamentoput = async (req: Request, res: Response) => {
   })
 
   res.sendStatus(200)
-  
+
 
 }
 
 export const index = async (req: Request, res: Response) => {
 
+  var sessionName = req.session.user?.name;
 
+  var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+  var nomelogin3 = nomelogin4?.toUpperCase()[0]
+  var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+  var nomelogin = nomelogin3?.concat(nomelogin2)
 
+  const date = new Date().toLocaleTimeString();
+
+  if (date >= '06:00:00' && date < '12:00:00') {
+
+    var texto = 'Bom dia'
+
+  } else if (date >= '12:00:00' && date < '18:00:00') {
+    texto = 'Boa tarde'
+  } else {
+    texto = 'Boa noite'
+  }
 
   res.render('pages/index', {
-     url
+    url,
+    nomelogin,
+    texto
   })
 
 }

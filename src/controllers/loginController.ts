@@ -1,4 +1,4 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { Operador } from '../models/Operadores';
 import { Parametros, ParametrosInstance } from '../models/Parametros';
 import session from 'express-session';
@@ -45,11 +45,7 @@ export const home = async (req: Request, res: Response) => {
     console.log(error);
   });
 
-
-
-
 }
-
 
 
 export const login = (req: Request, res: Response) => {
