@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import * as PageController from '../controllers/pageController';
-import * as SearchController from '../controllers/searchController';
 import * as loginController from '../controllers/loginController';
 import express from 'express';
 import session from 'express-session';
@@ -62,7 +61,7 @@ router.get('/relatorio', PageController.relatorio);
 router.get('/agendamento', PageController.agendamentoget);
 router.post('/agendamento', PageController.agendamentopost);
 router.get('/index', PageController.index);
-router.get('search', SearchController.search);
+
 
 
 export default router;

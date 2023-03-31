@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Operador } from '../models/Operadores';
 import { Parametros, ParametrosInstance } from '../models/Parametros';
 import session from 'express-session';
 const axios = require('axios');
