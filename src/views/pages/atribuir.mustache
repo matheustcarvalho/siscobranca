@@ -161,7 +161,7 @@
           <!-- Conteudo modal -->
           <label class="form-label" value="">Operador</label>
           <select class="form-select" id="operadores-list" name="operador" aria-label="Default select example">
-            <option value='' selected>Selecione</option>
+            <option id="operador-lista" value='' selected>Selecione</option>
           </select>
           <br>
           <!-- /Conteudo modal -->
@@ -334,30 +334,27 @@
 
   let clientes = [];
 
-  // $('#salvarr').html('<div class="loading2"></div>')
-
-  function save(data) {
-
-    $.ajax({
-      url: '/home',
-      method: 'post',
-      data,
-      // dataType: 'json',
-      success: res => {
-        alert('Salvo com sucesso')
-        location.reload();
-      },
-      error: e => {
-        console.log(e);
-        alert('Houve algum erro')
-      },
-      complete: () => {
-        $(".select-item").prop('checked', false);
-        clientes = []
-      }
-    })
-  }
-
+          function save(data) {
+        
+            $.ajax({
+              url: '/home',
+              method: 'post',
+              data,
+              // dataType: 'json',
+              success: res => {
+                alert('Salvo com sucesso')
+                location.reload();
+              },
+              error: e => {
+                console.log(e);
+                alert('Houve algum erro')
+              },
+              complete: () => {
+                $(".select-item").prop('checked', false);
+                clientes = []
+              }
+            })
+          }
 
 
   $('.filtro3').select2({
@@ -459,12 +456,17 @@
 
     $('#salvarr').on('click', function () {
 
-      $('#salvarr').html('<div class="loading2"></div>')
-
       const operador = $('[name=operador]').val()
 
+  if (operador.length < 1) {
+      alert('Por favor, selecione um operador!');
+      document.getElementById("operador-lista").focus();
+      return false;
+    }else {
+      $('#salvarr').html('<div class="loading2"></div>')
       save({ status: 'N', operador, clientes })
       clientes = []
+    }
     })
 
     listCidades()
