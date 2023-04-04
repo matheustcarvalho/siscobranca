@@ -415,20 +415,28 @@
 
     $("#botaofiltro").click(function () {
 
-      $('#filtro').on('submit', function (e) {
-        e.preventDefault()
-        const form = $('#filtro')
-        const fields = form.find('.enviafiltro')
-        const data = {}
+      if ($('#nmin').val() < 0) {
 
-        fields.each((i, el) => {
-          data[$(el).attr('name')] = $(el).val()
-        })
+          alert('Valor inserido não pode ser menor que zero');
+          location.reload();
+          $('#loading').removeClass('loading');
+          
+        } else {
+          $('#filtro').on('submit', function (e) {
+            e.preventDefault()
+            const form = $('#filtro')
+            const fields = form.find('.enviafiltro')
+            const data = {}
+    
+            fields.each((i, el) => {
+              data[$(el).attr('name')] = $(el).val()
+            })
+    
+            list(data)
+          });
 
-
-
-        list(data)
-      });
+        }
+      
     });
 
 
