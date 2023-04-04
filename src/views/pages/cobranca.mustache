@@ -159,7 +159,7 @@
 
 let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
 
-    function getList(page, limit) {
+    function getList() {
 
         $.ajax({
 
@@ -277,10 +277,6 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
 
     $('#salvarr').on("click", function (e) {
 
-        $('#salvarr').html('<div class="loading2"></div>')
-
-
-
         let formData = new FormData($("#form").get(0))
 
         const data = {}
@@ -293,27 +289,29 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
             alert('Por favor, preencha o campo data');
             document.getElementById("cobrancaform").focus();
             return false;
+        }else {
+            $('#salvarr').html('<div class="loading2"></div>')
+            $.ajax({
+                url: '/cobranca',
+                method: 'post',
+                data,
+                success: res => {
+                   
+                    alert('Salvo com sucesso')
+                    location.reload();
+                },
+                error: e => {
+                    console.log(e);
+                    alert('Houve algum erro')
+                }
+            })
         }
 
-        $.ajax({
-            url: '/cobranca',
-            method: 'post',
-            data,
-            success: res => {
-                alert('Salvo com sucesso')
-                location.reload();
-            },
-            error: e => {
-                console.log(e);
-                alert('Houve algum erro')
-            }
-        })
 
     });
 
     $('#salvaragendamento').on("click", function (e) {
 
-        $('#salvaragendamento').html('<div class="loading2"></div>')
 
         let formData = new FormData($("#formag").get(0))
 
@@ -327,32 +325,37 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
             alert('Por favor, preencha o campo data');
             document.getElementById("campodata").focus();
             return false;
+        } else {
+
+            $('#salvaragendamento').html('<div class="loading2"></div>')
+
+            $.ajax({
+                url: '/agendamento',
+                method: 'post',
+                data,
+                // dataType: 'json',
+                success: res => {
+                    alert('Salvo com sucesso')
+                    location.reload();
+                },
+                error: e => {
+                    console.log(e);
+                    alert('Houve algum erro')
+                }
+            })
         }
 
-        $.ajax({
-            url: '/agendamento',
-            method: 'post',
-            data,
-            // dataType: 'json',
-            success: res => {
-                alert('Salvo com sucesso')
-                location.reload();
-            },
-            error: e => {
-                console.log(e);
-                alert('Houve algum erro')
-            }
-        })
     });
 
     $(document).ready(function () {
+
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-        getList(1, 20)
+        getList()
     });
 
 </script>
