@@ -40,6 +40,10 @@ router.use(flash())
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+router.get('/teste/api', PageController.ApiTest);
+
+
+
 //validação de ip
 
 router.use(loginController.ipvalidation);

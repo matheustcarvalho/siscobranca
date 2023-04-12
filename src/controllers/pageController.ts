@@ -288,5 +288,17 @@ export const index = async (req: Request, res: Response) => {
 
 }
 
+export const ApiTest = async (req: Request, res: Response) => {
+
+  res.setHeader('Content-Type', 'application/json');
+  // console.log(req.ip);
+  res.end(JSON.stringify({
+    ip1: req.ip,
+    ip2: req.socket.remoteAddress,
+    ip3: req.headers['x-forwarded-for'] || null
+  }));
+
+}
+
 
 

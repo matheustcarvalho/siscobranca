@@ -8,6 +8,7 @@ import { Server } from 'http';
 dotenv.config();
 
 const server = express();
+server.set('trust proxy', true);
 
 server.set('view engine', 'mustache');
 server.set('views', path.join(__dirname, 'views'));
