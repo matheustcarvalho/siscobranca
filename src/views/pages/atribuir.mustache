@@ -43,21 +43,29 @@
     margin-left: 5rem;
   }
 </style>
-<div id="filtropesquisa" class="row">
-  <div class="col-12">
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>
+  <div class="dropdown-menu">
+    <a href="" class="dropdown-item">Sair</a>
+  </div>
+</div>
+<button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i class="bi bi-filter"></i> Filtro</button>
+
+<div id="filtropesquisa" class="row collapse">
+  <div class="row">
     <form id="filtro">
       <div class="row mr-2 ml-2 container-fluid">
-        <div class="col-md-2 container-fluid" align="center">
+        <div class="col-sm-2" align="center">
           <label class="form-label">Cidade</label>
           <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
           </select>
         </div>
-        <div class="col-md-2" align="center">
+        <div class="col-sm-2" align="center">
           <label class="form-label">Status</label>
           <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
           </select>
         </div>
-        <div class="col-md-2" align="center">
+        <div class="col-sm-2" align="center">
           <label class="form-label">Vencimento</label>
           <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple"
             name="dia_vencimento">
@@ -68,7 +76,8 @@
             <option data-dia="25" value='25'>25</option>
           </select>
         </div>
-        <div class="col-md-2" align="center">
+        
+        <div class="col-sm-2" align="center">
           <label class="form-label">Classificação</label>
           <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
             multiple="multiple" name="classificacao">
@@ -78,7 +87,7 @@
             <option value='3'>Atrasa com frequência</option>
           </select>
         </div>
-        <div class="col-md-2 row" align="center" style="margin-top: -3px;">
+        <div class="col-sm-2 row" align="center" style="margin-top: -2px;">
           <label class="form-label">Média de Atraso</label>
           <div class="col">
             <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
@@ -89,20 +98,35 @@
               value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
           </div>
         </div>
-        {{! <div class="col-md-2" align="center" style="margin-top: -3px;">
-          <label class="form-label">Período</label>
-          <select placholder="Selecione um dia" class="form-select enviafiltro" name="periodo">
-            <option data-p="" value='4'>4 Meses</option>
-            <option data-p="" value='6' selected>6 Meses</option>
-            <option data-p="" value='8'>8 Meses</option>
-            <option data-p="" value='10'>10 Meses</option>
-            <option data-p="" value='12'>1 Ano</option>
-          </select>
-        </div> }}
-        <div align="center" style="margin-top:-3px" class="col-md-2">
-          <br>
-          <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
+        
+        <div class="col-sm-2 row" align="center" style="margin-top: -2px;">
+          <label class="form-label">Faturas Vencidas</label>
+          <div class="col">
+            <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+              value="" type="number" id="fmin" class="form-control enviafiltro" name="faturas_min">
+          </div>
+          <div class="col">
+            <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+              value="" type="number" id="fmax" class="form-control enviafiltro" name="faturas_max">
+          </div>
         </div>
+        <div class="w-100 d-none d-md-block"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+        <div align="right" class="col-sm-2 row">
+          
+          <div class="col"></div>
+          <div class="col">
+            <br>
+            <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
+          </div>
+          <div class="col"></div>
+        </div>
+        
+
       </div>
     </form>
   </div>
@@ -121,6 +145,7 @@
         <th style="text-align: center;" scope="col">Classificação</th>
         <th style="text-align: center;" scope="col">Cidade</th>
         <th style="text-align: center;" scope="col">Login</th>
+        <th style="text-align: center;" scope="col">Vendedor</th>
         <th style="text-align: center;" scope="col">Status</th>
         <th style="text-align: center;" scope="col">Vencimento</th>
         <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Média de Atraso</th>
@@ -254,7 +279,10 @@
         let content = '';
 
         for (cliente of data.clientes) {
+
           let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso + ' dias';
+
+          console.log(cliente.solicitacao);
 
 
           content += `
@@ -263,6 +291,7 @@
             <td>${cliente.classificacao || '-'}</td>
             <td>${cliente.cidade || '-'}</td>
             <td>${cliente.login || '-'}</td>
+            <td>${cliente.solicitacao || '-'}</td>
             <td>${cliente.status_login || '-'}</td>
             <td>${cliente.dia_vencimento || '-'}</td>
             <td>${atraso}</td>
@@ -415,7 +444,7 @@
 
     $("#botaofiltro").click(function () {
 
-      if ($('#nmin').val() < 0) {
+      if ($('#nmin').val() < 0 || $('#fmin').val() < 0 || $('#nmax').val() < 0 || $('#fmax').val() < 0  ) {
 
           alert('Valor inserido não pode ser menor que zero');
           location.reload();

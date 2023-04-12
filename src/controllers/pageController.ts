@@ -25,7 +25,9 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     var nomelogin = nomelogin3?.concat(nomelogin2)
 
 
-    const date = new Date().toLocaleTimeString();
+    const date = new Date().toLocaleTimeString("pt-Br",{
+      timeZone: "America/Sao_Paulo"
+    });
 
     if (date >= '06:00:00' && date < '12:00:00') {
 
@@ -93,7 +95,9 @@ export const cobrancaget = async (req: Request, res: Response) => {
   var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
   var nomelogin = nomelogin3?.concat(nomelogin2)
 
-  const date = new Date().toLocaleTimeString();
+  const date = new Date().toLocaleTimeString("pt-Br",{
+    timeZone: "America/Sao_Paulo"
+  });
 
   if (date >= '06:00:00' && date < '12:00:00') {
 
@@ -184,7 +188,9 @@ export const agendamentoget = (req: Request, res: Response) => {
   var nomelogin = nomelogin3?.concat(nomelogin2)
 
 
-  const date = new Date().toLocaleTimeString();
+  const date = new Date().toLocaleTimeString("pt-Br",{
+    timeZone: "America/Sao_Paulo"
+  });
 
   if (date >= '06:00:00' && date < '12:00:00') {
 
@@ -260,7 +266,9 @@ export const index = async (req: Request, res: Response) => {
   var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
   var nomelogin = nomelogin3?.concat(nomelogin2)
 
-  const date = new Date().toLocaleTimeString();
+  const date = new Date().toLocaleTimeString("pt-Br",{
+    timeZone: "America/Sao_Paulo"
+  });
 
   if (date >= '06:00:00' && date < '12:00:00') {
 

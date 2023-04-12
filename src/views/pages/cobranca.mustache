@@ -163,7 +163,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
 
         $.ajax({
 
-            type: 'GET',
+            type: 'POST',
             url: `${url_api}/apis/sis-cobranca/listar-clientes-atribuidos`,
             dataType: 'json',
             success: function (data) {
