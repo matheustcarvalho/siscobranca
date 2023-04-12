@@ -1,6 +1,7 @@
 import { request, Request, response, Response } from 'express';
 const axios = require('axios');
 import dotenv from 'dotenv';
+const http = require('http');
 dotenv.config();
 
 const url = process.env.API_URL
@@ -295,10 +296,19 @@ export const ApiTest = async (req: Request, res: Response) => {
   res.end(JSON.stringify({
     ip1: req.ip,
     ip2: req.socket.remoteAddress,
-    ip3: req.headers['x-forwarded-for'] || null
+    ip3: req.headers['x-forwarded-for'] || null,
+    ip4: req.connection.remoteAddress
   }));
 
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -69,19 +69,13 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
     
     const parametro = await axios.get(`${url}/apis/sis-cobranca/buscar-ip`)
 
-    let ipClientee = await axios.get('https://api64.ipify.org/?format=json')
-    let ipzao = ipClientee.data.ip
-    var hash2 = crypto.createHash('md5').update(ipzao).digest('hex');
-    console.log(hash2);
-
-    // let ipCliente = (req.socket.remoteAddress)
-    // ipCliente = ipCliente?.split(':').reverse()[0]
-    // console.log(ipCliente);
-    // var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
+     let ipCliente = (req.ip)
+     ipCliente = ipCliente?.split(':').reverse()[0]
+     console.log(ipCliente);
+     var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
 
     const valores = parametro.data
-
-    let found = valores.includes(hash2);
+    let found = valores.includes(hash.toString());
 
     if (!found)
       return res.status(403).render('pages/restrito')

@@ -2,6 +2,20 @@
 <link rel="stylesheet" href="/css/login.css" />
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="application/javascript">
+      $(function() {
+        $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
+          function(json) {
+            console.log("Meu IP público é: ", json.ip);
+          }
+        );
+      });
+
+      var uri = location.pathname;
+
+      console.log(uri);
+    </script>
 <!------ Include the above in your HEAD tag ---------->
 
 <div class="wrapper fadeInDown">
