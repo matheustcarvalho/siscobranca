@@ -188,6 +188,7 @@
         <div class="modal-footer">
           <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
         </div>
+        <div id="alert-erro"></div>
 
       </div>
     </div>
@@ -490,8 +491,12 @@
       const operador = $('[name=operador]').val()
 
   if (operador.length < 1) {
-      alert('Por favor, selecione um operador!');
-      document.getElementById("operador-lista").focus();
+    let content = `<div class="alert alert-danger alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Atenção!</strong> Selecione um operador.
+  </div>`
+    $('#alert-erro').html(content);
+      document.getElementById("operadores-list").focus();
       return false;
     }else {
       $('#salvarr').html('<div class="loading2"></div>')

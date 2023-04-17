@@ -96,6 +96,9 @@
         <div class="modal-footer">
           <button type="button" id="salvarr" class="btn btn-primary">Salvar</button>
         </div>
+        <div id="alert-erro-ag">
+
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +127,9 @@
         <div class="modal-footer">
           <button type="button" id="salvaragendamento" class="btn btn-primary">Salvar</button>
         </div>
+        <div id="alert-erro">
+
+        </div>
       </div>
     </div>
   </div>
@@ -146,6 +152,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
       </div>
+      
     </div>
   </div>
 </div>
@@ -167,7 +174,11 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
     console.log(data);
 
     if (document.getElementById("cobrancaform").value.length < 1) {
-      alert('Por favor, preencha o campo data');
+      let content = `<div class="alert alert-danger alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Atenção!</strong> Preencha o campo <b>data<b/>.
+  </div>`
+            $('#alert-erro-ag').html(content);
       document.getElementById("cobrancaform").focus();
       return false;
     }else {
@@ -204,7 +215,11 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
     console.log(data);
 
     if (document.getElementById("cobrancaag").value.length < 1) {
-      alert('Por favor, preencha o campo data');
+      let content = `<div class="alert alert-danger alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Atenção!</strong> Preencha o campo <b>data<b/>.
+  </div>`
+            $('#alert-erro').html(content);
       document.getElementById("cobrancaag").focus();
       return false;
     }else {
@@ -258,7 +273,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
               <td>${cliente.status_login || '-'}</td>
               <td>${cliente.dia_vencimento || '-'}</td>
               <td>${atraso}</td>
-              <td>${cliente.quant_cob || 0}</td>
+              <td><span style="font-size:15px;" class="badge bg-secondary">${cliente.quant_cob || 0}</span></td>
               <td style="color:rgb(21, 21, 21)"><b>${dataFormatada || '-'}</b></td>
               <td>
                 <div class="btn-group">
@@ -323,7 +338,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
           let hora = dataCobranca.slice(10, 19)
 
 
-          content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança e adicionou o comentário: <b>"${comentario || '-'}"</b> no dia <b>${dataFormatada}</b> ás <b>${hora}</b>.</p><hr>`
+          content += `<p>O operador <b>${historico.operador}</b> fez uma nova cobrança e adicionou o comentário: <b>"${comentario || '-'}"</b> no dia <b>${dataFormatada}</b> às <b>${hora}</b>.</p><hr>`
 
         }
 

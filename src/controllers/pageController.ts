@@ -56,7 +56,9 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
 
   } catch (err) {
+
     console.log(err);
+    
   }
 
 
@@ -64,12 +66,9 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
 export const homepost = async (req: Request, res: Response) => {
 
-
   var cliente = req.body.clientes
   var operador = req.body.operador
   var atribuiuId = req.session.user?.id
-
-
 
   const resposta = await axios({
     method: 'post',
@@ -81,9 +80,15 @@ export const homepost = async (req: Request, res: Response) => {
 
     }
 
-  })
+  }).then(function (response: any) {
+    res.sendStatus(200)
+    console.log(response.data);
 
-  res.sendStatus(200)
+  }).catch(function (error: any) {
+    console.log(error);
+  });
+
+  
 
 }
 
@@ -126,14 +131,11 @@ export const cobrancaget = async (req: Request, res: Response) => {
 
 export const cobrancapost = async (req: Request, res: Response) => {
 
-
   var idOperador = req.session.user?.id
   var nomeOperador = req.session.user?.name
   var loginOperador = req.session.user?.login
 
-
   var cliente = req.body
-
 
   const resposta = await axios({
     method: 'post',
@@ -144,16 +146,19 @@ export const cobrancapost = async (req: Request, res: Response) => {
       nome: nomeOperador,
       login: loginOperador
     }
+  }).then(function (response: any) {
 
-  })
-
+  console.log(response.data)
   res.sendStatus(200)
+
+}).catch(function (error: any) {
+  console.log(error);
+});
 
 }
 
 
 export const filtropost = async (req: Request, res: Response) => {
-
 
   const resposta = await axios({
     method: 'post',
@@ -162,9 +167,15 @@ export const filtropost = async (req: Request, res: Response) => {
 
     }
 
-  })
+  }).then(function (response: any) {
+
+  console.log(response.data)
 
   res.sendStatus(200)
+
+  }).catch(function (error: any) {
+    console.log(error);
+  });
 
 }
 
@@ -214,11 +225,9 @@ export const agendamentoget = (req: Request, res: Response) => {
 
 export const agendamentopost = async (req: Request, res: Response) => {
 
-
   var idOperador = req.session.user?.id
 
   var cliente = req.body
-
 
   const resposta = await axios({
     method: 'post',
@@ -228,9 +237,12 @@ export const agendamentopost = async (req: Request, res: Response) => {
       operador: idOperador
     }
 
-  })
-
+  }).then(function (response: any) {
+  console.log(response.data);
   res.sendStatus(200)
+  }).catch(function (error: any) {
+    console.log(error);
+  });
 
 
 }
@@ -251,9 +263,15 @@ export const agendamentoput = async (req: Request, res: Response) => {
       operador: idOperador
     }
 
-  })
+  }).then(function (response: any) {
+    
+  console.log(response.data);
 
   res.sendStatus(200)
+
+  }).catch(function (error: any) {
+    console.log(error);
+  });
 
 
 }

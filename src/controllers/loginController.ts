@@ -26,12 +26,11 @@ export const home = async (req: Request, res: Response) => {
 
   }).then(function (response: any) {
 
-    console.log(response.data);
     if (response.data.success == true) {
       const userData = response.data.data
       const session = req.session
       session.user = userData
-      console.log(session);
+      
 
       // renderIndex(res)
       res.redirect('/index')
@@ -71,7 +70,6 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
 
      let ipCliente = (req.ip)
      ipCliente = ipCliente?.split(':').reverse()[0]
-     console.log(ipCliente);
      var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
 
     const valores = parametro.data
@@ -96,14 +94,14 @@ export const validationlogin = async (req: Request, res: Response, next: Functio
   }
 }
 
-const renderIndex = async (res: Response) => {
-  const total = await axios.get(`${url}/apis/sis-cobranca/listar-clientes`)
-  const totalclientes = total.data.pagination.total
-  const atribuidos = await axios.get(`${url}/apis/sis-cobranca/listar-clientes-atribuidos`)
-  const clientes_atribuidos = atribuidos.data.pagination.total
+// const renderIndex = async (res: Response) => {
+//   const total = await axios.get(`${url}/apis/sis-cobranca/listar-clientes`)
+//   const totalclientes = total.data.pagination.total
+//   const atribuidos = await axios.get(`${url}/apis/sis-cobranca/listar-clientes-atribuidos`)
+//   const clientes_atribuidos = atribuidos.data.pagination.total
 
-  res.render('pages/index', {
-    totalclientes,
-    clientes_atribuidos
-  });
-}
+//   res.render('pages/index', {
+//     totalclientes,
+//     clientes_atribuidos
+//   });
+// }
