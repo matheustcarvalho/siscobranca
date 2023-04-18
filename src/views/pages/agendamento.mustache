@@ -171,7 +171,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
     formData.forEach((val, key) => {
       data[key] = val
     })
-    console.log(data);
+    
 
     if (document.getElementById("cobrancaform").value.length < 1) {
       let content = `<div class="alert alert-danger alert-dismissible fade show">
@@ -191,7 +191,12 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
         data,
         // dataType: 'json',
         success: res => {
-          alert('Salvo com sucesso')
+          Swal.fire({
+          title: 'Salvo com sucesso!',
+          icon: 'success',
+          showConfirmButton: false,
+          titleFontSize: '15px'
+        })
           location.reload();
         },
         error: e => {
@@ -230,7 +235,12 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
         data,
         // dataType: 'json',
         success: res => {
-          alert('Salvo com sucesso')
+          Swal.fire({
+          title: 'Salvo com sucesso!',
+          icon: 'success',
+          showConfirmButton: false,
+          titleFontSize: '15px'
+        })
           location.reload();
         },
         error: e => {

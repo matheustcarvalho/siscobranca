@@ -43,21 +43,26 @@
     margin-left: 5rem;
   }
 </style>
-<button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i class="bi bi-filter"></i> Filtro</button>
+<button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i
+    class="bi bi-filter"></i> Filtro</button>
 
 <div id="filtropesquisa" class="row collapse">
   <div class="row">
     <form id="filtro">
       <div class="row mr-2 ml-2 container-fluid">
         <div class="col-sm-2" align="center">
-          <label class="form-label">Cidade</label>
-          <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
-          </select>
+          <div class="col">
+            <label class="form-label">Cidade</label>
+            <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
+            </select>
+          </div>
         </div>
         <div class="col-sm-2" align="center">
-          <label class="form-label">Status</label>
-          <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
-          </select>
+          <div class="col">
+            <label class="form-label">Status</label>
+            <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
+            </select>
+          </div>
         </div>
         <div class="col-sm-2" align="center">
           <label class="form-label">Vencimento</label>
@@ -70,7 +75,7 @@
             <option data-dia="25" value='25'>25</option>
           </select>
         </div>
-        
+
         <div class="col-sm-2" align="center">
           <label class="form-label">Classificação</label>
           <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
@@ -92,7 +97,7 @@
               value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
           </div>
         </div>
-        
+
         <div class="col-sm-2 row" align="center" style="margin-top: -2px;">
           <label class="form-label">Faturas Vencidas</label>
           <div class="col">
@@ -111,7 +116,7 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-2"></div>
         <div align="right" class="col-sm-2 row">
-          
+
           <div class="col"></div>
           <div class="col">
             <br>
@@ -119,7 +124,7 @@
           </div>
           <div class="col"></div>
         </div>
-        
+
 
       </div>
     </form>
@@ -195,9 +200,10 @@
   </div>
 </form>
 
-<!-- /Modal -->
 
 <script>
+
+
 
 
   // $("#botaofiltro").click(function () {
@@ -277,8 +283,6 @@
 
           let atraso = (cliente.dias_atraso == '0') ? cliente.dias_atraso : cliente.dias_atraso + ' dias';
 
-          console.log(cliente.solicitacao);
-
 
           content += `
           <tr>
@@ -316,10 +320,10 @@
         $('#botaofiltro').on('click', function () {
 
           if ($('#nmin').val() < 0) {
-          alert('Valor inserido não pode ser menor que zero');
-          $('#loading').removeClass('loading');
-          
-        }
+            alert('Valor inserido não pode ser menor que zero');
+            $('#loading').removeClass('loading');
+
+          }
           $('#paginate').css('display', 'none')
           $('#loading').addClass('loading');
 
@@ -358,27 +362,41 @@
 
   let clientes = [];
 
-          function save(data) {
-        
-            $.ajax({
-              url: '/home',
-              method: 'post',
-              data,
-              // dataType: 'json',
-              success: res => {
-                alert('Salvo com sucesso')
-                location.reload();
-              },
-              error: e => {
-                console.log(e);
-                alert('Houve algum erro')
-              },
-              complete: () => {
-                $(".select-item").prop('checked', false);
-                clientes = []
-              }
-            })
-          }
+  $('#meuModal').hide();
+
+
+  function save(data) {
+
+    let content = `<div class="alert alert-success alert-dismissible fade show">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Salvo com sucesso!</strong></div>`
+
+    $.ajax({
+      url: '/home',
+      method: 'post',
+      data,
+      // dataType: 'json',
+      success: res => {
+
+        Swal.fire({
+          title: 'Salvo com sucesso!',
+          icon: 'success',
+          showConfirmButton: false,
+          titleFontSize: '15px'
+        })
+
+        location.reload();
+      },
+      error: e => {
+        console.log(e);
+        alert('Houve algum erro')
+      },
+      complete: () => {
+        $(".select-item").prop('checked', false);
+        clientes = []
+      }
+    })
+  }
 
 
   $('.filtro3').select2({
@@ -393,6 +411,8 @@
 
 
   $(document).ready(function () {
+
+
 
     let selectedItems = []
 
@@ -439,28 +459,28 @@
 
     $("#botaofiltro").click(function () {
 
-      if ($('#nmin').val() < 0 || $('#fmin').val() < 0 || $('#nmax').val() < 0 || $('#fmax').val() < 0  ) {
+      if ($('#nmin').val() < 0 || $('#fmin').val() < 0 || $('#nmax').val() < 0 || $('#fmax').val() < 0) {
 
-          alert('Valor inserido não pode ser menor que zero');
-          location.reload();
-          $('#loading').removeClass('loading');
-          
-        } else {
-          $('#filtro').on('submit', function (e) {
-            e.preventDefault()
-            const form = $('#filtro')
-            const fields = form.find('.enviafiltro')
-            const data = {}
-    
-            fields.each((i, el) => {
-              data[$(el).attr('name')] = $(el).val()
-            })
-    
-            list(data)
-          });
+        alert('Valor inserido não pode ser menor que zero');
+        location.reload();
+        $('#loading').removeClass('loading');
 
-        }
-      
+      } else {
+        $('#filtro').on('submit', function (e) {
+          e.preventDefault()
+          const form = $('#filtro')
+          const fields = form.find('.enviafiltro')
+          const data = {}
+
+          fields.each((i, el) => {
+            data[$(el).attr('name')] = $(el).val()
+          })
+
+          list(data)
+        });
+
+      }
+
     });
 
 
@@ -490,25 +510,25 @@
 
       const operador = $('[name=operador]').val()
 
-  if (operador.length < 1) {
-    let content = `<div class="alert alert-danger alert-dismissible fade show">
+      if (operador.length < 1) {
+        let content = `<div class="alert alert-danger alert-dismissible fade show">
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     <strong>Atenção!</strong> Selecione um operador.
   </div>`
-    $('#alert-erro').html(content);
-      document.getElementById("operadores-list").focus();
-      return false;
-    }else {
-      $('#salvarr').html('<div class="loading2"></div>')
-      save({ status: 'N', operador, clientes })
-      clientes = []
-    }
+        $('#alert-erro').html(content);
+        document.getElementById("operadores-list").focus();
+        return false;
+      } else {
+        $('#salvarr').html('<div class="loading2"></div>')
+        save({ status: 'N', operador, clientes })
+        clientes = []
+      }
     })
     list()
     listCidades()
     listOperadores()
     listStatuses()
-    
+
   });
 
 </script>

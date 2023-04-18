@@ -290,16 +290,16 @@
         formData.forEach((val, key) => {
             data[key] = val
         })
-        console.log(data);
+
 
         if (document.getElementById("cobrancaform").value.length < 1) {
 
             let content = `<div class="alert alert-danger alert-dismissible fade show">
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     <strong>Atenção!</strong> Preencha o campo <b>data<b/>.
-  </div>`
+    </div>`
             $('#alert-erro').html(content);
-            
+
             document.getElementById("cobrancaform").focus();
             return false;
         } else {
@@ -309,8 +309,13 @@
                 method: 'post',
                 data,
                 success: res => {
-
-                    alert('Salvo com sucesso')
+                    Swal.fire({
+                        title: 'Salvo com sucesso!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        titleFontSize: '15px',
+                        timer: 1500
+                    })
                     location.reload();
                 },
                 error: e => {
@@ -332,7 +337,7 @@
         formData.forEach((val, key) => {
             data[key] = val
         })
-        console.log(data);
+
 
         if (document.getElementById("campodata").value.length < 1) {
             let content = `<div class="alert alert-danger alert-dismissible fade show">
@@ -352,7 +357,12 @@
                 data,
                 // dataType: 'json',
                 success: res => {
-                    alert('Salvo com sucesso')
+                    Swal.fire({
+                        title: 'Salvo com sucesso!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        titleFontSize: '15px'
+                    })
                     location.reload();
                 },
                 error: e => {
@@ -377,6 +387,5 @@
 
 </script>
 
-<!-- /Capturar id -->
 
 {{>partials/footer}}

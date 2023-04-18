@@ -183,6 +183,36 @@ margin-top: 00px;
     background-color: #b1b3b5;
 }
 
+#meuModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* cor de fundo com transparência para dar um efeito de overlay */
+  }
+  
+  #meuModal .modal-conteudo {
+    /* Estilos para o conteúdo do modal */
+    max-width: 700px; /* Largura máxima do modal */
+    background-color: #fff; /* Cor de fundo do modal */
+    padding: 20px; /* Espaçamento interno do conteúdo do modal */
+    border-radius: 5px; /* Borda arredondada do modal */
+  }
+  
+  #meuModal .modal-conteudo img {
+    width: 150px;
+    height: 150px;
+  }
+  
+  #meuModal .modal-conteudo  {
+   color: rgb(90, 176, 90);
+   font-size: 25px;
+  }
+
 
 @media (max-width: 900px) {
     .list {

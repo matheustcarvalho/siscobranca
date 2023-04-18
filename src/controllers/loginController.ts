@@ -26,6 +26,8 @@ export const home = async (req: Request, res: Response) => {
 
   }).then(function (response: any) {
 
+    const resposta = response.data.success
+
     if (response.data.success == true) {
       const userData = response.data.data
       const session = req.session
@@ -35,7 +37,9 @@ export const home = async (req: Request, res: Response) => {
       // renderIndex(res)
       res.redirect('/index')
     } else {
-      res.render('pages/login'
+      res.render('pages/login',{
+        resposta
+      }
       )
     }
 
@@ -68,9 +72,9 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
     
     const parametro = await axios.get(`${url}/apis/sis-cobranca/buscar-ip`)
 
-     let ipCliente = (req.ip)
-     ipCliente = ipCliente?.split(':').reverse()[0]
-     var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
+    let ipCliente = (req.ip)
+    ipCliente = ipCliente?.split(':').reverse()[0]
+    var hash = crypto.createHash('md5').update(ipCliente).digest('hex');
 
     const valores = parametro.data
     let found = valores.includes(hash.toString());
