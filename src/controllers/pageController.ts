@@ -2,6 +2,9 @@ import { request, Request, response, Response } from 'express';
 const axios = require('axios');
 import dotenv from 'dotenv';
 const http = require('http');
+const json2csv = require('json2csv').parse;
+const fs = require('fs');
+const path = require('path');
 dotenv.config();
 
 const url = process.env.API_URL
@@ -324,6 +327,33 @@ export const ApiTest = async (req: Request, res: Response) => {
     ip3: req.headers['x-forwarded-for'] || null,
     ip4: req.connection.remoteAddress
   }));
+
+}
+
+export const exportarCSV = async (req: Request, res: Response) => {
+
+  try {
+    
+    const list = await axios.get(`${url}/apis/sis-cobranca/listar-clientes-CSV`)
+
+    var data = list.data.clientes
+
+    const csv = json2csv(data);
+    const filename = 'listagem.csv';
+    const filepath = path.join(__dirname, filename);
+  
+    fs.writeFile(filepath, csv, function(err:any) {
+      if (err) throw err;
+      res.download(filepath, function(err) {
+        if (err) throw err;
+        fs.unlinkSync(filepath);
+      });
+    })
+
+
+  } catch (e) {
+    console.log(e);
+  }
 
 }
 

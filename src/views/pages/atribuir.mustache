@@ -45,90 +45,87 @@
 </style>
 <button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i
     class="bi bi-filter"></i> Filtro</button>
+<a href="/exportarCSV"><button style="margin:5px" id="btn-download" class="btn btn-success"><i class="bi bi-filetype-csv"></i> Download</button></a>
 
 <div id="filtropesquisa" class="row collapse">
-  <div class="row">
-    <form id="filtro">
-      <div class="row mr-2 ml-2 container-fluid">
-        <div class="col-sm-2" align="center">
-          <div class="col">
-            <label class="form-label">Cidade</label>
-            <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
-            </select>
-          </div>
-        </div>
-        <div class="col-sm-2" align="center">
-          <div class="col">
-            <label class="form-label">Status</label>
-            <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
-            </select>
-          </div>
-        </div>
-        <div class="col-sm-2" align="center">
-          <label class="form-label">Vencimento</label>
-          <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple"
-            name="dia_vencimento">
-            <option data-dia="5" value='5'>5</option>
-            <option data-dia="10" value='10'>10</option>
-            <option data-dia="15" value='15'>15</option>
-            <option data-dia="20" value='20'>20</option>
-            <option data-dia="25" value='25'>25</option>
-          </select>
-        </div>
+  <form id="filtro">
+    <div class="row mr-2 ml-2 container-fluid">
+      <div class="col-sm-2 d-flex flex-column" align="center">
+        <label class="form-label">Cidade</label>
+        <select class="form-control filtro enviafiltro" multiple id="cidadeslist" name="cidade">
+        </select>
+        <!-- <div class="col">
+        </div> -->
+      </div>
+      <div class="col-sm-2 d-flex flex-column" align="center">
+        <label class="form-label">Status</label>
+        <select class="form-select filtro2 enviafiltro" multiple="multiple" id="opparametros" name="status_login">
+        </select>
+        {{! <div class="col">
+        </div> }}
+      </div>
+      <div class="col-sm-2 d-flex flex-column" align="center">
+        <label class="form-label">Vencimento</label>
+        <select placholder="Selecione um dia" class="form-select filtro3 enviafiltro" id="dias" multiple="multiple"
+          name="dia_vencimento">
+          <option data-dia="5" value='5'>5</option>
+          <option data-dia="10" value='10'>10</option>
+          <option data-dia="15" value='15'>15</option>
+          <option data-dia="20" value='20'>20</option>
+          <option data-dia="25" value='25'>25</option>
+        </select>
+      </div>
 
-        <div class="col-sm-2" align="center">
-          <label class="form-label">Classificação</label>
-          <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
-            multiple="multiple" name="classificacao">
-            <option value='0'>Primeiro atraso</option>
-            <option value='1'>Segundo atraso</option>
-            <option value='2'>Terceiro atraso</option>
-            <option value='3'>Atrasa com frequência</option>
-          </select>
-        </div>
-        <div class="col-sm-2 row" align="center" style="margin-top: -2px;">
-          <label class="form-label">Média de Atraso</label>
-          <div class="col">
-            <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
-              value="" type="number" id="nmin" class="form-control filtro5 enviafiltro" name="dias_atraso_min">
-          </div>
-          <div class="col">
-            <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
-              value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
-          </div>
-        </div>
+      <div class="col-sm-2 d-flex flex-column" align="center">
+        <label class="form-label">Classificação</label>
+        <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
+          multiple="multiple" name="classificacao">
+          <option value='0'>Primeiro atraso</option>
+          <option value='1'>Segundo atraso</option>
+          <option value='2'>Terceiro atraso</option>
+          <option value='3'>Atrasa com frequência</option>
+        </select>
+      </div>
+      <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
+        <label class="form-label">Média de Atraso</label>
+        <div class="col">
+           <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+             value="" type="number" id="nmin" class="form-control filtro5 enviafiltro" name="dias_atraso_min">
+        </div> 
+        <div class="col">
+          <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+            value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
+        </div> 
+      </div>
 
-        <div class="col-sm-2 row" align="center" style="margin-top: -2px;">
-          <label class="form-label">Faturas Vencidas</label>
-          <div class="col">
+      <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
+        <label class="form-label">Faturas Vencidas</label>
+        <div class="col">
             <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
               value="" type="number" id="fmin" class="form-control enviafiltro" name="faturas_min">
           </div>
           <div class="col">
-            <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
-              value="" type="number" id="fmax" class="form-control enviafiltro" name="faturas_max">
-          </div>
-        </div>
-        <div class="w-100 d-none d-md-block"></div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2"></div>
-        <div align="right" class="col-sm-2 row">
-
-          <div class="col"></div>
-          <div class="col">
-            <br>
-            <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
-          </div>
-          <div class="col"></div>
-        </div>
-
-
+          <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+            value="" type="number" id="fmax" class="form-control enviafiltro" name="faturas_max">
+        </div> 
       </div>
-    </form>
-  </div>
+      <div class="w-100 d-none d-md-block"></div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2"></div>
+      <div align="right" class="col-sm-2 row">
+
+        <div class="col"></div>
+        <div class="col">
+          <br>
+          <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </form>
 </div>
 <div>
   <button id="botao" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
@@ -202,9 +199,6 @@
 
 
 <script>
-
-
-
 
   // $("#botaofiltro").click(function () {
   //   if ($('#nmin').val() < 0 || $('#nmin').val() < 0) {

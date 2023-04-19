@@ -165,7 +165,11 @@
 <script>
 
     let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
-    let id_usuario = '{{id_usuario}}'
+    let ids = []
+    let id_usuario ='{{id_usuario}}'
+    ids.push(id_usuario)
+
+    console.log(ids);
 
 
     function getList() {
@@ -174,9 +178,9 @@
 
             type: 'POST',
             url: `${url_api}/apis/sis-cobranca/listar-clientes-atribuidos`,
+            data: ids,
             dataType: 'json',
             success: function (data) {
-
 
                 let content = '';
 
