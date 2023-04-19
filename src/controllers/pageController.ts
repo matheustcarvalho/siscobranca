@@ -12,11 +12,14 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
   try {
 
-    var grupo_user = req.session.user?.group
+    const parametro = await axios.get(`${url}/apis/sis-cobranca/permissao-parametro`)
 
-    var grupoUsuario = Number(grupo_user);
+    var parametroPermissao = parametro.data
 
-    var grupo = 1
+    // var grupo_user = req.session.user?.group
+    var id_user = req.session.user?.id
+    // var grupoUsuario = Number(grupo_user);
+    // var grupo = 1
 
     var sessionName = req.session.user?.name;
 
@@ -41,17 +44,17 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     }
 
 
-    if (grupoUsuario !== grupo) {
-
-      res.render('pages/restrito')
-
-    } else {
+    if (parametroPermissao.includes(id_user)){
 
       res.render('pages/atribuir', {
         url,
         nomelogin,
         texto
       });
+
+    } else {
+
+      res.render('pages/restrito')
     }
 
 
@@ -94,7 +97,10 @@ export const homepost = async (req: Request, res: Response) => {
 
 export const cobrancaget = async (req: Request, res: Response) => {
 
-  var sessionName = req.session.user?.name;
+  var sessionName = req.session.user?.name
+  var id_usuario = req.session.user?.id
+
+  // console.log(id_usuario);
 
   var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
   var nomelogin3 = nomelogin4?.toUpperCase()[0]
@@ -120,7 +126,8 @@ export const cobrancaget = async (req: Request, res: Response) => {
     res.render('pages/cobranca', {
       url,
       nomelogin,
-      texto
+      texto,
+      id_usuario
     });
   } catch (err) {
     console.log(err);
