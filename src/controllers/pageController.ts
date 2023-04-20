@@ -17,6 +17,13 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
 
     const parametro = await axios.get(`${url}/apis/sis-cobranca/permissao-parametro`)
 
+    const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+    var horaScript = horaget.data.hora[0].valor
+    var hora = horaScript.split(' ')[1]
+    
+  
+    
+
     var parametroPermissao = parametro.data
 
     // var grupo_user = req.session.user?.group
@@ -52,7 +59,8 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
       res.render('pages/atribuir', {
         url,
         nomelogin,
-        texto
+        texto,
+        hora
       });
 
     } else {
@@ -99,9 +107,15 @@ export const homepost = async (req: Request, res: Response) => {
 }
 
 export const cobrancaget = async (req: Request, res: Response) => {
-
+  
+  try{
+    
   var sessionName = req.session.user?.name
   var id_usuario = req.session.user?.id
+  const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+  var horaScript = horaget.data.hora[0].valor
+  var hora = horaScript.split(' ')[1]
+
 
   // console.log(id_usuario);
 
@@ -123,16 +137,15 @@ export const cobrancaget = async (req: Request, res: Response) => {
   } else {
     texto = 'Boa noite'
   }
-
-  try {
-
     res.render('pages/cobranca', {
       url,
       nomelogin,
       texto,
-      id_usuario
+      id_usuario,
+      hora
     });
   } catch (err) {
+
     console.log(err);
   }
 
@@ -200,36 +213,48 @@ export const relatorio = (req: Request, res: Response) => {
 }
 
 
-export const agendamentoget = (req: Request, res: Response) => {
+export const agendamentoget = async (req: Request, res: Response) => {
+
+try{
+  const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+  var horaScript = horaget.data.hora[0].valor
+  var hora = horaScript.split(' ')[1]
 
   var sessionName = req.session.user?.name;
-
+  
   var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
   var nomelogin3 = nomelogin4?.toUpperCase()[0]
   var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
   var nomelogin = nomelogin3?.concat(nomelogin2)
-
-
+  
+  
   const date = new Date().toLocaleTimeString("pt-Br",{
     timeZone: "America/Sao_Paulo"
   });
-
+  
   if (date >= '06:00:00' && date < '12:00:00') {
-
+  
     var texto = 'Bom dia'
-
+  
   } else if (date >= '12:00:00' && date < '18:00:00') {
     texto = 'Boa tarde'
   } else {
     texto = 'Boa noite'
   }
-
-
+  
+  
   res.render('pages/agendamento', {
     url,
     nomelogin,
-    texto
+    texto,
+    hora
   });
+
+} catch (e) {
+
+  console.log(e);
+}
+
 
 }
 
@@ -288,32 +313,44 @@ export const agendamentoput = async (req: Request, res: Response) => {
 
 export const index = async (req: Request, res: Response) => {
 
-  var sessionName = req.session.user?.name;
+try{
+  const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+  var horaScript = horaget.data.hora[0].valor
+  var hora = horaScript.split(' ')[1]
 
+  var sessionName = req.session.user?.name;
+  
   var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
   var nomelogin3 = nomelogin4?.toUpperCase()[0]
   var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
   var nomelogin = nomelogin3?.concat(nomelogin2)
-
+  
   const date = new Date().toLocaleTimeString("pt-Br",{
     timeZone: "America/Sao_Paulo"
   });
-
+  
   if (date >= '06:00:00' && date < '12:00:00') {
-
+  
     var texto = 'Bom dia'
-
+  
   } else if (date >= '12:00:00' && date < '18:00:00') {
     texto = 'Boa tarde'
   } else {
     texto = 'Boa noite'
   }
-
+  
   res.render('pages/index', {
     url,
     nomelogin,
-    texto
+    texto,
+    hora
   })
+
+
+} catch (e) {
+  console.log(e);
+}
+
 
 }
 
@@ -356,14 +393,3 @@ export const exportarCSV = async (req: Request, res: Response) => {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-

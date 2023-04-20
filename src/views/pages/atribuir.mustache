@@ -43,9 +43,15 @@
     margin-left: 5rem;
   }
 </style>
+
 <button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i
     class="bi bi-filter"></i> Filtro</button>
-<a href="/exportarCSV"><button style="margin:5px" id="btn-download" class="btn btn-success"><i class="bi bi-filetype-csv"></i> Download</button></a>
+<a href="/exportarCSV"><button style="margin:5px" id="btn-download" class="btn btn-success"><i
+      class="bi bi-filetype-csv"></i> Download</button></a>
+<button style="margin:5px" id="atualizarScript" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i>
+  Atualizar</button>
+
+
 
 <div id="filtropesquisa" class="row collapse">
   <form id="filtro">
@@ -89,25 +95,25 @@
       <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
         <label class="form-label">Média de Atraso</label>
         <div class="col">
-           <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
-             value="" type="number" id="nmin" class="form-control filtro5 enviafiltro" name="dias_atraso_min">
-        </div> 
+          <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+            value="" type="number" id="nmin" class="form-control filtro5 enviafiltro" name="dias_atraso_min">
+        </div>
         <div class="col">
           <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
             value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
-        </div> 
+        </div>
       </div>
 
       <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
         <label class="form-label">Faturas Vencidas</label>
         <div class="col">
-            <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
-              value="" type="number" id="fmin" class="form-control enviafiltro" name="faturas_min">
-          </div>
-          <div class="col">
+          <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
+            value="" type="number" id="fmin" class="form-control enviafiltro" name="faturas_min">
+        </div>
+        <div class="col">
           <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
             value="" type="number" id="fmax" class="form-control enviafiltro" name="faturas_max">
-        </div> 
+        </div>
       </div>
       <div class="w-100 d-none d-md-block"></div>
       <div class="col-sm-2"></div>
@@ -137,7 +143,6 @@
   <table id="myTable" class="table caption-top">
     <thead>
       <tr>
-
         <th style="text-align: center;" scope="col">Classificação</th>
         <th style="text-align: center;" scope="col">Cidade</th>
         <th style="text-align: center;" scope="col">Login</th>
@@ -200,13 +205,6 @@
 
 <script>
 
-  // $("#botaofiltro").click(function () {
-  //   if ($('#nmin').val() < 0 || $('#nmin').val() < 0) {
-  //     alert('Valor inserido é menor que 0');
-  //     return false;
-  //   }
-  // });
-
 
   let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
 
@@ -233,6 +231,37 @@
       }
 
     })
+  }
+
+
+  function attScript() {
+
+    $('#atualizarScript').on('click', function () {
+
+      $(this).attr('disabled', true);
+      $('#atualizarScript').html('<div class="loading2"></div>')
+
+      $.ajax({
+        type: 'GET',
+        url: `${url_api}/apis/sis-cobranca/atualizar-script`,
+        dataType: 'json',
+        success: function (data) {
+
+          Swal.fire({
+          title: 'Atualizado com sucesso!',
+          icon: 'success',
+          showConfirmButton: false,
+          titleFontSize: '15px'
+        })
+           location.reload();
+
+        }, error: e => {
+        console.log(e);
+      },
+
+      })
+
+    });
   }
 
 
@@ -513,6 +542,7 @@
         document.getElementById("operadores-list").focus();
         return false;
       } else {
+        $(this).attr('disabled', true);
         $('#salvarr').html('<div class="loading2"></div>')
         save({ status: 'N', operador, clientes })
         clientes = []
@@ -522,6 +552,7 @@
     listCidades()
     listOperadores()
     listStatuses()
+    attScript()
 
   });
 

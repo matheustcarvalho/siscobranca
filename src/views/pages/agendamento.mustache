@@ -182,7 +182,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
       document.getElementById("cobrancaform").focus();
       return false;
     }else {
-
+      $(this).attr('disabled', true);
       $('#salvarr').html('<div class="loading2"></div>')
 
       $.ajax({
@@ -228,6 +228,7 @@ let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
       document.getElementById("cobrancaag").focus();
       return false;
     }else {
+      $(this).attr('disabled', true);
       $('#salvaragendamento').html('<div class="loading2"></div>')
       $.ajax({
         url: '/agendamento',

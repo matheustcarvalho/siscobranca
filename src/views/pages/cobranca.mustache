@@ -307,6 +307,7 @@
             document.getElementById("cobrancaform").focus();
             return false;
         } else {
+            $(this).attr('disabled', true);
             $('#salvarr').html('<div class="loading2"></div>')
             $.ajax({
                 url: '/cobranca',
@@ -352,7 +353,7 @@
             document.getElementById("campodata").focus();
             return false;
         } else {
-
+            $(this).attr('disabled', true);
             $('#salvaragendamento').html('<div class="loading2"></div>')
 
             $.ajax({
