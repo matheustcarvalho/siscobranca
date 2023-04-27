@@ -1,6 +1,9 @@
 {{>partials/header}}
 
 <style>
+  .btn-datatables{
+    margin-left: 5px;
+  }
   .loading {
     animation: is-rotating 1s infinite;
     border: 6px solid #696767;
@@ -332,8 +335,12 @@
         table.DataTable().destroy()
         $("#listar-clientes").html(content)
         table.DataTable({
-          dom: 'Bfrtio',
-          buttons: ['csv'],
+          dom: 'lfBrtip',
+          paging: true,
+          buttons: [{
+            extend: 'csv',
+            className: 'btn-datatables'
+          }],
           "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
           }
