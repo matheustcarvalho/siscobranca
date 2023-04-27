@@ -46,8 +46,8 @@
 
 <button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i
     class="bi bi-filter"></i> Filtro</button>
-<a href="/exportarCSV"><button style="margin:5px" id="btn-download" class="btn btn-success"><i
-      class="bi bi-filetype-csv"></i> Download</button></a>
+{{! <a href="/exportarCSV"><button style="margin:5px" id="btn-download" class="btn btn-success"><i
+      class="bi bi-filetype-csv"></i> Download</button></a> }}
 <button style="margin:5px" id="atualizarScript" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i>
   Atualizar</button>
 
@@ -332,6 +332,8 @@
         table.DataTable().destroy()
         $("#listar-clientes").html(content)
         table.DataTable({
+          dom: 'Bfrtio',
+          buttons: ['csv'],
           "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.13.2/i18n/pt-BR.json"
           }
