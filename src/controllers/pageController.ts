@@ -9,7 +9,6 @@ dotenv.config();
 
 const url = process.env.API_URL
 
-
 export const homeget = async (req: Request, res: Response, next: Function) => {
 
 
@@ -20,9 +19,6 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
     var horaScript = horaget.data.hora[0].valor
     var hora = horaScript.split(' ')[1]
-    
-  
-    
 
     var parametroPermissao = parametro.data
 
@@ -37,7 +33,6 @@ export const homeget = async (req: Request, res: Response, next: Function) => {
     var nomelogin3 = nomelogin4?.toUpperCase()[0]
     var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
     var nomelogin = nomelogin3?.concat(nomelogin2)
-
 
     const date = new Date().toLocaleTimeString("pt-Br",{
       timeZone: "America/Sao_Paulo"
@@ -102,8 +97,6 @@ export const homepost = async (req: Request, res: Response) => {
     console.log(error);
   });
 
-  
-
 }
 
 export const cobrancaget = async (req: Request, res: Response) => {
@@ -148,7 +141,6 @@ export const cobrancaget = async (req: Request, res: Response) => {
 
     console.log(err);
   }
-
 
 }
 
@@ -203,12 +195,42 @@ export const filtropost = async (req: Request, res: Response) => {
 }
 
 
-export const relatorio = (req: Request, res: Response) => {
+export const relatorio = async (req: Request, res: Response) => {
+try{
+  const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+  var horaScript = horaget.data.hora[0].valor
+  var hora = horaScript.split(' ')[1]
 
-
-  res.render('pages/relatorio', {
-    url
+  var sessionName = req.session.user?.name;
+  
+  var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+  var nomelogin3 = nomelogin4?.toUpperCase()[0]
+  var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+  var nomelogin = nomelogin3?.concat(nomelogin2)
+  
+  const date = new Date().toLocaleTimeString("pt-Br",{
+    timeZone: "America/Sao_Paulo"
   });
+  
+  if (date >= '06:00:00' && date < '12:00:00') {
+  
+    var texto = 'Bom dia'
+  
+  } else if (date >= '12:00:00' && date < '18:00:00') {
+    texto = 'Boa tarde'
+  } else {
+    texto = 'Boa noite'
+  }
+  res.render('pages/relatorio', {
+    url,
+    nomelogin,
+    texto,
+    hora
+  });
+} catch (e) {
+
+  console.log(e);
+}
 
 }
 
@@ -279,7 +301,6 @@ export const agendamentopost = async (req: Request, res: Response) => {
     console.log(error);
   });
 
-
 }
 
 export const agendamentoput = async (req: Request, res: Response) => {
@@ -287,8 +308,6 @@ export const agendamentoput = async (req: Request, res: Response) => {
   var idOperador = req.session.user?.id
 
   var cliente = req.body
-
-
 
   const resposta = await axios({
     method: 'post',
@@ -307,7 +326,6 @@ export const agendamentoput = async (req: Request, res: Response) => {
   }).catch(function (error: any) {
     console.log(error);
   });
-
 
 }
 
@@ -387,9 +405,51 @@ export const exportarCSV = async (req: Request, res: Response) => {
       });
     })
 
-
   } catch (e) {
     console.log(e);
   }
 
 }
+
+export const pagas = async (req: Request, res: Response) => {
+
+  try{
+    const horaget = await axios.get(`${url}/apis/sis-cobranca/hora-script`)
+    var horaScript = horaget.data.hora[0].valor
+    var hora = horaScript.split(' ')[1]
+  
+    var sessionName = req.session.user?.name;
+    
+    var nomelogin4 = sessionName?.split('-')[0].split(' ')[0]
+    var nomelogin3 = nomelogin4?.toUpperCase()[0]
+    var nomelogin2: any = nomelogin4?.substring(1).toLowerCase()
+    var nomelogin = nomelogin3?.concat(nomelogin2)
+    
+    const date = new Date().toLocaleTimeString("pt-Br",{
+      timeZone: "America/Sao_Paulo"
+    });
+    
+    if (date >= '06:00:00' && date < '12:00:00') {
+    
+      var texto = 'Bom dia'
+    
+    } else if (date >= '12:00:00' && date < '18:00:00') {
+      texto = 'Boa tarde'
+    } else {
+      texto = 'Boa noite'
+    }
+    
+    res.render('pages/pagas', {
+      url,
+      nomelogin,
+      texto,
+      hora
+    })
+  
+  
+  } catch (e) {
+    console.log(e);
+  }
+  
+  
+  }

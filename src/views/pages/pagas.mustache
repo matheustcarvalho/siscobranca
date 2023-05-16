@@ -1,10 +1,24 @@
 {{>partials/header}}
 
 <style>
+#font-total{
+font-size: 15px;
+}
+#totalValue {
+  position: absolute;
+  top: 97%;
+  right: 10px; 
+  padding: 5px;
+  width: 210px;
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
   
-  .btn-datatables{
+  .btn-datatables {
     margin-left: 5px;
   }
+
   .loading {
     animation: is-rotating 1s infinite;
     border: 6px solid #696767;
@@ -46,6 +60,26 @@
     margin-top: 10px;
     margin-left: 5rem;
   }
+
+  #botaofiltro {
+
+    position: absolute;
+    bottom: 0;
+  }
+
+  .button-container {
+    position: absolute;
+    top: 50%;
+    right: -3%;
+    transform: translateY(-50%);
+  }
+
+  .button-container span {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #FFFFFF;
+  }
 </style>
 
 <button style="margin:5px" data-bs-toggle="collapse" class="btn btn-primary" data-bs-target="#filtropesquisa"><i
@@ -54,6 +88,7 @@
       class="bi bi-filetype-csv"></i> Download</button></a> }}
 <button style="margin:5px" id="atualizarScript" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i>
   Atualizar</button>
+
 
 
 <div id="filtropesquisa" class="row collapse">
@@ -85,7 +120,7 @@
         </select>
       </div>
 
-      <div class="col-sm-2 d-flex flex-column" align="center">
+      {{! <div class="col-sm-2 d-flex flex-column" align="center">
         <label class="form-label">Classificação</label>
         <select placholder="Selecione uma classificacao" class="form-select filtro4 enviafiltro" id="classificacao"
           multiple="multiple" name="classificacao">
@@ -94,8 +129,8 @@
           <option value='2'>Terceiro atraso</option>
           <option value='3'>Atrasa com frequência</option>
         </select>
-      </div>
-      <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
+      </div> }}
+      {{! <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
         <label class="form-label">Média de Atraso</label>
         <div class="col">
           <input placeholder="Min" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
@@ -105,7 +140,7 @@
           <input placeholder="Max" style="height:33px; border-color: #b6b3b3; padding-right: 5px; padding-left: 5px;"
             value="" type="number" id="nmax" class="form-control filtro5 enviafiltro" name="dias_atraso_max">
         </div>
-      </div>
+      </div> }}
 
       <div class="col-sm-2 row d-flex " align="center" style="margin-top: -2px;">
         <label class="form-label">Faturas Vencidas</label>
@@ -118,17 +153,16 @@
             value="" type="number" id="fmax" class="form-control enviafiltro" name="faturas_max">
         </div>
       </div>
-      <div class="w-100 d-none d-md-block"></div>
+      {{! <div class="w-100 d-none d-md-block"></div> }}
+      {{! <div class="col-sm-2"></div>
       <div class="col-sm-2"></div>
       <div class="col-sm-2"></div>
       <div class="col-sm-2"></div>
-      <div class="col-sm-2"></div>
-      <div class="col-sm-2"></div>
-      <div align="right" class="col-sm-2 row">
+      <div class="col-sm-2"></div> }}
+      <div class="col-sm-2 row">
 
         <div class="col"></div>
-        <div class="col">
-          <br>
+        <div class="col" style="position: relative">
           <button type="submit" id="botaofiltro" class="btn btn-secondary">Filtrar</button>
         </div>
         <div class="col"></div>
@@ -147,14 +181,14 @@
     <thead>
       <tr>
         <th style="text-align: center;" scope="col">Login</th>
-        <th style="text-align: center;" scope="col">Cidade</th>
         <th style="text-align: center;" scope="col">Status</th>
-        <th style="text-align: center;" scope="col">Vendedor</th>
         <th style="text-align: center;" scope="col">Vencimento</th>
+        <th style="text-align: center;" scope="col">Cidade</th>
+        <th style="text-align: center;" scope="col">Vendedor</th>
         <th style="text-align: center;" scope="col">Faturas Vencidas</th>
-        <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Média de Atraso</th>
-        <th style="text-align: center;" scope="col">Classificação</th>
-         {{! <th></th>  }}
+        <th style="text-align: center; color:rgb(21, 21, 21)" scope="col">Soma Boletos</th>
+        <th style="text-align: center;" scope="col">Valor Pago</th>
+        {{! <th></th> }}
       </tr>
     </thead>
     <tbody id="listar-clientes">
@@ -162,6 +196,11 @@
     </tbody>
   </table>
 </div>
+
+{{! <div id="totalValue" class="container">
+  <span class="badge bg-success">  </span>
+</div> }}
+
 <div class="row">
   <div class="col-md-4">
   </div>
@@ -205,6 +244,7 @@
   </div>
 </form>
 
+
 <script>
 
   let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
@@ -232,7 +272,30 @@
       }
 
     })
+
   }
+
+  // function SomaTotal() {
+
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: `${url_api}/apis/sis-cobranca/total-pagos`,
+  //     dataType: 'json',
+  //     success: function (data) {
+
+  //        let total = data.total[0].ValorTotalPago
+  //         console.log(total);
+
+  //       $('#totalValue').html(`<span id="font-total" class="badge bg-success">Total Recebido: ${total}</span>`);
+
+  //     }, error: e => {
+  //       console.log(e);
+  //     },
+
+  //   })
+
+  // }
+
 
 
   function attScript() {
@@ -249,16 +312,16 @@
         success: function (data) {
 
           Swal.fire({
-          title: 'Atualizado com sucesso!',
-          icon: 'success',
-          showConfirmButton: false,
-          titleFontSize: '15px'
-        })
-           location.reload();
+            title: 'Atualizado com sucesso!',
+            icon: 'success',
+            showConfirmButton: false,
+            titleFontSize: '15px'
+          })
+          location.reload();
 
         }, error: e => {
-        console.log(e);
-      },
+          console.log(e);
+        },
 
       })
 
@@ -292,43 +355,50 @@
 
 
   function list(filter = null) {
+
+    function formatMoney(valor) {
+
+      valor = Math.round(parseFloat(valor) * 100) / 100;
+      var partes = valor.toFixed(2).split('.');
+      var inteiro = partes[0];
+      var centavos = partes[1];
+      inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      var valorFormatado = inteiro + ',' + centavos;
+
+      return valorFormatado;
+    }
+
+
     $.ajax({
 
       type: 'POST',
-      url: `${url_api}/apis/sis-cobranca/listar-clientes`,
+      url: `${url_api}/apis/sis-cobranca/listar-clientes-pagos`,
       data: filter,
       dataType: 'json',
       success: function (data) {
-               console.log
+
 
         let content = '';
 
         for (cliente of data.clientes) {
 
-          
-
-          let atraso = (cliente.DiasDeAtraso == '0') ? cliente.DiasDeAtraso : cliente.DiasDeAtraso + ' dias';
-
 
           content += `
           <tr>
+          
             <td>${cliente.login || '-'}</td>
-            <td>${cliente.cidade || '-'}</td>
-            <td>${cliente.statusLogin || '-'}</td>
-            <td>${cliente.nomeVendedor || '-'}</td>
+            <td>${cliente.status_login || '-'}</td>
             <td>${cliente.diaVencimento || '-'}</td>
-            <td>${cliente.SomaBoletosVencidos || '-'}</td>
-            <td>${atraso}</td>
-            <td>${cliente.classificacao || '-'}</td>            
+            <td>${cliente.cidade || '-'}</td>
+            <td>${cliente.nomeVendedor || '-'}</td>
+            <td>${cliente.TotalBoletosVencidos || '-'}</td>
+            <td><span style="font-size:15px;" class="badge bg-secondary">R$ ${formatMoney(cliente.TotalValorBoleto) || '-'}</span></td>
+            <td><span style="font-size:15px;" class="badge bg-success">R$ ${formatMoney(cliente.TotalValorPago) || '-'}</span></td>
+
+            
           </tr>`
 
         }
-            // botao da listagem acima
-            // <td>
-            //   <input style="width: 25px; height: 25px; border-color: rgb(55, 55, 55);" data-id="${cliente.id_cliente}"
-            //     data-login="${cliente.login}" data-adesao="${cliente.id}" class="big-cehckboc form-check-input select-item" type="checkbox"
-            //     value="" id="flexCheckDefault">
-            // </td>
 
         const table = $("#myTable")
         table.DataTable().destroy()
@@ -379,8 +449,7 @@
 
           content += `
     <option data-status='${data.parametros[i].atributo}' value='${data.parametros[i].atributo}'>${data.parametros[i].atributo}</option>
-    
-    `
+     `
         }
 
         $("#opparametros").append(content)
@@ -395,41 +464,6 @@
 
   $('#meuModal').hide();
 
-
-  function save(data) {
-
-    let content = `<div class="alert alert-success alert-dismissible fade show">
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      <strong>Salvo com sucesso!</strong></div>`
-
-    $.ajax({
-      url: '/home',
-      method: 'post',
-      data,
-      // dataType: 'json',
-      success: res => {
-
-        Swal.fire({
-          title: 'Salvo com sucesso!',
-          icon: 'success',
-          showConfirmButton: false,
-          titleFontSize: '15px'
-        })
-
-        location.reload();
-      },
-      error: e => {
-        console.log(e);
-        alert('Houve algum erro')
-      },
-      complete: () => {
-        $(".select-item").prop('checked', false);
-        clientes = []
-      }
-    })
-  }
-
-
   $('.filtro3').select2({
     placeholder: "Selecione",
     allowClear: true
@@ -440,10 +474,7 @@
     allowClear: true
   });
 
-
   $(document).ready(function () {
-
-
 
     let selectedItems = []
 
@@ -515,7 +546,6 @@
     });
 
 
-
     $('#listar-clientes').on('change', '.select-item', function () {
       const selected = $(this).is(':checked')
       const login = $(this).data('login')
@@ -531,7 +561,6 @@
         clientes.splice(clientes.findIndex(i => { i.login == login }), 1)
       }
 
-      // console.log(clientes);
     })
 
     $("input[type='checkbox']:checked").prop('checked', false);
@@ -545,7 +574,7 @@
         let content = `<div class="alert alert-danger alert-dismissible fade show">
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     <strong>Atenção!</strong> Selecione um operador.
-  </div>`
+     </div>`
         $('#alert-erro').html(content);
         document.getElementById("operadores-list").focus();
         return false;
@@ -556,14 +585,16 @@
         clientes = []
       }
     })
+
     list()
     listCidades()
     listOperadores()
     listStatuses()
     attScript()
+    // SomaTotal()
 
   });
 
 </script>
 
-{{>partials/footer}}
+ {{>partials/footer}} 

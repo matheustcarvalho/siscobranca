@@ -9,7 +9,7 @@
             <nav id="course-toc" class="js-only">
 
 
-              <ol id="chapters" style="margin-top:25px" class="chapters list-large">
+              <ol id="chapters" style="margin-top:25px; list-style-type:none;" class="chapters list-large">
                 <li
                   style=" border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
                   class="">
@@ -17,17 +17,16 @@
                     style="margin-left:15px; margin-top:25px; color:rgb(35, 34, 34); text-decoration: none;"
                     class="chapter-title" section-number="0">Gráfico 1
                     <span class="text completionstatus outoftotal">
+                      <small style="margin-left: 15px; margin-top: 10px;">
 
-                      <small style="margin-left: 15px;">
-
-                        <p style="margin-left:15px"> Relatório: 1 / 4 </p>
+                        <p style="margin-left:15px; margin-top: 10px;"> Relatório de valores recebidos</p>
                       </small>
 
                     </span>
                   </a>
                 </li>
 
-                <li
+                {{! <li
                   style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
                   class="">
                   <a onClick="mostrar('section-1')" id="dados-pessoais"
@@ -74,7 +73,7 @@
                       </small>
                     </span>
                   </a>
-                </li>
+                </li> }}
                 <!-- <li
                   style="border: solid 1px; border-color: rgb(207, 204, 204); border-radius: 5px; margin-bottom: 5px; border-left-width: 5px;border-left-color:#2D4E9E;"
                   class="">
@@ -110,22 +109,17 @@
                         <div>
                           <h2
                             style="font-size: 20px; margin:30px; margin-left: -20px; font-size: 22px; color:rgb(84, 83, 83)"
-                            class="sectionname">Relatório 1
+                            class="sectionname">Relatório
                           </h2>
-                        </div>
-                        <div id="chart">  <div id="myModal" class="modal">
-                          <div class="modal-content">
-                            <h1>Alerta Modal</h1>
-                            <p>Este é um alerta modal personalizado!</p>
-                            <button onclick="hideModal()">Fechar</button>
+                          <div id="chart">
+
                           </div>
                         </div>
-                        <button onclick="showModal()">Mostrar Alerta Modal</button>
-                        
                       </div>
+
                     </li>
 
-                    <li id="section-1" class="section main clearfix section-1 hidden" aria-label="Aula 1 "
+                    {{! <li id="section-1" class="section main clearfix section-1 hidden" aria-label="Aula 1 "
                       tabindex="-1">
                       <div class="content">
                         <div>
@@ -151,8 +145,7 @@
                         <div id="chart3"></div>
                       </div>
                     </li>
-                    <li id="section-3" class="section main clearfix section-3 hidden" aria-label="Aula 1"
-                      tabindex="-1">
+                    <li id="section-3" class="section main clearfix section-3 hidden" aria-label="Aula 1" tabindex="-1">
                       <div class="content">
                         <div>
                           <h2
@@ -176,52 +169,52 @@
                           </h2>
                         </div>
                         <div id="chart5">
-                        
+
 
 
                         </div>
                       </div>
-                    </li>
+                    </li> }}
                   </ul>
                 </div>
               </div>
             </section>
           </div>
-         </div>
+        </div>
       </div>
-    </div>
   </div>
+</div>
 </div>
 
 <style>
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
-.modal-content {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 20px;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  margin: 100px auto;
-  max-width: 400px;
-}
+  .modal-content {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 100px auto;
+    max-width: 400px;
+  }
 
-/* Estilos adicionais para centralizar o conteúdo verticalmente */
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+  /* Estilos adicionais para centralizar o conteúdo verticalmente */
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 
 
   .sectionname {
@@ -276,207 +269,132 @@
 </style>
 
 <script>
-function showModal() {
-  var modal = document.getElementById('myModal');
-  modal.style.display = 'block';
-}
+  $(document).ready(function () {
 
-function hideModal() {
-  var modal = document.getElementById('myModal');
-  modal.style.display = 'none';
-}
+    let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
 
-
-
-let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
-
-
-  function mostrar(id) {
-    if (document.getElementById(id).style.display !== "none") {
-      document.getElementById(id).style.display = "none";
-      return;
-    }
-    Array.from(document.getElementsByClassName("hidden")).forEach(
-      li => (li.style.display = "none")
-    );
-    document.getElementById(id).style.display = "block";
-  };
-
-$.ajax({
-
-type: 'GET',
-url: `${url_api}a/apis/sis-cobranca/relatorio-valor`,
-dataType: 'json',
-success: function (data) {
-
-  var options = {
-    chart: {
-      type: 'bar',
-      width: 700,
-      height: 400
-  
-    },
-    series: [
-      {
-        name: 'Valores recebidos',
-        data: [data.operador[0].valor_recebido, data.operador[1].valor_recebido, data.operador[2].valor_recebido]
+    function mostrar(id) {
+      if (document.getElementById(id).style.display !== "none") {
+        document.getElementById(id).style.display = "none";
+        return;
       }
-    ],
-    xaxis: {
-      categories: [data.operador[0].nome, data.operador[1].nome, data.operador[2].nome]
+      Array.from(document.getElementsByClassName("hidden")).forEach(
+        li => (li.style.display = "none")
+      );
+      document.getElementById(id).style.display = "block";
+    };
+
+    function formatMoney(valor) {
+
+      valor = Math.round(parseFloat(valor) * 100) / 100;
+      var partes = valor.toFixed(2).split('.');
+      var inteiro = partes[0];
+      var centavos = partes[1];
+      inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      var valorFormatado = inteiro + ',' + centavos;
+
+      return valorFormatado;
     }
 
- }
-  var chart = new ApexCharts(document.querySelector('#chart'), options)
-  chart.render()  
+    $.ajax({
 
-}
+      type: 'GET',
+      url: `${url_api}/apis/sis-cobranca/total-pagos`,
+      dataType: 'json',
+      success: function (data) {
 
-});
+        var valorTotal = data.total[0].ValorTotalPago
 
-
-$.ajax({
-
-type: 'GET',
-url: `${url_api}/apis/sis-cobranca/relatorio-quantide`,
-dataType: 'json',
-success: function (data) {
-
-  
-}
-
-});
-
-var options2 = {
-  series: [44, 55, 13, 43, 22],
-  chart: {
-    width: 600,
-    type: 'pie',
-  },
-  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 600
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
-};
-
-
-  var options3 = {
-    series: [{
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-    }],
-    chart: {
-      height: 350,
-      width: 700,
-      type: 'line',
-      zoom: {
-        enabled: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    },
-    title: {
-      text: 'Product Trends by Month',
-      align: 'left'
-    },
-    grid: {
-      row: {
-        colors: ['#f3f3f3', 'transparent'],
-        opacity: 0.5
-      },
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    }
-  };
-
-  var options4 = {
+        var options = {
           series: [{
-          name: 'PRODUCT A',
-          data: [44, 55, 41, 67, 22, 43]
-        }, {
-          name: 'PRODUCT B',
-          data: [13, 23, 20, 8, 13, 27]
-        }, {
-          name: 'PRODUCT C',
-          data: [11, 17, 15, 15, 21, 14]
-        }, {
-          name: 'PRODUCT D',
-          data: [21, 7, 25, 13, 22, 8]
-        }],
+            name: 'Total Recebido',
+            data: [0, 0, 0, 0, formatMoney(valorTotal), 0, 0, 0, 0, 0, 0, 0]
+          }],
           chart: {
-          type: 'bar',
-          height: 400,
-          width:750,
-          stacked: true,
-          toolbar: {
-            show: true
+            height: 350,
+            type: 'bar',
           },
-          zoom: {
-            enabled: true
-          }
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
+          plotOptions: {
+            bar: {
+              borderRadius: 10,
+              dataLabels: {
+                position: 'top', // top, center, bottom
+              },
             }
-          }
-        }],
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            borderRadius: 10,
-            dataLabels: {
-              total: {
-                enabled: true,
-                style: {
-                  fontSize: '13px',
-                  fontWeight: 900
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+              return "R$ " + val;
+            },
+            offsetY: -20,
+            style: {
+              fontSize: '12px',
+              colors: ["#304758"]
+            }
+          },
+
+          xaxis: {
+            categories: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            position: 'top',
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false
+            },
+            crosshairs: {
+              fill: {
+                type: 'gradient',
+                gradient: {
+                  colorFrom: '#D8E3F0',
+                  colorTo: '#BED1E6',
+                  stops: [0, 100],
+                  opacityFrom: 0.4,
+                  opacityTo: 0.5,
                 }
               }
+            },
+            tooltip: {
+              enabled: true,
             }
           },
-        },
-        xaxis: {
-          type: 'datetime',
-          categories: ['01/01/2011 GMT', '01/02/2011 GMT', '01/03/2011 GMT', '01/04/2011 GMT',
-            '01/05/2011 GMT', '01/06/2011 GMT'
-          ],
-        },
-        legend: {
-          position: 'right',
-          offsetY: 40
-        },
-        fill: {
-          opacity: 1
-        }
+          yaxis: {
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false,
+            },
+            labels: {
+              show: false,
+              formatter: function (val) {
+                return "R$ " + val;
+              }
+            }
+
+          },
+          title: {
+            text: 'Valor Total Recebido',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+              color: '#444'
+            }
+          }
         };
-  
-        
-  var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
-  chart2.render();
 
-  var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
-  chart3.render();
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 
-  var chart4 = new ApexCharts(document.querySelector("#chart4"), options4);
-  chart4.render();
+      }
+
+    });
+
+  });
+
+
 
 </script>
 

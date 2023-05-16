@@ -9,8 +9,6 @@ dotenv.config();
 
 const url = process.env.API_URL
 
-
-
 export const home = async (req: Request, res: Response) => {  
 
   var loginn = req.body.login
@@ -85,7 +83,6 @@ export const ipvalidation = async (req: Request, res: Response, next: Function) 
   } catch (e) {
     res.status(401).send(e)
   }
-
 
 }
 

@@ -66,6 +66,7 @@ router.get('/agendamento', PageController.agendamentoget);
 router.post('/agendamento', PageController.agendamentopost);
 router.get('/index', PageController.index);
 router.get('/exportarCSV', PageController.exportarCSV);
+router.get('/pagas', PageController.pagas);
 
 
 

@@ -32,38 +32,40 @@
             <div class="info-tiles tiles-toyo " id="novo-colaborador" href="">
                 <br>
                 <div class="tiles-heading text-center">
-                    <H6 style="color: #FFFFFF">Atribuir Cobranças</H6>
+                    <H6 style="color: #FFFFFF">Cobranças Pendentes</H6>
                 </div>
                 <div class="adm-inc d-flex justify-content-center">
                     <div class="text-center loading" id="atribuir"></div>
                 </div>
-                <p><a href="/atribuir" class="col-sm-12 btn btn-secondary">Ir para atribuição</a></p>
+                <p><a href="/atribuir" class="col-sm-12 btn btn-secondary">Abrir Listagem</a></p>
             </div>
         </div>
         <div class="caixacob col-md-4 col-xs-12 col-sm-4">
             <div class="info-tiles tiles-success"  href="#">
                 <br>
                 <div class="tiles-heading2 text-center">
-                    <H6 style="color: #FFFFFF">Nova cobrança</H6>
+                    <H6 style="color: #FFFFFF">Cobranças Pagas</H6>
                 </div>
                 <div class="adm-inc d-flex justify-content-center">
                     <div class="text-center loading" id="atribuir2">
                     </div>
                 </div>
-                <p><a href="/cobranca" class="col-sm-12 btn btn-success">Iniciar cobrança</a></p>
+                <p><a href="/pagas" class="col-sm-12 btn btn-success">Abrir Listagem</a></p>
             </div>
         </div>
         <div class="caixaage col-md-4 col-xs-12 col-sm-4">
             <div class="info-tiles tiles-orange" id="colaborador-ferias" href="#">
                 <br>
                 <div class="tiles-heading3 text-center">
-                    <H6 style="color: #FFFFFF">Cobranças Agendadas</H6>
+                    <H6 style="color: #FFFFFF">Relatórios</H6>
                 </div>
                 <div class="adm-inc d-flex justify-content-center">
-                    <div class="text-center loading" id="atribuir3">
+                    <div class="text-center" id="atribuir3">
+                        <h4 style="color: #FFFFFF"><i class="bi bi-bar-chart-fill"></i></h4>
+                    <small style=" color: #FFFFFF">Detalhes</small>
                     </div>
                 </div>
-                <p><a href="/agendamento" class="col-sm-12 btn btn-dark">Cobranças agendadas</a></p>
+                <p><a href="/relatorio" class="col-sm-12 btn btn-dark">Abrir Relatórios</a></p>
             </div>
         </div>
     </div>
@@ -71,52 +73,61 @@
 
 <script>
 
-let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+function carregar() {
 
-        $.ajax({
-            type: 'GET',
-            url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
-            success: function(data){
+    let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+    
+            $.ajax({
+                type: 'GET',
+                url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
+                success: function(data){
+    
+                    let total = data.clientes[0].total
+                    const content = `
+                        <h4 style="color: #FFFFFF">${total}</h4>
+                        <small style=" color: #FFFFFF">Clientes em atraso</small>
+                    `
+                    $('#atribuir').removeClass('loading').html(content);
+    
+                }
+            });
+    
+            $.ajax({
+                type: 'GET',
+                url: `${url_api}/apis/sis-cobranca/contagem-clientes-pagos`,
+                success: function(data){
+                    console.log(data);
+                    let totalatribuido = data.clientes[0].total
+                    const content = `
+                        <h4 style="color: #FFFFFF">${totalatribuido}</h4>
+                        <small style=" color: #FFFFFF">Realizaram o pagamento</small>
+                    `
+                    $('#atribuir2').removeClass('loading').html(content);
+    
+                }
+            });
+    
+            // $.ajax({
+            //     type: 'GET',
+            //     url: `${url_api}/apis/sis-cobranca/contagem-cobranca-agendamento`,
+            //     success: function(data){
+    
+                  
+    
+            //         let totalagendado = data.clientes.total
+            //         const content = `
+            //             <h4 style="color: #FFFFFF">${totalagendado}</h4>
+            //             <small style=" color: #FFFFFF">Detalhes</small>
+            //         `
+            //         $('#atribuir3').removeClass('loading').html(content);
+    
+            //     }
+            // });
 
-                let total = data.clientes.total
-                const content = `
-                    <h4 style="color: #FFFFFF">${total}</h4>
-                    <small style=" color: #FFFFFF">Aguardando atribuição</small>
-                `
-                $('#atribuir').removeClass('loading').html(content);
+}
 
-            }
-        });
+$(document).ready(function() {
+    carregar();
+});
 
-        $.ajax({
-            type: 'GET',
-            url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes-atribuidos`,
-            success: function(data){
-
-                let totalatribuido = data.clientes.total
-                const content = `
-                    <h4 style="color: #FFFFFF">${totalatribuido}</h4>
-                    <small style=" color: #FFFFFF">Aguardando cobrança</small>
-                `
-                $('#atribuir2').removeClass('loading').html(content);
-
-            }
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: `${url_api}/apis/sis-cobranca/contagem-cobranca-agendamento`,
-            success: function(data){
-
-              
-
-                let totalagendado = data.clientes.total
-                const content = `
-                    <h4 style="color: #FFFFFF">${totalagendado}</h4>
-                    <small style=" color: #FFFFFF">Aguardando cobrança</small>
-                `
-                $('#atribuir3').removeClass('loading').html(content);
-
-            }
-        });
 </script>
