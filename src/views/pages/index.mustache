@@ -80,8 +80,8 @@ function carregar() {
             $.ajax({
                 type: 'GET',
                 url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
+                dataType: 'json',
                 success: function(data){
-    
                     let total = data.clientes[0].total
                     const content = `
                         <h4 style="color: #FFFFFF">${total}</h4>
@@ -89,14 +89,15 @@ function carregar() {
                     `
                     $('#atribuir').removeClass('loading').html(content);
     
-                }
+                },
+                error: console.log
             });
     
             $.ajax({
                 type: 'GET',
                 url: `${url_api}/apis/sis-cobranca/contagem-clientes-pagos`,
+                dataType: 'json',
                 success: function(data){
-                    console.log(data);
                     let totalatribuido = data.clientes[0].total
                     const content = `
                         <h4 style="color: #FFFFFF">${totalatribuido}</h4>
@@ -104,7 +105,8 @@ function carregar() {
                     `
                     $('#atribuir2').removeClass('loading').html(content);
     
-                }
+                },
+                error: console.log
             });
     
             // $.ajax({
