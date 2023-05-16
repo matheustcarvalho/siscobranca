@@ -1,7 +1,7 @@
 {{>partials/header}}
 
 <style>
-    .progress{
+    .progress {
         margin-top: 15px
     }
 
@@ -16,14 +16,15 @@
     }
 
     @keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
     }
 </style>
 <div class="container">
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div class="caixacob col-md-4 col-xs-12 col-sm-4">
-            <div class="info-tiles tiles-success"  href="#">
+            <div class="info-tiles tiles-success" href="#">
                 <br>
                 <div class="tiles-heading2 text-center">
                     <H6 style="color: #FFFFFF">Cobranças Pagas</H6>
@@ -62,7 +63,7 @@
                 <div class="adm-inc d-flex justify-content-center">
                     <div class="text-center" id="atribuir3">
                         <h4 style="color: #FFFFFF"><i class="bi bi-bar-chart-fill"></i></h4>
-                    <small style=" color: #FFFFFF">Detalhes</small>
+                        <small style=" color: #FFFFFF">Detalhes</small>
                     </div>
                 </div>
                 <p><a href="/relatorio" class="col-sm-12 btn btn-dark">Abrir Relatórios</a></p>
@@ -73,63 +74,71 @@
 
 <script>
 
-function carregar() {
+    function carregar() {
 
-    let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
-    
-            $.ajax({
-                type: 'GET',
-                url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
-                dataType: 'json',
-                success: function(data){
-                    let total = data.clientes[0].total
-                    const content = `
+        let url_api = '{{url}}'.replaceAll('&#x2F;', '/');
+
+        $.ajax({
+            type: 'GET',
+            url: `${url_api}/apis/sis-cobranca/contagem-listar-clientes`,
+            dataType: 'json',
+            success: function (data) {
+                let total = data.clientes[0].total
+                const content = `
                         <h4 style="color: #FFFFFF">${total}</h4>
                         <small style=" color: #FFFFFF">Clientes em atraso</small>
                     `
-                    $('#atribuir').removeClass('loading').html(content);
-    
-                },
-                error: console.log
-            });
-    
-            $.ajax({
-                type: 'GET',
-                url: `${url_api}/apis/sis-cobranca/contagem-clientes-pagos`,
-                dataType: 'json',
-                success: function(data){
-                    let totalatribuido = data.clientes[0].total
-                    const content = `
+                $('#atribuir').removeClass('loading').html(content);
+
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.status + ': ' + xhr.statusText);
+                console.log('Error: ' + error);
+            }
+
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: `${url_api}/apis/sis-cobranca/contagem-clientes-pagos`,
+            dataType: 'json',
+            success: function (data) {
+                let totalatribuido = data.clientes[0].total
+                const content = `
                         <h4 style="color: #FFFFFF">${totalatribuido}</h4>
                         <small style=" color: #FFFFFF">Realizaram o pagamento</small>
                     `
-                    $('#atribuir2').removeClass('loading').html(content);
-    
-                },
-                error: console.log
-            });
-    
-            // $.ajax({
-            //     type: 'GET',
-            //     url: `${url_api}/apis/sis-cobranca/contagem-cobranca-agendamento`,
-            //     success: function(data){
-    
-                  
-    
-            //         let totalagendado = data.clientes.total
-            //         const content = `
-            //             <h4 style="color: #FFFFFF">${totalagendado}</h4>
-            //             <small style=" color: #FFFFFF">Detalhes</small>
-            //         `
-            //         $('#atribuir3').removeClass('loading').html(content);
-    
-            //     }
-            // });
+                $('#atribuir2').removeClass('loading').html(content);
 
-}
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.status + ': ' + xhr.statusText);
+                console.log('Error: ' + error);
+            }
 
-$(document).ready(function() {
-    carregar();
-});
+        });
+
+        // $.ajax({
+        //     type: 'GET',
+        //     url: `${url_api}/apis/sis-cobranca/contagem-cobranca-agendamento`,
+        //     success: function(data){
+
+
+
+        //         let totalagendado = data.clientes.total
+        //         const content = `
+        //             <h4 style="color: #FFFFFF">${totalagendado}</h4>
+        //             <small style=" color: #FFFFFF">Detalhes</small>
+        //         `
+        //         $('#atribuir3').removeClass('loading').html(content);
+
+        //     }
+        // });
+
+    }
+
+    $(document).ready(function () {
+        carregar();
+    });
 
 </script>
