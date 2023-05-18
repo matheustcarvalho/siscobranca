@@ -284,31 +284,25 @@
       document.getElementById(id).style.display = "block";
     };
 
-    function formatMoney(valor) {
-
-      valor = Math.round(parseFloat(valor) * 100) / 100;
-      var partes = valor.toFixed(2).split('.');
-      var inteiro = partes[0];
-      var centavos = partes[1];
-      inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      var valorFormatado = inteiro + ',' + centavos;
-
-      return valorFormatado;
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
     }
 
-    $.ajax({
 
+    $.ajax({
       type: 'GET',
       url: `${url_api}/apis/sis-cobranca/total-pagos`,
       dataType: 'json',
       success: function (data) {
+        console.log(data);
 
-        var valorTotal = data.total[0].ValorTotalPago
+        var valores = data.total.map(item => parseFloat(item.TotalValorPago));
+        var nomes_meses = data.total.map(item => item.nomeMes);
 
         var options = {
           series: [{
             name: 'Total Recebido',
-            data: [0, 0, 0, 0, formatMoney(valorTotal), 0, 0, 0, 0, 0, 0, 0]
+            data: valores
           }],
           chart: {
             height: 350,
@@ -325,7 +319,7 @@
           dataLabels: {
             enabled: true,
             formatter: function (val) {
-              return "R$ " + val;
+              return formatarMoeda(val);
             },
             offsetY: -20,
             style: {
@@ -333,9 +327,8 @@
               colors: ["#304758"]
             }
           },
-
           xaxis: {
-            categories: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            categories: nomes_meses,
             position: 'top',
             axisBorder: {
               show: false
@@ -369,10 +362,13 @@
             labels: {
               show: false,
               formatter: function (val) {
-                return "R$ " + val;
+                return formatarMoeda(val);
               }
             }
 
+          },
+          grid: {
+            show: false
           },
           title: {
             text: 'Valor Total Recebido',
@@ -387,10 +383,10 @@
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
-
       }
-
     });
+
+
 
   });
 
